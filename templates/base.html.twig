@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    {#
+    Meta :
+    encodage UTF-8 Html5
+    Responsive
+    informations aux vieux navigateurs web IE
+    #}
+    <meta charset="UTF-8">
+    <meta name="description" content="Site de sorties !"/>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=yes, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {#
+    CSS
+    framework BULMA
+    Javascript
+    Foontawsome
+    #}
+    <link rel="stylesheet" href="{{ asset('css/normalize.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" defer></script>
+    <script src="{{ asset('js/appJs.js') }}" defer></script>
+    {#
+    flavicon
+    Title
+    #}
+    <link rel="icon" type="image/gif" href="{{ asset('icon/favicon.png') }}"/>
+
+    <title>{% block title %}Sortir.com{% endblock %}</title>
+</head>
+<body>
+<header>
+    {% include 'inc/nav_bar.html.twig' %}</nav>
+
+</header>
+<main>
+    {% block body %}{% endblock %}
+</main>
+<footer></footer>
+</body>
+</html>
+
+
