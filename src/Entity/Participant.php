@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ParticipantRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -79,6 +81,22 @@ class Participant implements UserInterface
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $updatedDate;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="organizer")
+     */
+    private $events;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Sortie::class, mappedBy="participants")
+     */
+    private $eventRegistrationList;
+
+    public function __construct()
+    {
+        $this->events = new ArrayCollection();
+        $this->eventRegistrationList = new ArrayCollection();
+    }
     
 
 
@@ -263,6 +281,63 @@ class Participant implements UserInterface
     public function setUpdatedDate(?\DateTimeInterface $updatedDate): self
     {
         $this->updatedDate = $updatedDate;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sortie[]
+     */
+    public function getEvents(): Collection
+    {
+        return $this->events;
+    }
+
+    public function addEvent(Sortie $event): self
+    {
+        if (!$this->events->contains($event)) {
+            $this->events[] = $event;
+            $event->setOrganizer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvent(Sortie $event): self
+    {
+        if ($this->events->removeElement($event)) {
+            // set the owning side to null (unless already changed)
+            if ($event->getOrganizer() === $this) {
+                $event->setOrganizer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sortie[]
+     */
+    public function getEventRegistrationList(): Collection
+    {
+        return $this->eventRegistrationList;
+    }
+
+    public function addEventRegistrationList(Sortie $eventRegistrationList): self
+    {
+        if (!$this->eventRegistrationList->contains($eventRegistrationList)) {
+            $this->eventRegistrationList[] = $eventRegistrationList;
+            $eventRegistrationList->addParticipant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEventRegistrationList(Sortie $eventRegistrationList): self
+    {
+        if ($this->eventRegistrationList->removeElement($eventRegistrationList)) {
+            $eventRegistrationList->removeParticipant($this);
+        }
 
         return $this;
     }
