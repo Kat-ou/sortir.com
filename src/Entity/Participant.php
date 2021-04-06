@@ -54,7 +54,7 @@ class Participant implements UserInterface
     private $firstname;
 
     /**
-     * @ORM\Column(type="string", length=15, nullable=true)
+     * @ORM\Column(type="string", length=25, nullable=true)
      */
     private $phone;
 
