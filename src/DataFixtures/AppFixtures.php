@@ -130,7 +130,7 @@ class AppFixtures extends Fixture
             // Duration : Exprimée en 'minutes' :
             $event->setDuration($faker->numberBetween(30, 600));
             $event->setMaxRegistrations(10);
-            $event->setDescription($faker->realTextBetween(30, 1000));
+            $event->setDescription($faker->realTextBetween(30, 1500));
             $event->setName($faker->sentence);
             $manager->persist($event);
         }
