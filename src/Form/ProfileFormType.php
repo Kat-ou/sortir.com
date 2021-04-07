@@ -2,7 +2,13 @@
 
 namespace App\Form;
 
+use App\Entity\Campus;
+use App\Entity\Participant;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,7 +19,7 @@ class ProfileFormType extends AbstractType
     {
         $builder
             ->add('username', TextType::class, [
-                'label' => 'Pseudo'
+                'label' => 'Pseudo',
                 ])
             ->add('firstname', TextType::class, [
                 'label' => 'Prénom'
@@ -22,16 +28,30 @@ class ProfileFormType extends AbstractType
                 'label' => 'Nom'
             ])
             ->add('phone', TextType::class, [
-                'label' => 'Téléphone'
+                'label' => 'Téléphone',
+                'required' => false
             ])
             ->add('email', TextType::class, [
-                'label' => 'Email'
+                'label' => 'Email',
             ])
-            ->add('password', TextType::class, [
-                'label' => 'Mot de passe'
+            ->add('password', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'invalid_message' => 'Les mots de passe ne correspondent pas.',
+                'options' => ['attr' => ['class' => 'password-field']],
+                'required' => false,
+                'first_options'  => ['label' => 'Mot de passe'],
+                'second_options' => ['label' => 'Confirmation'],
+                'mapped' => false
             ])
-            ->add('campus', TextType::class, [
-                'label' => 'Campus'
+            ->add('campus', EntityType::class, [
+                'label' => 'Campus',
+                'class' => Campus::class,
+                "choice_label" => "name",
+            ])
+            ->add('pictureFilename', FileType::class, [
+                'label' => 'Ma photo',
+                'required' => false,
+                'mapped' => false
             ])
         ;
     }
@@ -39,7 +59,7 @@ class ProfileFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            // Configure your form options here
+            'data_class' => Participant::class,
         ]);
     }
 }

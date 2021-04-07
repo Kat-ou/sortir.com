@@ -8,10 +8,12 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ParticipantRepository::class)
- * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @UniqueEntity(fields={"email"}, message="Cet email est utilisé par un autre compte")
+ * @UniqueEntity(fields={"username"}, message="Ce pseudo est utilisé par un autre compte")
  */
 class Participant implements UserInterface
 {
@@ -24,6 +26,8 @@ class Participant implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank(message="Ce champ ne doit pas être vide.")
+     * @Assert\Length(max=180, maxMessage="Ce champ a un maximum de 180 caractères")
      */
     private $email;
 
@@ -40,21 +44,28 @@ class Participant implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank(message="Ce champ ne doit pas être vide.")
+     * @Assert\Length(max=50, maxMessage="Ce champ a un maximum de 50 caractères")
+     *
      */
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=50, unique=true)
+     * @Assert\Length(max=50, maxMessage="Ce champ a un maximum de 50 caractères")
      */
     private $username;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank(message="Ce champ ne doit pas être vide.")
+     * @Assert\Length(max=50, maxMessage="Ce champ a un maximum de 50 caractères")
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=25, nullable=true)
+     * @Assert\Length(max=25, maxMessage="Ce champ a un maximum de 25 caractères")
      */
     private $phone;
 
@@ -127,7 +138,7 @@ class Participant implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string) $this->username;
     }
 
     /**

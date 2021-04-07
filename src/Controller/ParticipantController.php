@@ -2,45 +2,26 @@
 
 namespace App\Controller;
 
-use App\Entity\Participant;
 use App\Form\ProfileFormType;
-use App\Repository\ParticipantRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\String\ByteString;
 
 class ParticipantController extends AbstractController
 {
     /**
-     * @Route("/profile/{id}", name="profile")
+     * @Route("/profile/", name="profile")
      */
-    public function profile($id, ParticipantRepository $participantRepository, Request $request, EntityManagerInterface $entityManager): Response
+    public function profile(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $encoder): Response
     {
-        $participant = $participantRepository->find($id);
-
-        // Crée une instance de l'entité que le form sert à créer
-        $profile = new Participant();
-
-        // On récupère des données dans l'instance participant
-        $currentUsername = $participant->getUsername();
-        $currentFirstName = $participant->getFirstname();
-        $currentName = $participant->getName();
-        $currentPhone = $participant->getPhone();
-        $currentEmail = $participant->getEmail();
-        $currentCampus = $participant->getCampus()->getName();
+        $user = $this->getUser();
 
         // Crée une instance de la classe de formulaire que l'on assicie à notre formulaire
-        $profileForm = $this->createForm(ProfileFormType::class, $profile);
-
-        // On injecte des données dans le formulaire
-        $profileForm->get('username')->setData($currentUsername);
-        $profileForm->get('firstname')->setData($currentFirstName);
-        $profileForm->get('name')->setData($currentName);
-        $profileForm->get('phone')->setData($currentPhone);
-        $profileForm->get('email')->setData($currentEmail);
-        $profileForm->get('campus')->setData($currentCampus);
+        $profileForm = $this->createForm(ProfileFormType::class, $user);
 
         // On prend les données du formulaire soumis, et les injecte dans mon $profil
         $profileForm->handleRequest($request);
@@ -48,12 +29,26 @@ class ParticipantController extends AbstractController
         // Si le formulaire est soumis
         if ($profileForm->isSubmitted() && $profileForm->isValid()) {
 
-            // Hydrate les propriétés qui sont encore null
-            $participant->setRoles(['ROLES_USER']);
+            $uploadedFile = $profileForm->get('pictureFilename')->getData();
+            if ($uploadedFile != "") {
+                //génère un nom de fichier sécuritaire
+                $newFilename = ByteString::fromRandom(30) . "." . $uploadedFile->guessExtension();
+                //déplace le fichier dans mon répertoire public/ avant sa destruction
+                //upload_dir est défini dans config/services.yaml
+                try {
+                    $uploadedFile->move($this->getParameter('upload_dir'), $newFilename);
+                } catch (\Exception $e){
+                    dd($e->getMessage());
+                }
+                //détruit l'originale
+                //unlink($this->getParameter('upload_dir') . "/$newFilename");
+                $user->setPictureFilename($newFilename);
+            }
 
+            $user->setUpdatedDate(new \DateTime());
 
             // Sauvegarde en Bdd
-            $entityManager->persist($participant);
+            $entityManager->persist($user);
             $entityManager->flush();
 
             // On ajoute un message flash
