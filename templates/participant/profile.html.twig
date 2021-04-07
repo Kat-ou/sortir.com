@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ParticipantController!{% endblock %}
+
+{% block body %}
+
+    {% for flashError in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+    {% endfor %}
+
+    <h1>Mon profile</h1>
+
+    {{ form_start(profileForm) }}
+    {{ form_widget(profileForm) }}
+    <button>Publish!</button>
+    {{ form_end(profileForm) }}
+{% endblock %}
