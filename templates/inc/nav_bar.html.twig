@@ -1,0 +1,49 @@
+<nav class="navbar is-transparent" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <div class="navbar-item">
+        <div class="buttons">
+        <a class="button is-link is-light" href="{{ path('home') }}">
+            <img src="{{ asset('img/logo.png') }}" height="50" alt="logo">Sortir.com
+        </a>
+
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+        </div>
+    </div>
+    <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-end">
+            <a class="navbar-item">
+                Villes
+            </a>
+
+            <a class="navbar-item">
+                Campus
+            </a>
+
+            <a class="navbar-item">
+                Accueil
+            </a>
+
+            <a class="navbar-item">
+                Mon Profil
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="navbar-end">
+        <div class="navbar-item">
+            <div class="buttons">
+                <a class="button is-link is-light" href="{{ path('app_logout') }}">
+                    <strong>Se déconnecter</strong>
+                </a>
+            </div>
+        </div>
+    </div>
+    </div>
+</nav>

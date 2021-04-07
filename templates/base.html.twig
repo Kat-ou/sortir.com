@@ -28,19 +28,72 @@
     flavicon
     Title
     #}
-    <link rel="icon" type="image/gif" href="{{ asset('icon/favicon.png') }}"/>
+    <link rel="icon" type="image/gif" href="{{ asset('img/logo.png') }}"/>
 
     <title>{% block title %}Sortir.com{% endblock %}</title>
 </head>
 <body>
-<header>
-    {% include 'inc/nav_bar.html.twig' %}</nav>
+<header class="color-bg">
+    <div class="container">
+        {% include 'inc/nav_bar.html.twig' %}
+    </div>
 
 </header>
 <main>
-    {% block body %}{% endblock %}
+    <div class="container">
+        {% block body %}
+
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque porta augue enim, in semper nulla
+                pharetra a. Sed metus lacus, tincidunt quis arcu vitae, mollis aliquam turpis. Proin interdum ante
+                mi,
+                ut convallis dolor efficitur congue. Sed ut neque consectetur, faucibus enim ut, tempor sapien. Sed
+                iaculis fermentum leo at scelerisque. Vivamus id viverra neque. Curabitur gravida tortor ac lectus
+                fermentum rhoncus. </p><br>
+            <p>Quisque et neque efficitur, maximus dui a, pellentesque ipsum. Curabitur gravida turpis tortor, in
+                vulputate dolor suscipit at. Sed nec ornare tortor. Nulla urna quam, pellentesque id tempor quis,
+                efficitur in neque. Quisque suscipit enim ut odio facilisis feugiat. Proin velit nunc, tincidunt in
+                lacus vitae, condimentum malesuada orci. In vestibulum vitae mi in condimentum. Nam vel consectetur
+                dui.
+                Nunc feugiat id sapien ut sagittis. Donec at sapien ut orci vestibulum pulvinar nec venenatis
+                turpis.
+                Duis sagittis elit non condimentum tristique. Praesent ac sem sit amet diam volutpat vehicula.
+                Mauris
+                non enim dolor. </p><br>
+            <p>Integer interdum ante ut lorem lobortis tincidunt. Aliquam a urna elementum, mollis velit eget,
+                congue
+                tortor. Pellentesque at libero vitae diam imperdiet rutrum sit amet non ipsum. Morbi volutpat
+                eleifend
+                felis, vitae semper orci lacinia ut. Sed sed imperdiet diam, scelerisque commodo justo. Vivamus
+                mollis
+                orci eros, sed fringilla felis rhoncus at. Fusce quis mi eu nunc fermentum porttitor. Suspendisse ut
+                quam porta, molestie massa vitae, interdum sapien. </p><br>
+            <p>Praesent sagittis enim sem, et maximus neque convallis in. Etiam quis arcu sodales, congue lacus
+                viverra,
+                efficitur sem. Donec eget quam at erat dapibus efficitur. Maecenas felis metus, rutrum ut molestie
+                non,
+                maximus vel mauris. Nunc gravida pretium justo, vitae blandit eros rhoncus sagittis. Integer semper
+                dolor elit, ac gravida mi pretium in. Vivamus tempus diam a felis pellentesque pulvinar vitae vel
+                purus.
+                Cras mollis orci in ipsum mattis, eget feugiat nisl dapibus. Vivamus sed pharetra massa. </p><br>
+            <p>Nam et mi felis. Maecenas fermentum velit vitae elit tincidunt convallis. Lorem ipsum dolor sit amet,
+                consectetur adipiscing elit. Aenean eu pellentesque eros. Integer condimentum dignissim felis, sed
+                euismod dolor lacinia nec. Praesent ullamcorper faucibus nisi, et pretium ex bibendum id. Class
+                aptent
+                taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut malesuada a urna
+                sed
+                pretium. Mauris ut imperdiet leo, eget convallis augue. Nulla quis quam velit. </p><br>
+
+        {% endblock %}
+    </div>
 </main>
-<footer></footer>
+<footer class="color-bg">
+    <div class="container">
+        <p class="content has-text-centered">
+            &copy; {{ "now"|date("Y") }} Sortir.com<br>
+            Logo by <a href="https://pngimage.net/wp-content/uploads/2018/06/meditation-logo-png-1.png">PNGimage</a>
+        </p>
+    </div>
+</footer>
 </body>
 </html>
 
