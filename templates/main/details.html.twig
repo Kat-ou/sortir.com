@@ -1,0 +1,138 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <br>
+    <p class="title is-2">Details sortie</p>
+
+
+    <div class="columns">
+        <div class="column">
+            <div class="columns is-mobile">
+                <div class="column is-3">
+                    <p class="has-text-link">Nom de la sortie: </p>
+                </div>
+                <div class="column">
+                    <p>{{ sortie.name }}</p>
+                </div>
+            </div>
+            <div class="columns is-mobile">
+                <div class="column is-3">
+                    <p class="has-text-link">Date et heure de la sortie: </p>
+                </div>
+                <div class="column">
+                    <p>{{ sortie.startDate|format_datetime('short', 'short', locale='fr') }}</p>
+                </div>
+            </div>
+            <div class="columns is-mobile">
+                <div class="column is-3">
+                    <p class="has-text-link">Date limite d'inscription: </p>
+                </div>
+                <div class="column">
+                    <p>{{ sortie.deadline|format_datetime('short', 'none', locale='fr') }}</p>
+                </div>
+            </div>
+            <div class="columns is-mobile">
+                <div class="column is-3">
+                    <p class="has-text-link">Nombre de places: </p>
+                </div>
+                <div class="column">
+                    <p>{{ sortie.maxRegistrations }}</p>
+                </div>
+            </div>
+            <div class="columns is-mobile">
+                <div class="column is-3">
+                    <p class="has-text-link">Durée: </p>
+                </div>
+                <div class="column">
+                    <p>{{ sortie.duration }} minutes</p>
+                </div>
+            </div>
+            <div class="columns is-mobile ">
+                <div class="column is-3">
+                    <p class="has-text-link">Description et infos: </p>
+                </div>
+                <div class="column">
+                    <p>{{ sortie.description }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="column is-0"></div>
+        <div class="column is-4">
+            <div class="columns is-mobile">
+                <div class="column is-4">
+                    <p class="has-text-link">Campus: </p>
+                </div>
+                <div class="column">
+                    <p>{{ sortie.organizingSite.name|upper }}</p>
+                </div>
+            </div>
+            <div class="columns is-mobile">
+                <div class="column is-4">
+                    <p class="has-text-link">Lieu: </p>
+                </div>
+                <div class="column">
+                    <p>{{ sortie.location.name }}</p>
+                </div>
+            </div>
+            <div class="columns is-mobile">
+                <div class="column is-4">
+                    <p class="has-text-link">Rue: </p>
+                </div>
+                <div class="column">
+                    <p>{{ sortie.location.street }}</p>
+                </div>
+            </div>
+            <div class="columns is-mobile">
+                <div class="column is-4">
+                    <p class="has-text-link">Code Postal: </p>
+                </div>
+                <div class="column">
+                    <p>{{ sortie.location.city.postcode }}</p>
+                </div>
+            </div>
+            <div class="columns is-mobile">
+                <div class="column is-4">
+                    <p class="has-text-link">Latitude: </p>
+                </div>
+                <div class="column">
+                    <p>{{ sortie.location.latitude }} </p>
+                </div>
+            </div>
+            <div class="columns is-mobile">
+                <div class="column is-4">
+                    <p class="has-text-link">Longitude: </p>
+                </div>
+                <div class="column">
+                    <p>{{ sortie.location.longitude }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if sortie.participants|length > 0 %}
+        <p class="subtitle is-4 has-text-link">Liste des participants inscrits : </p>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Pseudo</th>
+                <th>Nom</th>
+            </tr>
+            </thead>
+            <tfoot>
+            <tbody>
+
+            {% for participant in sortie.participants %}
+                <tr>
+                    <td>{{ participant.username }}</td>
+                    <td>{{ participant.name }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}
+
+{% block title %}
+
+{% endblock %}
+
