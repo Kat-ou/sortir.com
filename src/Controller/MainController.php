@@ -111,7 +111,6 @@ dd($eventsListToDisplay);
         ]);
     }
 
-
     /**
      * @Route("/details/{id}", name="details")
      */
