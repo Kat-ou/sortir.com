@@ -1,0 +1,151 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}
+    {{ parent()}} | Accueil
+{% endblock %}
+
+
+{% block header %}
+    {% include 'inc/nav_bar.html.twig' %}
+{% endblock %}
+
+
+{% block body %}
+
+    <!-- Date et Participant connecté -->
+    <section>
+        <div class="my-3">
+            <p>Date du jour : <span>{{ "now"|date("d/m/Y") }}</span></p>
+            <p>Participant : <span>{{ app.user.username }}</span></p>
+        </div>
+    </section>
+    <!-- Formulaire de recherches -->
+    <h1 class="title is-3">Filtrer les sorties</h1>
+    {{ form_start(eventsListForm) }}
+    <div class="columns">
+        <div class="column">
+            {{ form_row(eventsListForm.campus) }}
+            {{ form_row(eventsListForm.search) }}
+            {{ form_row(eventsListForm.startDate) }}
+            {{ form_row(eventsListForm.endDate) }}
+        </div>
+        <div class="column">
+            {{ form_row(eventsListForm.meOrganizerChoice) }}
+            {{ form_row(eventsListForm.meRegisterChoice) }}
+            {{ form_row(eventsListForm.meNoRegisterChoice) }}
+            {{ form_row(eventsListForm.eventsDoneChoice) }}
+        </div>
+        <div class="column">
+            <div class="buttons mt-3">
+                <button type="submit" class="button is-info is-light">Rechercher</button>
+            </div>
+        </div>
+    </div>
+    {{ form_end(eventsListForm) }}
+    <!-- La liste des Sorties -->
+    <section>
+        <table class="table is-striped is-narrow is-hoverable is-fullwidth">
+            <thead>
+                <tr>
+                    <th>Nom de la sortie</th>
+                    <th>Date de la sortie</th>
+                    <th>Clôture</th>
+                    <th>Inscrits/Places</th>
+                    <th>Etat</th>
+                    <th>Inscrit</th>
+                    <th>Organisateur</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>21</td>
+                    <td>38</td>
+                    <td>23</td>
+                    <td>12</td>
+                    <td>3</td>
+                    <td>68</td>
+                    <td>36</td>
+                    <td>+32</td>
+                </tr>
+                <tr>
+                    <td>21</td>
+                    <td>38</td>
+                    <td>23</td>
+                    <td>12</td>
+                    <td>3</td>
+                    <td>68</td>
+                    <td>36</td>
+                    <td>+32</td>
+                </tr>
+                <tr>
+                    <td>21</td>
+                    <td>38</td>
+                    <td>23</td>
+                    <td>12</td>
+                    <td>3</td>
+                    <td>68</td>
+                    <td>36</td>
+                    <td>+32</td>
+                </tr>
+                <tr>
+                    <td>21</td>
+                    <td>38</td>
+                    <td>23</td>
+                    <td>12</td>
+                    <td>3</td>
+                    <td>68</td>
+                    <td>36</td>
+                    <td>+32</td>
+                </tr>
+                <tr>
+                    <td>21</td>
+                    <td>38</td>
+                    <td>23</td>
+                    <td>12</td>
+                    <td>3</td>
+                    <td>68</td>
+                    <td>36</td>
+                    <td>+32</td>
+                </tr>
+                <tr>
+                    <td>21</td>
+                    <td>38</td>
+                    <td>23</td>
+                    <td>12</td>
+                    <td>3</td>
+                    <td>68</td>
+                    <td>36</td>
+                    <td>+32</td>
+                </tr>
+                <tr>
+                    <td>21</td>
+                    <td>38</td>
+                    <td>23</td>
+                    <td>12</td>
+                    <td>3</td>
+                    <td>68</td>
+                    <td>36</td>
+                    <td>+32</td>
+                </tr>
+                <tr>
+                    <td>21</td>
+                    <td>38</td>
+                    <td>23</td>
+                    <td>12</td>
+                    <td>3</td>
+                    <td>68</td>
+                    <td>36</td>
+                    <td>+32</td>
+                </tr>
+            </tbody>
+        </table>
+        <div>
+            <a class="button is-info is-light my-3" href="">Créer une sortie</a>
+        </div>
+    </section>
+
+{% endblock %}
+
