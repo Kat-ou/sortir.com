@@ -26,6 +26,7 @@ class Participant implements UserInterface
 
     /**
      * @Assert\Email(message="Cet email n'est pas valide !")
+     * @Assert\NotBlank(message="Ce champ ne doit pas être vide.")
      * @Assert\Length(max=180, maxMessage="Ce champ a un maximum de 180 caractères")
      * @ORM\Column(type="string", length=180, unique=true)
      */
@@ -50,6 +51,7 @@ class Participant implements UserInterface
     private $name;
 
     /**
+     * @Assert\NotBlank(message="Ce champ ne doit pas être vide.")
      * @ORM\Column(type="string", length=50, unique=true)
      * @Assert\Length(max=50, maxMessage="Ce champ a un maximum de 50 caractères")
      */
@@ -123,7 +125,7 @@ class Participant implements UserInterface
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail($email): self
     {
         $this->email = $email;
 
@@ -167,7 +169,7 @@ class Participant implements UserInterface
         return (string) $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword($password): self
     {
         $this->password = $password;
 
@@ -199,14 +201,14 @@ class Participant implements UserInterface
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName($name): self
     {
         $this->name = $name;
 
         return $this;
     }
 
-    public function setUsername(string $username): self
+    public function setUsername($username): self
     {
         $this->username = $username;
 
@@ -218,7 +220,7 @@ class Participant implements UserInterface
         return $this->firstname;
     }
 
-    public function setFirstname(string $firstname): self
+    public function setFirstname($firstname): self
     {
         $this->firstname = $firstname;
 

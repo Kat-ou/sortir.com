@@ -20,29 +20,23 @@ class ProfileFormType extends AbstractType
         $builder
             ->add('username', TextType::class, [
                 'label' => 'Pseudo',
-                'required' => false
                 ])
             ->add('firstname', TextType::class, [
                 'label' => 'Prénom',
-                'required' => false
             ])
             ->add('name', TextType::class, [
                 'label' => 'Nom',
-                'required' => false
             ])
             ->add('phone', TextType::class, [
                 'label' => 'Téléphone',
-                'required' => false
             ])
             ->add('email', TextType::class, [
                 'label' => 'Email',
-                'required' => false
             ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'Les mots de passe ne correspondent pas.',
                 'options' => ['attr' => ['class' => 'password-field']],
-                'required' => false,
                 'first_options'  => ['label' => 'Mot de passe'],
                 'second_options' => ['label' => 'Confirmation'],
                 'mapped' => false
@@ -54,7 +48,6 @@ class ProfileFormType extends AbstractType
             ])
             ->add('pictureFilename', FileType::class, [
                 'label' => 'Ma photo',
-                'required' => false,
                 'mapped' => false
             ])
         ;
@@ -64,6 +57,8 @@ class ProfileFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Participant::class,
-        ]);
+            'attr' => [
+                'novalidate' => 'novalidate', // comment me to reactivate the html5 validation!
+        ]]);
     }
 }

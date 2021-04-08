@@ -52,7 +52,7 @@ class ParticipantController extends AbstractController
             $entityManager->flush();
 
             // On ajoute un message flash
-            $this->addFlash("success", "Votre profile a été modifié");
+            $this->addFlash("success", "Votre profil a été modifié");
         }
 
         return $this->render('participant/profile.html.twig', [
