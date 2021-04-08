@@ -69,15 +69,20 @@
                     <td>{{ event.isItParticipantOfEvent(app.user)? 'X' : '' }}</td>
                     <td>{{ event.organizer.username }}</td>
                     <td>
-                        <a href=""><span class="icon"><i class="fas fa-search"></i></span></a>
+                        <!-- afficher -->
+                        <a href="{{ path('details', {id: event.id}) }}"><span class="icon"><i class="fas fa-search"></i></span></a>
                         {% if event.state.wording == 'Créée' and event.organizer.id == app.user.id %}
+                            <!-- éditer et publier -->
                             <a href=""><span class="icon"><i class="far fa-edit"></i></span></a>
                             <a href=""><span class="icon"><i class="far fa-calendar-check"></i></span></a>
                         {% elseif (event.state.wording == 'Ouverte' or event.state.wording == 'clôturée') and event.isItParticipantOfEvent(app.user) %}
+                            <!-- se dés'inscrire -->
                             <a href=""><span class="icon"><i class="fas fa-user-minus"></i></span></a>
                         {% elseif (event.state.wording == 'Ouverte' or event.state.wording == 'clôturée') and event.organizer.id == app.user.id %}
+                            <!-- Annuler -->
                             <a href=""><span class="icon"><i class="far fa-trash-alt"></i></span></a>
                         {% elseif event.state.wording == 'Ouverte' and not event.isItParticipantOfEvent(app.user) %}
+                            <!-- s'inscrire -->
                             <a href=""><span class="icon"><i class="fas fa-user-plus"></i></span></a>
                         {% endif %}
                     </td>
@@ -86,7 +91,7 @@
             </tbody>
         </table>
         <div>
-            <a class="button is-info is-light my-3" href="">Créer une sortie</a>
+            <a class="button is-info is-light my-3" href="{{ path('create') }}">Créer une sortie</a>
         </div>
     </section>
 

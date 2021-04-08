@@ -14,7 +14,7 @@ use Symfony\Component\String\ByteString;
 class ParticipantController extends AbstractController
 {
     /**
-     * @Route("/profile", name="profile")
+     * @Route("/profile", name="participant_profile")
      */
     public function profile(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $encoder): Response
     {

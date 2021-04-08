@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Lieu;
+use App\Entity\Sortie;
+use App\Form\EventFormType;
 use App\Form\EventsListFormType;
 use App\Model\SearchForm;
 use App\Repository\SortieRepository;
@@ -38,7 +41,6 @@ class MainController extends AbstractController
         // Dans le cas ou le formulaire est soumis et validé
         if ( $searchEventsForm->isSubmitted() && $searchEventsForm->isValid() ) {
             // on va chercher la liste des sorties selon les critères :
-            $search = ($searchForm->getSearchInputText() !== null) ? $searchForm->getSearchInputText() : null;
             $eventsListToDisplay = $sortieRepository->getEventsListSorted( $this->getUser(), $searchForm);
         }
 
