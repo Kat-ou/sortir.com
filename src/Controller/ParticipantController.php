@@ -45,6 +45,13 @@ class ParticipantController extends AbstractController
                 $user->setPictureFilename($newFilename);
             }
 
+            // On récupère le mot de passe en 'claire' et on le hash
+            $newPassword = $profileForm->get('password')->getData();
+            if ($newPassword != "") {
+                $encoded = $encoder->encodePassword($user, $newPassword);
+                $user->setPassword($encoded);
+            }
+
             $user->setUpdatedDate(new \DateTime());
 
             // Sauvegarde en Bdd

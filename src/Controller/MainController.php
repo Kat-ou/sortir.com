@@ -75,6 +75,7 @@ class MainController extends AbstractController
         $currentLongitude = $location->getLongitude();
         $currentLocationCity = $location->getCity();
         $eventForm = $this->createForm(EventFormType::class, $event);
+
         $eventForm->get('name')->setData($currentName);
         $eventForm->get('street')->setData($currentStreet);
         $eventForm->get('latitude')->setData($currentLatitude);
