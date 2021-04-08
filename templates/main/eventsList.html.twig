@@ -26,15 +26,15 @@
     <div class="columns">
         <div class="column">
             {{ form_row(eventsListForm.campus) }}
-            {{ form_row(eventsListForm.search) }}
+            {{ form_row(eventsListForm.searchInputText) }}
             {{ form_row(eventsListForm.startDate) }}
             {{ form_row(eventsListForm.endDate) }}
         </div>
         <div class="column">
-            {{ form_row(eventsListForm.meOrganizerChoice) }}
-            {{ form_row(eventsListForm.meRegisterChoice) }}
-            {{ form_row(eventsListForm.meNoRegisterChoice) }}
-            {{ form_row(eventsListForm.eventsDoneChoice) }}
+            {{ form_row(eventsListForm.isItMeOrganizer) }}
+            {{ form_row(eventsListForm.isItMeRegister) }}
+            {{ form_row(eventsListForm.isItMeNoRegister) }}
+            {{ form_row(eventsListForm.isItEventsDone) }}
         </div>
         <div class="column">
             <div class="buttons mt-3">
@@ -51,7 +51,7 @@
                     <th>Nom de la sortie</th>
                     <th>Date de la sortie</th>
                     <th>Clôture</th>
-                    <th>Inscrits/Places</th>
+                    <th>Inscrits / Places</th>
                     <th>Etat</th>
                     <th>Inscrit</th>
                     <th>Organisateur</th>
@@ -59,87 +59,30 @@
                 </tr>
             </thead>
             <tbody>
-
+                {% for event in eventsList %}
                 <tr>
-                    <td>21</td>
-                    <td>38</td>
-                    <td>23</td>
-                    <td>12</td>
-                    <td>3</td>
-                    <td>68</td>
-                    <td>36</td>
-                    <td>+32</td>
+                    <td>{{ event.name }}</td>
+                    <td>{{ event.startDate|date("d/m/Y - H:m") }}</td>
+                    <td>{{ event.deadLine|date("d/m/Y")  }}</td>
+                    <td>{{ event.participants|length }} / {{ event.maxRegistrations }}</td>
+                    <td>{{ event.state.wording }}</td>
+                    <td>{{ event.isItParticipantOfEvent(app.user)? 'X' : '' }}</td>
+                    <td>{{ event.organizer.username }}</td>
+                    <td>
+                        <a href=""><span class="icon"><i class="fas fa-search"></i></span></a>
+                        {% if event.state.wording == 'Créée' and event.organizer.id == app.user.id %}
+                            <a href=""><span class="icon"><i class="far fa-edit"></i></span></a>
+                            <a href=""><span class="icon"><i class="far fa-calendar-check"></i></span></a>
+                        {% elseif (event.state.wording == 'Ouverte' or event.state.wording == 'clôturée') and event.isItParticipantOfEvent(app.user) %}
+                            <a href=""><span class="icon"><i class="fas fa-user-minus"></i></span></a>
+                        {% elseif (event.state.wording == 'Ouverte' or event.state.wording == 'clôturée') and event.organizer.id == app.user.id %}
+                            <a href=""><span class="icon"><i class="far fa-trash-alt"></i></span></a>
+                        {% elseif event.state.wording == 'Ouverte' and not event.isItParticipantOfEvent(app.user) %}
+                            <a href=""><span class="icon"><i class="fas fa-user-plus"></i></span></a>
+                        {% endif %}
+                    </td>
                 </tr>
-                <tr>
-                    <td>21</td>
-                    <td>38</td>
-                    <td>23</td>
-                    <td>12</td>
-                    <td>3</td>
-                    <td>68</td>
-                    <td>36</td>
-                    <td>+32</td>
-                </tr>
-                <tr>
-                    <td>21</td>
-                    <td>38</td>
-                    <td>23</td>
-                    <td>12</td>
-                    <td>3</td>
-                    <td>68</td>
-                    <td>36</td>
-                    <td>+32</td>
-                </tr>
-                <tr>
-                    <td>21</td>
-                    <td>38</td>
-                    <td>23</td>
-                    <td>12</td>
-                    <td>3</td>
-                    <td>68</td>
-                    <td>36</td>
-                    <td>+32</td>
-                </tr>
-                <tr>
-                    <td>21</td>
-                    <td>38</td>
-                    <td>23</td>
-                    <td>12</td>
-                    <td>3</td>
-                    <td>68</td>
-                    <td>36</td>
-                    <td>+32</td>
-                </tr>
-                <tr>
-                    <td>21</td>
-                    <td>38</td>
-                    <td>23</td>
-                    <td>12</td>
-                    <td>3</td>
-                    <td>68</td>
-                    <td>36</td>
-                    <td>+32</td>
-                </tr>
-                <tr>
-                    <td>21</td>
-                    <td>38</td>
-                    <td>23</td>
-                    <td>12</td>
-                    <td>3</td>
-                    <td>68</td>
-                    <td>36</td>
-                    <td>+32</td>
-                </tr>
-                <tr>
-                    <td>21</td>
-                    <td>38</td>
-                    <td>23</td>
-                    <td>12</td>
-                    <td>3</td>
-                    <td>68</td>
-                    <td>36</td>
-                    <td>+32</td>
-                </tr>
+                {% endfor %}
             </tbody>
         </table>
         <div>

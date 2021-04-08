@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Campus;
-use App\Entity\Sortie;
+use App\Model\SearchForm;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -15,49 +15,68 @@ use Symfony\Component\Validator\Constraints\Length;
 
 class EventsListFormType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $searchEventsForm, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
-        $searchEventsForm
+        $builder
             ->add('campus', EntityType::class, [
                 'label' => 'Campus ',
                 'class' => Campus::class,
                 'choice_label' => 'name',
+                'choice_value' => 'id',
+                'required' => false,
             ])
-            ->add('search', TextType::class, [
+            ->add('searchInputText', TextType::class, [
                 'label' => 'Le nom de la sortie contient : ',
-                'constraints' => new Length([
-                    'min' => 3,
-                    'max' => 250
-                ]),
-                'attr' => ['placeholder' => 'recherche']
+                'constraints' => [
+                    new Length([ 'min' => 3, 'max' => 250 ]),
+                ],
+                'attr' => ['placeholder' => 'recherche'],
+                'required' => false,
             ])
             ->add('startDate', DateType::class, [
                 'label' => 'Entre ',
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
+                'required' => false,
             ])
             ->add('endDate', DateType::class, [
                 'label' => ' et  ',
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
+                'required' => false,
             ])
-            ->add('meOrganizerChoice', CheckboxType::class, [
+            ->add('isItMeOrganizer', CheckboxType::class, [
                 'label' => 'Sorties dont je suis l\'organisateur(trice)',
-                'attr' => ['checked' => 'checked']
+                'attr' => ['checked' => 'checked'],
+                'required' => false,
             ])
-            ->add('meRegisterChoice', CheckboxType::class, [
+            ->add('isItMeRegister', CheckboxType::class, [
                 'label' => 'Sorties auxquelles je suis inscrit(e)',
-                'attr' => ['checked' => 'checked']
+                'attr' => ['checked' => 'checked'],
+                'required' => false,
             ])
-            ->add('meNoRegisterChoice', CheckboxType::class, [
+            ->add('isItMeNoRegister', CheckboxType::class, [
                 'label' => 'Sorties auxquelles je ne suis pas inscrit(e)',
-                'attr' => ['checked' => 'checked']
+                'attr' => ['checked' => 'checked'],
+                'required' => false,
             ])
-            ->add('eventsDoneChoice', CheckboxType::class, [
+            ->add('isItEventsDone', CheckboxType::class, [
                 'label' => 'Sorties passées',
-            ]);
+                'required' => false,
+            ])
+        ;
+
+
+
+
 
     }
 
+
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([]);
+        $resolver->setDefaults([
+            'data_class' => SearchForm::class,
+        ]);
     }
 }

@@ -78,10 +78,30 @@ class Sortie
      */
     private $state;
 
+
     public function __construct()
     {
         $this->participants = new ArrayCollection();
     }
+
+
+    /**
+     * Méthode permettant de vérifier si un utilisateur passé en paramètre
+     * est dans la liste des participants de l'instance "Sortie".
+     * @param $user L'utilisateur faisant l'objet de la vérification.
+     * @return bool True s'il participe à la sortie, sinon False.
+     */
+    public function isItParticipantOfEvent($user): bool
+    {
+        $result = false;
+        foreach ($this->participants as $participant) {
+            if ($participant->getId() == $user->getId()) {
+                $result = true;
+            }
+        }
+        return $result;
+    }
+
 
     public function getId(): ?int
     {

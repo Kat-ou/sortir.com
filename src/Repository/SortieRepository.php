@@ -33,30 +33,68 @@ class SortieRepository extends ServiceEntityRepository
     }
 
 
-    public function getEventsListSorted($campusId, $startDate, $endDate, $userInput)
+    /**
+     * Méthode permettant la requete de filtrage pour rechercher une liste de Sortie.
+     * Les parametre sont constitués des éléments du formulaire de recherche en page d'accueil.
+     * @param $user - Le Participant connecté
+     * @param $campusId - Le campus sélectionné
+     * @param $startDate - La date de début saisie
+     * @param $endDate - La date de fin saisie
+     * @param $userInput - Le texte saisie par le participant
+     * @param $isItMeOrganizer - Le filtre si le participant est organisateur
+     * @param $isItMeRegister - Le filtre si le participant est inscrit
+     * @param $isItMeNoRegister -  Le filtre si le participant n'est pas inscrit
+     * @param $isItEventsDone - Le filtre pour obtenir les sorties passées
+     * @return int|mixed|string - Une liste de sortie corespondant à la recherche.
+     */
+    public function getEventsListSorted($user, $campusId, $startDate, $endDate, $userInput,
+                                        $isItMeOrganizer, $isItMeRegister, $isItMeNoRegister,
+                                        $isItEventsDone)
     {
         $queryBuilder = $this->createQueryBuilder('s');
         $queryBuilder->join('s.state', 'e');
-        $queryBuilder->join('s.participants', 'p');
-        // filtre avec le campus
-        $queryBuilder->where('s.organizingSite = :campusId');
-        $queryBuilder->setParameter('campusId', $campusId);
-        // filtre avec les dates
-        $queryBuilder->andWhere('s.startDate >= :startDate ');
-        $queryBuilder->setParameter('startDate', $startDate);
-        //$queryBuilder->andWhere('s.startDate <= :endDate ');
-        //$queryBuilder->setParameter('endDate', $endDate);
-        // filtre avec la saisie
-        //$queryBuilder->andWhere(
-        //    $queryBuilder->expr()->like('s.name', ':userInput')
-        //);
-        //$queryBuilder->setParameter('userInput', $userInput);
-        // filtre avec les checkBoxes
-
         $queryBuilder->addSelect('e');
+        $queryBuilder->join('s.participants', 'p');
         $queryBuilder->addSelect('p');
+        $queryBuilder->join('s.organizer', 'o');
+        $queryBuilder->addSelect('o');
+        // filtre avec le campus
+        if ($campusId !== null) {
+            $queryBuilder->where('s.organizingSite = :campusId');
+            $queryBuilder->setParameter('campusId', $campusId);
+        }
+        // filtre avec les dates
+        if ($startDate !== null && $endDate !== null) {
+            $queryBuilder->andWhere('s.startDate >= :startDate ');
+            $queryBuilder->setParameter('startDate', $startDate);
+            $queryBuilder->andWhere('s.startDate <= :endDate ');
+            $queryBuilder->setParameter('endDate', $endDate);
+        }
+        // filtre avec la saisie (concaténation des '%' pour filtrer juste un terme en MySql)
+        if ($userInput !== null) {
+            $queryBuilder->andWhere('s.name LIKE :userInput');
+            $queryBuilder->setParameter('userInput', '%'.$userInput.'%');
+        }
+        // filtre avec les checkBoxes
+        if ($isItMeOrganizer === true) {
+            $queryBuilder->andWhere('s.organizer = :me');
+            $queryBuilder->setParameter('me', $user);
+        }
+        if ($isItMeRegister === true) {
+            $queryBuilder->andWhere('s.participants = :me');
+            $queryBuilder->setParameter('me', $user);
+        }
+        if ($isItMeNoRegister === true) {
+            $queryBuilder->andWhere('s.participants <> :me');
+            $queryBuilder->setParameter('me', $user);
+        }
+        if ($isItEventsDone === true) {
+            $queryBuilder->andWhere('e.wording = :passee');
+            $queryBuilder->setParameter('passee', 'Passée');
+        }
+
         $query = $queryBuilder->getQuery();
-        return $query->execute();
+        return $query->getResult();
     }
 
 
