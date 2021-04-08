@@ -20,12 +20,15 @@ class ProfileFormType extends AbstractType
         $builder
             ->add('username', TextType::class, [
                 'label' => 'Pseudo',
+                'required' => false
                 ])
             ->add('firstname', TextType::class, [
-                'label' => 'Prénom'
+                'label' => 'Prénom',
+                'required' => false
             ])
             ->add('name', TextType::class, [
-                'label' => 'Nom'
+                'label' => 'Nom',
+                'required' => false
             ])
             ->add('phone', TextType::class, [
                 'label' => 'Téléphone',
@@ -33,6 +36,7 @@ class ProfileFormType extends AbstractType
             ])
             ->add('email', TextType::class, [
                 'label' => 'Email',
+                'required' => false
             ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,

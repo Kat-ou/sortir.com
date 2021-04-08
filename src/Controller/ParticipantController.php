@@ -14,7 +14,7 @@ use Symfony\Component\String\ByteString;
 class ParticipantController extends AbstractController
 {
     /**
-     * @Route("/profile/", name="profile")
+     * @Route("/profile", name="profile")
      */
     public function profile(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $encoder): Response
     {
@@ -52,7 +52,7 @@ class ParticipantController extends AbstractController
             $entityManager->flush();
 
             // On ajoute un message flash
-            $this->addFlash("success", "Le message a été enregistré");
+            $this->addFlash("success", "Votre profile a été modifié");
         }
 
         return $this->render('participant/profile.html.twig', [

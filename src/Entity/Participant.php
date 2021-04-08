@@ -25,9 +25,9 @@ class Participant implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\NotBlank(message="Ce champ ne doit pas être vide.")
+     * @Assert\Email(message="Cet email n'est pas valide !")
      * @Assert\Length(max=180, maxMessage="Ce champ a un maximum de 180 caractères")
+     * @ORM\Column(type="string", length=180, unique=true)
      */
     private $email;
 
@@ -46,7 +46,6 @@ class Participant implements UserInterface
      * @ORM\Column(type="string", length=50)
      * @Assert\NotBlank(message="Ce champ ne doit pas être vide.")
      * @Assert\Length(max=50, maxMessage="Ce champ a un maximum de 50 caractères")
-     *
      */
     private $name;
 
@@ -57,8 +56,8 @@ class Participant implements UserInterface
     private $username;
 
     /**
-     * @ORM\Column(type="string", length=50)
      * @Assert\NotBlank(message="Ce champ ne doit pas être vide.")
+     * @ORM\Column(type="string", length=50)
      * @Assert\Length(max=50, maxMessage="Ce champ a un maximum de 50 caractères")
      */
     private $firstname;
