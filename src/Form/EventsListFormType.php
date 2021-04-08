@@ -47,17 +47,14 @@ class EventsListFormType extends AbstractType
             ])
             ->add('isItMeOrganizer', CheckboxType::class, [
                 'label' => 'Sorties dont je suis l\'organisateur(trice)',
-                'attr' => ['checked' => 'checked'],
                 'required' => false,
             ])
             ->add('isItMeRegister', CheckboxType::class, [
                 'label' => 'Sorties auxquelles je suis inscrit(e)',
-                'attr' => ['checked' => 'checked'],
                 'required' => false,
             ])
             ->add('isItMeNoRegister', CheckboxType::class, [
                 'label' => 'Sorties auxquelles je ne suis pas inscrit(e)',
-                'attr' => ['checked' => 'checked'],
                 'required' => false,
             ])
             ->add('isItEventsDone', CheckboxType::class, [
@@ -65,10 +62,6 @@ class EventsListFormType extends AbstractType
                 'required' => false,
             ])
         ;
-
-
-
-
 
     }
 

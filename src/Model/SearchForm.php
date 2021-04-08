@@ -5,6 +5,7 @@ namespace App\Model;
 
 
 use App\Entity\Campus;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
@@ -14,8 +15,16 @@ use App\Entity\Campus;
 class SearchForm
 {
 
+    /**
+     * @Assert\NotBlank(message="Sélectionnez un campus")
+     */
     private ?Campus $campus = null;
+
+    /**
+     * @Assert\Length(max=255, maxMessage="Votre saisie dépasse 255 caractères")
+     */
     private ?string $searchInputText = null;
+
     private ?\DateTime $startDate = null;
     private ?\DateTime $endDate = null;
     private ?bool $isItMeOrganizer;
@@ -23,23 +32,6 @@ class SearchForm
     private ?bool $isItMeNoRegister;
     private ?bool $isItEventsDone;
 
-
-    /**
-     * Méthode retournant un tableau d'erreurs.
-     * Une erreur si les 4 types de recherche sont dé-cochés.
-     * Une erreur si les 2 dates ne sont pas saisies.
-     * @return array
-     */
-    public function getErrorsSearchForm(): array {
-        $result = [];
-        if ($this->isItMeOrganizer === false && $this->isItMeRegister === false && $this->isItMeNoRegister === false && $this->isItEventsDone === false ) {
-            array_push($result, "Sélectionnez au moins un type de sortie dont vous voulez faire la recherche.");
-        }
-        if ($this->startDate === null || $this->endDate === null) {
-            array_push($result, "Sélectionnez les deux dates de votre intervalle de recherche.");
-        }
-        return $result;
-    }
 
 
     /**

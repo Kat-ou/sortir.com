@@ -26,7 +26,7 @@ class AppFixtures extends Fixture
     const PLAIN_PASSWORD = "azerty";
 
     // Les états des sorties :
-    const STATES = ["Créée", "Ouverte", "Clôturée", "Activité en cours", "Passée", "Annulée"];
+    const STATES = ["Créée", "Ouverte", "Clôturée", "Activité en cours", "Passée", "Annulée", "Historisée"];
 
     // la liste des campus ENI :
     const CAMPUS_LIST = ["st herblain", "chartres de bretagne", "niort", "la roche sur yon", "angers", "quimper", "le mans", "laval"];
@@ -115,7 +115,7 @@ class AppFixtures extends Fixture
         $participants = $manager->getRepository(Participant::class)->findAll();
         $locations = $manager->getRepository(Lieu::class)->findAll();
         $statesDb = $manager->getRepository(Etat::class)->findAll();
-        for ($i = 0; $i < 25; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $event = new Sortie();
             $event->setOrganizer($faker->randomElement($participants));
             // On ajoute un nombre aléatoire de participants à la sortie

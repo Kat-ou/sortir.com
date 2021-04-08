@@ -36,21 +36,16 @@ class SortieRepository extends ServiceEntityRepository
     /**
      * Méthode permettant la requete de filtrage pour rechercher une liste de Sortie.
      * Les parametre sont constitués des éléments du formulaire de recherche en page d'accueil.
-     * @param $user - Le Participant connecté
-     * @param $campusId - Le campus sélectionné
-     * @param $startDate - La date de début saisie
-     * @param $endDate - La date de fin saisie
-     * @param $userInput - Le texte saisie par le participant
-     * @param $isItMeOrganizer - Le filtre si le participant est organisateur
-     * @param $isItMeRegister - Le filtre si le participant est inscrit
-     * @param $isItMeNoRegister -  Le filtre si le participant n'est pas inscrit
-     * @param $isItEventsDone - Le filtre pour obtenir les sorties passées
+     * @param $user - Le Participant connecté.
+     * @param $searchForm - L'objet SearchForm constituant la recherche de l'utilisateur.
      * @return int|mixed|string - Une liste de sortie corespondant à la recherche.
      */
-    public function getEventsListSorted($user, $campusId, $startDate, $endDate, $userInput,
-                                        $isItMeOrganizer, $isItMeRegister, $isItMeNoRegister,
-                                        $isItEventsDone)
+    public function getEventsListSorted($user, $searchForm)
     {
+        // on valorise ou non la saisie utilisateur
+        $search = ($searchForm->getSearchInputText() !== null) ? $searchForm->getSearchInputText() : null;
+
+        // on créer la requete MySQL avec le QueryBuilder.
         $queryBuilder = $this->createQueryBuilder('s');
         $queryBuilder->join('s.state', 'e');
         $queryBuilder->addSelect('e');
@@ -59,71 +54,55 @@ class SortieRepository extends ServiceEntityRepository
         $queryBuilder->join('s.organizer', 'o');
         $queryBuilder->addSelect('o');
         // filtre avec le campus
-        if ($campusId !== null) {
+        if ($searchForm->getCampus()->getId() !== null) {
             $queryBuilder->where('s.organizingSite = :campusId');
-            $queryBuilder->setParameter('campusId', $campusId);
+            $queryBuilder->setParameter('campusId', $searchForm->getCampus()->getId());
         }
         // filtre avec les dates
-        if ($startDate !== null && $endDate !== null) {
+        if ($searchForm->getStartDate() !== null) {
             $queryBuilder->andWhere('s.startDate >= :startDate ');
-            $queryBuilder->setParameter('startDate', $startDate);
+            $queryBuilder->setParameter('startDate', $searchForm->getStartDate());
+        }
+        if ($searchForm->getEndDate() !== null) {
             $queryBuilder->andWhere('s.startDate <= :endDate ');
-            $queryBuilder->setParameter('endDate', $endDate);
+            $queryBuilder->setParameter('endDate', $searchForm->getEndDate());
         }
         // filtre avec la saisie (concaténation des '%' pour filtrer juste un terme en MySql)
-        if ($userInput !== null) {
+        if ($search !== null) {
             $queryBuilder->andWhere('s.name LIKE :userInput');
-            $queryBuilder->setParameter('userInput', '%'.$userInput.'%');
+            $queryBuilder->setParameter('userInput', '%'.$search.'%');
         }
         // filtre avec les checkBoxes
-        if ($isItMeOrganizer === true) {
+        if ($searchForm->isItMeOrganizer()) {
             $queryBuilder->andWhere('s.organizer = :me');
             $queryBuilder->setParameter('me', $user);
         }
-        if ($isItMeRegister === true) {
-            $queryBuilder->andWhere('s.participants = :me');
+        if ($searchForm->isItMeRegister()) {
+            // on vérifie par une requete s'il existe un utilisateur dans une selection
+            // de participants à une sortie (liaison ManyToMany)
+            $queryBuilder->andWhere(':me MEMBER OF s.participants');
             $queryBuilder->setParameter('me', $user);
         }
-        if ($isItMeNoRegister === true) {
-            $queryBuilder->andWhere('s.participants <> :me');
+        if ($searchForm->isItMeNoRegister()) {
+            // on vérifie par une requete si l'utilisateur n'existe pas dans une selection
+            // de participants à une sortie (liaison ManyToMany)
+            $queryBuilder->andWhere(':me NOT MEMBER OF s.participants');
             $queryBuilder->setParameter('me', $user);
         }
-        if ($isItEventsDone === true) {
+        if ($searchForm->isItEventsDone()) {
             $queryBuilder->andWhere('e.wording = :passee');
             $queryBuilder->setParameter('passee', 'Passée');
         }
+        // filtre sur les sorties annulées et historisées
+        $queryBuilder->andWhere('e.wording <> :annulee');
+        $queryBuilder->setParameter('annulee', 'Annulée');
+        $queryBuilder->andWhere('e.wording <> :historisee');
+        $queryBuilder->setParameter('historisee', 'Historisée');
 
+        // on construit, soumet et récupère les résultats
         $query = $queryBuilder->getQuery();
         return $query->getResult();
     }
 
 
-    // /**
-    //  * @return Sortie[] Returns an array of Sortie objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('s.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Sortie
-    {
-        return $this->createQueryBuilder('s')
-            ->andWhere('s.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
