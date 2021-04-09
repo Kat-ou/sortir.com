@@ -13,101 +13,109 @@
     <div class="column">
         <div class="columns is-mobile">
             <div class="column is-3">
-                <p class="has-text-link">{{ form_label(eventForm.name) }} </p>
+                <p>{{ form_label(eventForm.name,{'label_attr': {'class': 'has-text-link'}}) }} </p>
             </div>
             <div class="column">
-                <p>{{ form_row(eventForm.name) }}</p>
+                <p>{{ form_widget(eventForm.name) }}</p>
             </div>
         </div>
         <div class="columns is-mobile">
             <div class="column is-3">
-                <p class="has-text-link">Date et heure de la sortie: </p>
+                <p>{{ form_label(eventForm.startDate) }}</p>
             </div>
             <div class="column">
-                <p>{{ form_row(eventForm.startDate) }}</p>
+                <p>{{ form_widget(eventForm.startDate) }}</p>
             </div>
         </div>
         <div class="columns is-mobile">
             <div class="column is-3">
-                <p class="has-text-link">Date limite d'inscription: </p>
+                <p>{{ form_label(eventForm.deadLine) }}</p>
             </div>
             <div class="column">
-                <p>{{ form_row(eventForm.deadLine) }}</p>
+                <p>{{ form_widget(eventForm.deadLine) }}</p>
             </div>
         </div>
         <div class="columns is-mobile">
             <div class="column is-3">
-                <p class="has-text-link">Nombre de places: </p>
+                <p>{{ form_label(eventForm.maxRegistrations) }}</p>
             </div>
             <div class="column">
-                <p>{{ form_row(eventForm.maxRegistrations) }}</p>
+                <p>{{ form_widget(eventForm.maxRegistrations) }}</p>
             </div>
         </div>
         <div class="columns is-mobile">
             <div class="column is-3">
-                <p class="has-text-link">Durée: </p>
+                <p>{{ form_label(eventForm.duration) }}</p>
             </div>
             <div class="column">
-                <p>{{ form_row(eventForm.duration) }} minutes</p>
+                <p>{{ form_widget(eventForm.duration) }}</p>
             </div>
         </div>
         <div class="columns is-mobile ">
             <div class="column is-3">
-                <p class="has-text-link">Description et infos: </p>
+                <p>{{ form_label(eventForm.description) }}</p>
             </div>
             <div class="column">
-                <p class="has-text-justified">{{ form_row(eventForm.description) }}</p>
+                <p class="has-text-justified">{{ form_widget(eventForm.description) }}</p>
             </div>
         </div>
     </div>
     <div class="column is-0"></div>
-    <div class="column is-4">
+    <div class="column is-6">
         <div class="columns is-mobile">
             <div class="column is-4">
-                <p class="has-text-link">Campus: </p>
+                <p>{{ form_label(eventForm.campus)}}</p>
             </div>
             <div class="column">
-                <p>{# todo ajouter champs #}</p>
+                <p>{{ form_widget(eventForm.campus) }}</p>
             </div>
         </div>
         <div class="columns is-mobile">
             <div class="column is-4">
-                <p class="has-text-link">Lieu: </p>
+                <p>{{ form_label(eventForm.ville) }}</p>
             </div>
             <div class="column">
-                <p>{# todo ajouter champs #}</p>
+                <p>{{ form_widget(eventForm.ville) }}</p>
             </div>
         </div>
         <div class="columns is-mobile">
             <div class="column is-4">
-                <p class="has-text-link">Rue: </p>
+                <p>{{ form_label(eventForm.location) }}</p>
             </div>
             <div class="column">
-                <p>{{ form_row(eventForm.street) }}</p>
+                <p>{{ form_widget(eventForm.location) }}</p>
             </div>
         </div>
         <div class="columns is-mobile">
             <div class="column is-4">
-                <p class="has-text-link">Code Postal: </p>
+                <p>{{ form_label(eventForm.street) }}</p>
             </div>
             <div class="column">
-                <p>{# todo ajouter champs #}</p>
+                <p>{{ form_widget(eventForm.street) }}</p>
             </div>
         </div>
         <div class="columns is-mobile">
             <div class="column is-4">
-                <p class="has-text-link">Latitude: </p>
+                <p>{{ form_label(eventForm.postcode) }}</p>
             </div>
             <div class="column">
-                <p>{{ form_row(eventForm.latitude) }} </p>
+                <p>{{ form_widget(eventForm.postcode) }}</p>
             </div>
         </div>
         <div class="columns is-mobile">
             <div class="column is-4">
-                <p class="has-text-link">Longitude: </p>
+                <p>{{ form_label(eventForm.latitude) }}</p>
             </div>
             <div class="column">
-                <p>{{ form_row(eventForm.longitude) }}</p>
+                <p>{{ form_widget(eventForm.latitude) }} </p>
+            </div>
+        </div>
+        <div class="columns is-mobile">
+            <div class="column is-4">
+                <p>{{ form_label(eventForm.latitude) }}</p>
+            </div>
+            <div class="column">
+                <p>{{ form_widget(eventForm.longitude) }}</p>
             </div>
         </div>
     </div>
