@@ -28,7 +28,7 @@
             {% endif %}
 
             <!-- Lien accessible uniquement à un utilisateur connecté -->
-            {% if app.user != "" %}
+            {% if is_granted("ROLE_USER") %}
             <a class="navbar-item" href="{{ path('main_eventsList') }}">
                 Accueil
             </a>
@@ -41,17 +41,16 @@
 
     <div class="navbar-end">
         <div class="navbar-item">
-            {% if app.user == "" %}
+            {% if not is_granted("ROLE_USER") %}
             <div class="buttons">
                 <a class="button is-link is-light" href="{{ path('app_login') }}">
                     <strong>Se connecter</strong>
-
                 </a>
             </div>
             {% else %}
                 <div class="buttons">
                     <a class="button is-link is-light" href="{{ path('app_logout') }}">
-                        <strong>Se déconnecter ({{ app.user.username|striptags }})</strong>
+                        <strong>Se déconnecter ({{ app.user.username | striptags }})</strong>
                     </a>
                 </div>
             {% endif %}
