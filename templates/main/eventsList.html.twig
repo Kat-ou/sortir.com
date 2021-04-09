@@ -14,35 +14,46 @@
 {% block body %}
 
     <!-- Date et Participant connecté -->
-    <section>
-        <div class="my-3">
-            <p>Date du jour : <span>{{ "now"|date("d/m/Y") }}</span></p>
-            <p>Participant : <span>{{ app.user.username }}</span></p>
+    <section class="columns my-3">
+        <div class="column is-3 is-offset-9">
+            <p><strong>Date du jour : </strong><span>{{ "now"|date("d/m/Y") }}</span></p>
+            <p><strong>Participant : </strong><span>{{ app.user.username }}</span></p>
         </div>
     </section>
+
     <!-- Formulaire de recherches -->
     <h1 class="title is-3">Filtrer les sorties</h1>
     {{ form_start(eventsListForm) }}
     <div class="columns">
-        <div class="column">
+        <div class="column px-4">
             {{ form_row(eventsListForm.campus) }}
             {{ form_row(eventsListForm.searchInputText) }}
             {{ form_row(eventsListForm.startDate) }}
             {{ form_row(eventsListForm.endDate) }}
         </div>
-        <div class="column">
+        <div class="column is-flex is-flex-direction-column is-justify-content-center px-4">
             {{ form_row(eventsListForm.isItMeOrganizer) }}
             {{ form_row(eventsListForm.isItMeRegister) }}
             {{ form_row(eventsListForm.isItMeNoRegister) }}
             {{ form_row(eventsListForm.isItEventsDone) }}
         </div>
-        <div class="column">
+        <div class="column is-flex is-flex-direction-column is-justify-content-center px-4">
             <div class="buttons mt-3">
-                <button type="submit" class="button is-info is-light">Rechercher</button>
+                <button type="submit" class="button is-medium is-link is-light">Rechercher</button>
             </div>
         </div>
     </div>
     {{ form_end(eventsListForm) }}
+
+    <!-- la pagination -->
+    <div class="my-6">
+        {{ knp_pagination_render(eventsList, null, {}, {
+            'align': 'center',
+            'size': 'small',
+            'rounded': false,
+        })}}
+    </div>
+
     <!-- La liste des Sorties -->
     <section>
         <table class="table is-striped is-narrow is-hoverable is-fullwidth">
@@ -75,10 +86,10 @@
                             <!-- éditer et publier -->
                             <a href=""><span class="icon"><i class="far fa-edit"></i></span></a>
                             <a href=""><span class="icon"><i class="far fa-calendar-check"></i></span></a>
-                        {% elseif (event.state.wording == 'Ouverte' or event.state.wording == 'clôturée') and event.isItParticipantOfEvent(app.user) %}
+                        {% elseif (event.state.wording == 'Ouverte' or event.state.wording == 'Clôturée') and event.isItParticipantOfEvent(app.user) %}
                             <!-- se dés'inscrire -->
-                            <a href=""><span class="icon"><i class="fas fa-user-minus"></i></span></a>
-                        {% elseif (event.state.wording == 'Ouverte' or event.state.wording == 'clôturée') and event.organizer.id == app.user.id %}
+                            <a href="{{ path('main_renounce', {id: event.id}) }}"><span class="icon"><i class="fas fa-user-minus"></i></span></a>
+                        {% elseif (event.state.wording == 'Ouverte' or event.state.wording == 'Clôturée') and event.organizer.id == app.user.id %}
                             <!-- Annuler -->
                             <a href=""><span class="icon"><i class="far fa-trash-alt"></i></span></a>
                         {% elseif event.state.wording == 'Ouverte' and not event.isItParticipantOfEvent(app.user) %}
@@ -90,8 +101,8 @@
                 {% endfor %}
             </tbody>
         </table>
-        <div>
-            <a class="button is-info is-light my-3" href="{{ path('create') }}">Créer une sortie</a>
+        <div class="my-6 px-4">
+            <a class="button is-medium is-link is-light" href="{{ path('create') }}">Créer une sortie</a>
         </div>
     </section>
 

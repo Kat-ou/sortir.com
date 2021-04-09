@@ -6,6 +6,9 @@
 parameters:
     upload_dir: '%kernel.project_dir%/public/img/profile/'
 
+imports:
+    - { resource: packages/paginator.yaml } # Configurations du composant de pagination knp_paginator (doc. https://github.com/KnpLabs/KnpPaginatorBundle)
+
 services:
     # default configuration for services in *this* file
     _defaults:

@@ -11,7 +11,6 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Length;
 
 class EventsListFormType extends AbstractType
 {
@@ -27,9 +26,6 @@ class EventsListFormType extends AbstractType
             ])
             ->add('searchInputText', TextType::class, [
                 'label' => 'Le nom de la sortie contient : ',
-                'constraints' => [
-                    new Length([ 'min' => 3, 'max' => 250 ]),
-                ],
                 'attr' => ['placeholder' => 'recherche'],
                 'required' => false,
             ])

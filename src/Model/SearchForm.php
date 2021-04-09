@@ -15,9 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class SearchForm
 {
 
-    /**
-     * @Assert\NotBlank(message="Sélectionnez un campus")
-     */
+
     private ?Campus $campus = null;
 
     /**
@@ -26,11 +24,16 @@ class SearchForm
     private ?string $searchInputText = null;
 
     private ?\DateTime $startDate = null;
+
     private ?\DateTime $endDate = null;
-    private ?bool $isItMeOrganizer;
-    private ?bool $isItMeRegister;
-    private ?bool $isItMeNoRegister;
-    private ?bool $isItEventsDone;
+
+    private ?bool $isItMeOrganizer = false;
+
+    private ?bool $isItMeRegister = false;
+
+    private ?bool $isItMeNoRegister = false;
+
+    private ?bool $isItEventsDone = false;
 
 
 

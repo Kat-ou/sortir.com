@@ -14,6 +14,15 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class SortieRepository extends ServiceEntityRepository
 {
+
+
+    // Constantes de l'entité 'Etat' :
+    const STATE_DONE = 'Passée';
+    const STATE_CANCELED = 'Annulée';
+    const STATE_HISTORIZED = 'Historisée';
+
+
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Sortie::class);
@@ -54,9 +63,9 @@ class SortieRepository extends ServiceEntityRepository
         $queryBuilder->join('s.organizer', 'o');
         $queryBuilder->addSelect('o');
         // filtre avec le campus
-        if ($searchForm->getCampus()->getId() !== null) {
-            $queryBuilder->where('s.organizingSite = :campusId');
-            $queryBuilder->setParameter('campusId', $searchForm->getCampus()->getId());
+        if ($searchForm->getCampus() !== null) {
+            $queryBuilder->where('s.organizingSite = :campus');
+            $queryBuilder->setParameter('campus', $searchForm->getCampus());
         }
         // filtre avec les dates
         if ($searchForm->getStartDate() !== null) {
@@ -91,16 +100,20 @@ class SortieRepository extends ServiceEntityRepository
         }
         if ($searchForm->isItEventsDone()) {
             $queryBuilder->andWhere('e.wording = :passee');
-            $queryBuilder->setParameter('passee', 'Passée');
+            $queryBuilder->setParameter('passee', self::STATE_DONE);
         }
         // filtre sur les sorties annulées et historisées
         $queryBuilder->andWhere('e.wording <> :annulee');
-        $queryBuilder->setParameter('annulee', 'Annulée');
+        $queryBuilder->setParameter('annulee', self::STATE_CANCELED);
         $queryBuilder->andWhere('e.wording <> :historisee');
-        $queryBuilder->setParameter('historisee', 'Historisée');
+        $queryBuilder->setParameter('historisee', self::STATE_HISTORIZED);
+
+        // ordonnée par sa date
+        $queryBuilder->orderBy('s.startDate', 'DESC');
 
         // on construit, soumet et récupère les résultats
         $query = $queryBuilder->getQuery();
+
         return $query->getResult();
     }
 
