@@ -62,7 +62,7 @@
                     <th>Nom de la sortie</th>
                     <th>Date de la sortie</th>
                     <th>Clôture</th>
-                    <th>Inscrits / Places</th>
+                    <th><abbr title="Inscrits / Places">Ins./Pl.</abbr></th>
                     <th>Etat</th>
                     <th>Inscrit</th>
                     <th>Organisateur</th>
@@ -72,7 +72,7 @@
             <tbody>
                 {% for event in eventsList %}
                 <tr>
-                    <td>{{ event.name }}</td>
+                    <td>{{ event.name|u.truncate(60, '...') }}</td>
                     <td>{{ event.startDate|date("d/m/Y - H:m") }}</td>
                     <td>{{ event.deadLine|date("d/m/Y")  }}</td>
                     <td>{{ event.participants|length }} / {{ event.maxRegistrations }}</td>
@@ -82,17 +82,17 @@
                     <td>
                         <!-- afficher -->
                         <a href="{{ path('details', {id: event.id}) }}"><span class="icon"><i class="fas fa-search"></i></span></a>
-                        {% if event.state.wording == 'Créée' and event.organizer.id == app.user.id %}
+                        {% if event.isItPossibleToModifyOrPublish(app.user) %}
                             <!-- éditer et publier -->
                             <a href=""><span class="icon"><i class="far fa-edit"></i></span></a>
                             <a href=""><span class="icon"><i class="far fa-calendar-check"></i></span></a>
-                        {% elseif (event.state.wording == 'Ouverte' or event.state.wording == 'Clôturée') and event.isItParticipantOfEvent(app.user) %}
+                        {% elseif event.isItPossibleToRenounce(app.user) %}
                             <!-- se dés'inscrire -->
                             <a href="{{ path('main_renounce', {id: event.id}) }}"><span class="icon"><i class="fas fa-user-minus"></i></span></a>
-                        {% elseif (event.state.wording == 'Ouverte' or event.state.wording == 'Clôturée') and event.organizer.id == app.user.id %}
+                        {% elseif event.isItPossibleToCancel(app.user) %}
                             <!-- Annuler -->
                             <a href=""><span class="icon"><i class="far fa-trash-alt"></i></span></a>
-                        {% elseif event.state.wording == 'Ouverte' and not event.isItParticipantOfEvent(app.user) %}
+                        {% elseif event.isItPossibleToRegister(app.user) %}
                             <!-- s'inscrire -->
                             <a href=""><span class="icon"><i class="fas fa-user-plus"></i></span></a>
                         {% endif %}

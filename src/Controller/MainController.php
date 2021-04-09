@@ -40,6 +40,8 @@ class MainController extends AbstractController
             // on garde en mémoire les sélections utilisateur en session pour permettre la navigation à l'aide de
             // la pagination et de retrouver sa dernière recherche en cas de retour sur la page d'accueil.
             $session->set('memorySearch', $searchForm);
+            // parametrage de la premiere page pour une nouvelle recherche (empeche de bloqué sur une page inexistante)
+            $request->query->set('page', 1);
         }
 
         // on va chercher la liste des sorties selon les critères :
@@ -53,6 +55,8 @@ class MainController extends AbstractController
             10,
         );
 
+        // Affichage des sorties dans la vue 'twig'
+        // (doc. https://twig.symfony.com/doc/2.x/filters/u.html)
         return $this->render('main/eventsList.html.twig', [
             'eventsListForm' => $searchEventsForm->createView(),
             'eventsList' => $events,
@@ -114,9 +118,7 @@ class MainController extends AbstractController
         $event = $sortieRepository->findAllElementsByEvent($id);
 
         // on contrôle bien que l'utilisateur est bien inscrit & que la sortie est bien cloturée ou ouverte
-        $eventState = $event->getState()->getWording();
-        $isItRegister = $event->isItParticipantOfEvent($this->getUser());
-        if ( $isItRegister && ( $eventState === "Ouverte" || $eventState === "Clôturée" ) ) {
+        if ( $event->isItPossibleToRenounce($this->getUser()) ) {
 
             /** @var Participant $participant */
             $participant = $this->getUser();

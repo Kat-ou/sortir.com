@@ -79,10 +79,17 @@ class Sortie
     private $state;
 
 
+
+
+    /**
+     * Sortie constructor.
+     */
     public function __construct()
     {
         $this->participants = new ArrayCollection();
     }
+
+
 
 
     /**
@@ -101,6 +108,70 @@ class Sortie
         }
         return $result;
     }
+
+
+    /**
+     * @param $user
+     * @return bool
+     */
+    public function isItPossibleToModifyOrPublish($user): bool
+    {
+        $result = false;
+        if ($this->getState()->getWording() == 'Créée' && $this->getOrganizer()->getId() == $user->getId() ) {
+            $result = true;
+        }
+        return $result;
+    }
+
+
+    /**
+     * @param $user
+     * @return bool
+     */
+    public function isItPossibleToRegister($user): bool
+    {
+        $result = false;
+        $today = new \DateTime('now');
+        if ($this->getState()->getWording() == 'Ouverte' &&
+            !$this->isItParticipantOfEvent($user) &&
+            count($this->getParticipants()) < $this->getMaxRegistrations() &&
+            $today < $this->getDeadLine()) {
+            $result = true;
+        }
+        return $result;
+    }
+
+
+    /**
+     * @param $user
+     * @return bool
+     */
+    public function isItPossibleToRenounce($user): bool
+    {
+        $result = false;
+        $eventStatement = $this->getState()->getWording();
+        $today = new \DateTime('now');
+        if ( $this->isItParticipantOfEvent($user) && ( $eventStatement == 'Ouverte' || ( $eventStatement == 'Clôturée' && $today < $this->deadLine ) ) ) {
+            $result = true;
+        }
+        return $result;
+    }
+
+
+    /**
+     * @param $user
+     * @return bool
+     */
+    public function isItPossibleToCancel($user): bool
+    {
+        $result = false;
+        $eventStatement = $this->getState()->getWording();
+        if ( ($eventStatement == 'Ouverte' || $eventStatement == 'Clôturée') && $this->getOrganizer()->getId() == $user->getId() ) {
+            $result = true;
+        }
+        return $result;
+    }
+
 
 
     public function getId(): ?int
