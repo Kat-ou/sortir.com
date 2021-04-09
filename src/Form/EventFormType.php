@@ -19,12 +19,14 @@ class EventFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, ['label' => 'Nom de la sortie:  '])
+            ->add('name', TextType::class, [
+                'label' => 'Nom de la sortie:  '
+            ])
             ->add('startDate', DateType::class, [
                 'label' => 'Date et heure de la sortie:  ',
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
-                ])
+            ])
             ->add('deadLine', DateType::class, [
                 'label' => "Date limite d'inscription: ",
                 'widget' => 'single_text',
@@ -81,7 +83,8 @@ class EventFormType extends AbstractType
                 'label' => "Campus: ",
                 'class' => Campus::class,
                 'mapped' => false,
-                'choice_label' => 'name'
+                'choice_label' => 'name',
+                //'attr' =>['class' => 'has-text-link']
             ]);
 
     }
