@@ -32,7 +32,7 @@ class AppFixtures extends Fixture
     const CAMPUS_LIST = ["st herblain", "chartres de bretagne", "niort", "la roche sur yon", "angers", "quimper", "le mans", "laval"];
 
     // Les roles des utilisateurs :
-    const ROLES = ["ROLE_USER"];
+    const ROLES = [["ROLE_USER"],["ROLE_ADMIN"]];
 
 
 
@@ -92,7 +92,7 @@ class AppFixtures extends Fixture
 
         // Jeu de données Participants :
         $campuses = $manager->getRepository(Campus::class)->findAll();
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 200; $i++) {
             // Creation du mot de passe hashé
             $pwd = password_hash(self::PLAIN_PASSWORD, PASSWORD_BCRYPT);
             // On hydrate le nouveau participant
@@ -102,7 +102,8 @@ class AppFixtures extends Fixture
             $user->setFirstname($faker->firstName);
             $user->setPhone($faker->phoneNumber);
             $user->setEmail($faker->email);
-            $user->setRoles($faker->randomElements(self::ROLES));
+            $idx = $faker->optional($weight = 10, $default = 0)->numberBetween(1,1);
+            $user->setRoles(self::ROLES[$idx]);
             $user->setIsActive($faker->boolean(90));
             $user->setPassword($pwd);
             $user->setCreatedDate($faker->dateTimeBetween('-1 years'));
@@ -115,7 +116,7 @@ class AppFixtures extends Fixture
         $participants = $manager->getRepository(Participant::class)->findAll();
         $locations = $manager->getRepository(Lieu::class)->findAll();
         $statesDb = $manager->getRepository(Etat::class)->findAll();
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 200; $i++) {
             $event = new Sortie();
             $event->setOrganizer($faker->randomElement($participants));
             // On ajoute un nombre aléatoire de participants à la sortie
