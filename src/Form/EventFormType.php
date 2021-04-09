@@ -40,9 +40,6 @@ class EventFormType extends AbstractType
             ])
             ->add('duration', null, [
                 'label' => 'Durée: ',
-                'attr' => array(
-                    'placeholder' => 'minutes'
-                )
             ])
             ->add('description', null, [
                 'label' => "Description et infos: ",

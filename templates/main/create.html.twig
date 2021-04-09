@@ -28,13 +28,13 @@
                             'attr': {'class': 'has-text-link'}
                         }) }}</p>
                 </div>
-                <div class="column is-6">
+                <div class="column is-4">
                     <p>
                         {{ form_widget(eventForm.startDate.date, {'attr': {'class': 'input is-primary'}}) }}
                     </p>
                 </div>
-                    <div class="column">
-                        <p>{{ form_widget(eventForm.startDate.time, {'attr': {'class': 'input is-primary'}}) }}</p>
+                    <div class="column is-2">
+                        <p>{{ form_widget(eventForm.startDate.time, {'attr': {'class': 'input is-primary'}}) }} </p>
                 </div>
             </div>
             <div class="columns is-mobile">
@@ -43,7 +43,7 @@
                             'attr': {'class': 'has-text-link'}
                         }) }}</p>
                 </div>
-                <div class="column is-6">
+                <div class="column is-4">
                     <p>{{ form_widget(eventForm.deadLine, {'attr': {'class': 'input is-primary'}}) }}</p>
                 </div>
             </div>
@@ -53,7 +53,7 @@
                             'attr': {'class': 'has-text-link'}
                         }) }}</p>
                 </div>
-                <div class="column is-6">
+                <div class="column is-2">
                     <p>{{ form_widget(eventForm.maxRegistrations, {'attr': {'class': 'input is-primary'}}) }}</p>
                 </div>
             </div>
@@ -63,8 +63,11 @@
                             'attr': {'class': 'has-text-link'}
                         }) }}</p>
                 </div>
-                <div class="column is-6">
-                    <p>{{ form_widget(eventForm.duration, {'attr': {'class': 'input is-primary'}}) }}</p>
+                <div class="column is-2">
+                    <p>{{ form_widget(eventForm.duration, {'attr': {'class': 'input is-primary'}}) }} </p>
+                </div>
+                <div class="column is-2">
+                    <p>minutes</p>
                 </div>
             </div>
             <div class="columns is-mobile ">
@@ -156,6 +159,7 @@
     </div>
     <div class="section columns">
         <div class="column"></div>
+
         <button type="submit" class="button is-medium is-link is-light">Enregistrer</button>
         <div class="column"></div>
         <button class="button is-medium is-link is-light">Publier la sortie</button>
