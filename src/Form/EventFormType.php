@@ -20,12 +20,15 @@ class EventFormType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Nom de la sortie:  '
+                'label' => 'Nom de la sortie: '
             ])
-            ->add('startDate', DateType::class, [
+            ->add('startDate', DateTimeType::class, [
                 'label' => 'Date et heure de la sortie:  ',
-                'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
+                'date_widget' => 'single_text',
+                'time_widget'=> 'single_text',
+                'attr' =>['class' => 'has-text-link']
+
+
             ])
             ->add('deadLine', DateType::class, [
                 'label' => "Date limite d'inscription: ",
@@ -79,13 +82,16 @@ class EventFormType extends AbstractType
                 'mapped' => false,
                 'choice_label' => 'postcode'
             ])
+
+            /* champs inséré en dur dans créer une sortie*/
             ->add('campus', EntityType::class, [
                 'label' => "Campus: ",
                 'class' => Campus::class,
                 'mapped' => false,
                 'choice_label' => 'name',
                 //'attr' =>['class' => 'has-text-link']
-            ]);
+            ])
+        ;
 
     }
 
