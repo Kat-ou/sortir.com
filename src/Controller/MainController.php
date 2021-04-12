@@ -9,6 +9,7 @@ use App\Form\EventFormType;
 use App\Form\EventsListFormType;
 use App\Model\SearchForm;
 use App\Repository\SortieRepository;
+use App\Services\RefreshStatesEvents;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,8 +25,12 @@ class MainController extends AbstractController
     /**
      * @Route("/", name="main_eventsList")
      */
-    public function eventsList(Request $request, SortieRepository $sortieRepository, PaginatorInterface $paginator, SessionInterface $session): Response
+    public function eventsList(Request $request, SortieRepository $sortieRepository, PaginatorInterface $paginator,
+                               SessionInterface $session, RefreshStatesEvents $refreshStatesEvents): Response
     {
+        // Appel au service "RefreshStatesEvents" pour Mettre certaines données à jour en base.
+        $refreshStatesEvents->refreshStateEventsIntoDb();
+
         // On creer le formulaire de recherches dans le cas ou la recherche n'est pas trouvé en session (pagination)
         $searchForm = ($session->get('memorySearch') == null) ? new SearchForm() : $session->get('memorySearch');
 
@@ -87,9 +92,6 @@ class MainController extends AbstractController
         $currentLatitude = $location->getLatitude();
         $currentLongitude = $location->getLongitude();
         $currentLocationCity = $location->getCity();
-        // On récupère le nom du campus
-        $currentCampus = $this->getUser()->getCampus()->getName();
-
         $eventForm = $this->createForm(EventFormType::class, $event);
         $eventForm->get('name')->setData($currentName);
         $eventForm->get('street')->setData($currentStreet);
@@ -107,9 +109,7 @@ class MainController extends AbstractController
             $entityManager->flush();
         }
         return $this->render('main/create.html.twig', [
-            'eventForm' => $eventForm->createView(),
-            'nomCampus' =>$currentCampus
-
+            'eventForm' => $eventForm->createView()
         ]);
     }
 
@@ -139,6 +139,16 @@ class MainController extends AbstractController
     }
 
 }
+
+
+
+
+
+
+
+
+
+
 
 
 
