@@ -10,6 +10,7 @@ use App\Form\EventFormType;
 use App\Form\EventsListFormType;
 use App\Model\SearchForm;
 use App\Repository\EtatRepository;
+use App\Repository\LieuRepository;
 use App\Repository\SortieRepository;
 use App\Services\RefreshStatesEvents;
 use Doctrine\ORM\EntityManagerInterface;
@@ -113,6 +114,19 @@ class MainController extends AbstractController
     }
 
     /**
+     * @Route ("/event/create/location/{id}", name="main_location")
+     */
+    public function getLocation($id, LieuRepository $lieuRepository)
+    {
+        $locations = $lieuRepository->findBy(['city'=>$id]);
+        $tabLocations = [];
+        foreach ($locations as $location) {
+            array_push($tabLocations, $location->toArray());
+        }
+        return new JsonResponse(['city' => $tabLocations]);
+    }
+
+    /**
      * @Route ("/event/renounce/{id}",name="main_renounce", requirements={"id"="\d+"})
      */
     public function renounce($id, EntityManagerInterface $em, Request $request, SortieRepository $sortieRepository): Response
@@ -137,17 +151,6 @@ class MainController extends AbstractController
         return $this->redirectToRoute('main_eventsList');
     }
 
-    /**
-     * @Route ("/event/create/location/{id}", name="main_location")
-     */
-    public function getLocation($id)
-    {
-
-
-
-
-        return new JsonResponse(['id' => $id]);
-    }
 
     /**
      * @Route ("/event/register/{id}",name="main_register", requirements={"id"="\d+"})

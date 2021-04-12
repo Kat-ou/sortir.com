@@ -8,6 +8,7 @@ selectVille.addEventListener('change', function() {
                     return response.json();
             }).then( function (data) {
                 console.log(data);
+                document.getElementById('event_form_location').
         } )
 
 });

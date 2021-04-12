@@ -55,6 +55,17 @@ class Lieu
         $this->eventsLocation = new ArrayCollection();
     }
 
+    public function toArray()
+    {
+        return [
+            'name' => $this->getName(),
+            'street' => $this->getStreet(),
+            'latitude' => $this->getLatitude(),
+            'longitude' => $this->getLongitude(),
+            'postcode' => $this->getCity()->getPostcode()
+        ];
+    }
+
     public function getId(): ?int
     {
         return $this->id;
