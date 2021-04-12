@@ -54,7 +54,6 @@ class SortieRepository extends ServiceEntityRepository
     }
 
 
-
     public function findAllElementsByEvent($id){
         $queryBuilder = $this->createQueryBuilder('s')
             ->leftJoin('s.participants','p')->addSelect('p')

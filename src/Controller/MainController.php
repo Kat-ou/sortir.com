@@ -6,12 +6,14 @@ use App\Entity\Etat;
 use App\Entity\Lieu;
 use App\Entity\Participant;
 use App\Entity\Sortie;
+use App\Entity\Ville;
 use App\Form\EventFormType;
 use App\Form\EventsListFormType;
 use App\Model\SearchForm;
 use App\Repository\EtatRepository;
 use App\Repository\LieuRepository;
 use App\Repository\SortieRepository;
+use App\Repository\VilleRepository;
 use App\Services\RefreshStatesEvents;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -117,14 +119,15 @@ class MainController extends AbstractController
     /**
      * @Route ("/event/create/location/{id}", name="main_location")
      */
-    public function getLocation($id, LieuRepository $lieuRepository)
+    public function getLocation($id, VilleRepository $villeRepository)
     {
-        $locations = $lieuRepository->findBy(['city'=>$id]);
+        /** @var Ville $city */
+        $city = $villeRepository->findAllLocationElementsByIdCity($id);
         $tabLocations = [];
-        foreach ($locations as $location) {
+        foreach ($city->getLocations() as $location) {
             array_push($tabLocations, $location->toArray());
         }
-        return new JsonResponse(['city' => $tabLocations]);
+        return new JsonResponse(['city' => $tabLocations, 'postCode' => $city->getPostcode()]);
     }
 
     /**

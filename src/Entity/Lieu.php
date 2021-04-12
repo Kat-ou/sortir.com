@@ -58,11 +58,11 @@ class Lieu
     public function toArray()
     {
         return [
+            'id' => $this ->getId(),
             'name' => $this->getName(),
             'street' => $this->getStreet(),
             'latitude' => $this->getLatitude(),
             'longitude' => $this->getLongitude(),
-            'postcode' => $this->getCity()->getPostcode()
         ];
     }
 
