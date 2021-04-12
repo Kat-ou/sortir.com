@@ -20,13 +20,39 @@ class SortieRepository extends ServiceEntityRepository
     const STATE_DONE = 'Passée';
     const STATE_CANCELED = 'Annulée';
     const STATE_HISTORIZED = 'Historisée';
+    const STATE_OPEN = 'Ouverte';
+    const STATE_END_REGISTER = 'Clôturée';
+    const STATE_IN_PROGRESS = 'Activité en cours';
 
 
-
+    /**
+     * SortieRepository constructor.
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Sortie::class);
     }
+
+
+    /**
+     * Méthode retournant les sorties triées selon les états souhaités : 'Ouvertes', 'Clôturées', 'En cours'.
+     * @return int|mixed|string
+     */
+    public function findEventsBySevralStates()
+    {
+        $queryBuilder = $this->createQueryBuilder('s')
+            ->join('s.state', 'e')->addSelect('e');
+        // on cherche les sorties étants Ouvertes, Cloturées, et En cours :
+        $queryBuilder
+            ->where('e.wording IN (:open, :end, :progress)')
+            ->setParameter('open',self::STATE_OPEN)
+            ->setParameter('end',self::STATE_END_REGISTER)
+            ->setParameter('progress',self::STATE_IN_PROGRESS);
+        $query = $queryBuilder->getQuery();
+        return $query->getResult();
+    }
+
 
 
     public function findAllElementsByEvent($id){
@@ -58,7 +84,7 @@ class SortieRepository extends ServiceEntityRepository
         $queryBuilder = $this->createQueryBuilder('s');
         $queryBuilder->join('s.state', 'e');
         $queryBuilder->addSelect('e');
-        $queryBuilder->join('s.participants', 'p');
+        $queryBuilder->leftjoin('s.participants', 'p');
         $queryBuilder->addSelect('p');
         $queryBuilder->join('s.organizer', 'o');
         $queryBuilder->addSelect('o');

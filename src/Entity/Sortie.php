@@ -79,8 +79,6 @@ class Sortie
     private $state;
 
 
-
-
     /**
      * Sortie constructor.
      */
@@ -88,8 +86,6 @@ class Sortie
     {
         $this->participants = new ArrayCollection();
     }
-
-
 
 
     /**
@@ -111,8 +107,10 @@ class Sortie
 
 
     /**
-     * @param $user
-     * @return bool
+     * Méthode permettant de vérifier si un utilisateur passé en paramètre
+     * peut modifier ou publier une sortie.
+     * @param $user - Le participant connecté.
+     * @return bool - True s'il peut, sinon False.
      */
     public function isItPossibleToModifyOrPublish($user): bool
     {
@@ -125,8 +123,10 @@ class Sortie
 
 
     /**
-     * @param $user
-     * @return bool
+     * Méthode permettant de vérifier si un utilisateur passé en paramètre
+     * peut s'inscrire à une sortie.
+     * @param $user - Le participant connecté.
+     * @return bool - True s'il peut, sinon False.
      */
     public function isItPossibleToRegister($user): bool
     {
@@ -143,8 +143,10 @@ class Sortie
 
 
     /**
-     * @param $user
-     * @return bool
+     * Méthode permettant de vérifier si un utilisateur passé en paramètre
+     * peut se désister d'une sortie.
+     * @param $user - Le participant connecté.
+     * @return bool - True s'il peut, sinon False.
      */
     public function isItPossibleToRenounce($user): bool
     {
@@ -159,8 +161,10 @@ class Sortie
 
 
     /**
-     * @param $user
-     * @return bool
+     * Méthode permettant de vérifier si un utilisateur passé en paramètre
+     * peut annuler une sortie.
+     * @param $user - Le participant connecté.
+     * @return bool - True s'il peut, sinon False.
      */
     public function isItPossibleToCancel($user): bool
     {
@@ -170,6 +174,16 @@ class Sortie
             $result = true;
         }
         return $result;
+    }
+
+
+    /**
+     * Méthode permettant de vérifier si un utilisateur peut afficher les détails d'une sortie.
+     * @return bool - True s'il peut, sinon False.
+     */
+    public function isItPossibleToDisplay()
+    {
+        return ($this->getState()->getWording() != 'Créée');
     }
 
 

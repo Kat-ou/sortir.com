@@ -80,21 +80,26 @@
                     <td>{{ event.isItParticipantOfEvent(app.user)? 'X' : '' }}</td>
                     <td>{{ event.organizer.username }}</td>
                     <td>
-                        <!-- afficher -->
-                        <a href="{{ path('details', {id: event.id}) }}"><span class="icon"><i class="fas fa-search"></i></span></a>
+                        {% if event.isItPossibleToDisplay() %}
+                            <!-- afficher -->
+                            <a href="{{ path('details', {id: event.id}) }}" title="Détails de la sortie"><span class="icon"><i class="fas fa-search"></i></span></a>
+                        {% endif %}
                         {% if event.isItPossibleToModifyOrPublish(app.user) %}
                             <!-- éditer et publier -->
-                            <a href=""><span class="icon"><i class="far fa-edit"></i></span></a>
-                            <a href=""><span class="icon"><i class="far fa-calendar-check"></i></span></a>
-                        {% elseif event.isItPossibleToRenounce(app.user) %}
+                            <a href=""><span class="icon"><i class="far fa-edit" title="Modifier la sortie"></i></span></a>
+                            <a href=""><span class="icon"><i class="far fa-calendar-check" title="Publier la sortie"></i></span></a>
+                        {% endif %}
+                        {% if event.isItPossibleToRenounce(app.user) %}
                             <!-- se dés'inscrire -->
-                            <a href="{{ path('main_renounce', {id: event.id}) }}"><span class="icon"><i class="fas fa-user-minus"></i></span></a>
-                        {% elseif event.isItPossibleToCancel(app.user) %}
-                            <!-- Annuler -->
-                            <a href=""><span class="icon"><i class="far fa-trash-alt"></i></span></a>
-                        {% elseif event.isItPossibleToRegister(app.user) %}
+                            <a href="{{ path('main_renounce', {id: event.id}) }}" title="Se désister"><span class="icon"><i class="fas fa-user-minus"></i></span></a>
+                        {% endif %}
+                        {% if event.isItPossibleToRegister(app.user) %}
                             <!-- s'inscrire -->
-                            <a href=""><span class="icon"><i class="fas fa-user-plus"></i></span></a>
+                            <a href="" title="S'inscrire"><span class="icon"><i class="fas fa-user-plus"></i></span></a>
+                        {% endif %}
+                        {% if event.isItPossibleToCancel(app.user) %}
+                            <!-- Annuler -->
+                            <a href="" title="Annuler la sortie"><span class="icon"><i class="far fa-trash-alt"></i></span></a>
                         {% endif %}
                     </td>
                 </tr>
