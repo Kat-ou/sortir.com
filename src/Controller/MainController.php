@@ -13,6 +13,7 @@ use App\Services\RefreshStatesEvents;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -140,6 +141,18 @@ class MainController extends AbstractController
             $em->flush();
         }
         return $this->redirectToRoute('main_eventsList');
+    }
+
+    /**
+     * @Route ("/event/create/location/{id}", name="main_location")
+     */
+    public function getLocation($id)
+    {
+
+
+
+
+        return new JsonResponse(['id' => $id]);
     }
 
 }
