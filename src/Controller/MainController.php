@@ -92,6 +92,9 @@ class MainController extends AbstractController
         $currentLatitude = $location->getLatitude();
         $currentLongitude = $location->getLongitude();
         $currentLocationCity = $location->getCity();
+        // On récupère le nom du campus
+        $currentCampus = $this->getUser()->getCampus()->getName();
+
         $eventForm = $this->createForm(EventFormType::class, $event);
         $eventForm->get('name')->setData($currentName);
         $eventForm->get('street')->setData($currentStreet);
@@ -109,7 +112,8 @@ class MainController extends AbstractController
             $entityManager->flush();
         }
         return $this->render('main/create.html.twig', [
-            'eventForm' => $eventForm->createView()
+            'eventForm' => $eventForm->createView(),
+            'nomCampus' =>$currentCampus
         ]);
     }
 
