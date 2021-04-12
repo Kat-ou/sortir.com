@@ -102,7 +102,8 @@ class MainController extends AbstractController
             $event->setOrganizer($this->getUser());
             $event->setOrganizingSite($this->getUser()->getCampus());
             $event->setLocation($eventForm->get('location')->getData());
-            //$event->setState()
+            $createdStatus = $etatRepository->findOneBy(['wording' => 'Créée']);
+            $event->setState($createdStatus);
 
             $entityManager->persist($event);
             $entityManager->flush();
@@ -177,6 +178,28 @@ class MainController extends AbstractController
         return $this->redirectToRoute('main_eventsList');
     }
 
+    /**
+     * @Route ("/event/published/{id}",name="main_published", requirements={"id"="\d+"})
+     */
+    public function published($id, EntityManagerInterface $em, Request $request, SortieRepository $sortieRepository, EtatRepository $etatRepository): Response
+    {
+        // on récupère la sortie
+        /** @var Sortie $event */
+        $event = $sortieRepository->findAllElementsByEvent($id);
+
+        // on contrôle que le statut est créée et que l'utilisateur est bien le créateur
+        if ( $event->isItPossibleToModifyOrPublish($this->getUser()) ) {
+
+            // on modifie le statut de la sortie
+            $createdStatus = $etatRepository->findOneBy(['wording' => 'Ouverte']);
+            $event->setState($createdStatus);
+
+            // on exécute la requete
+            $em->persist($event);
+            $em->flush();
+        }
+        return $this->redirectToRoute('main_eventsList');
+    }
 }
 
 
