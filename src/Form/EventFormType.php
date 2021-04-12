@@ -8,6 +8,7 @@ use App\Entity\Sortie;
 use App\Entity\Ville;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -27,8 +28,6 @@ class EventFormType extends AbstractType
                 'date_widget' => 'single_text',
                 'time_widget'=> 'single_text',
                 'attr' =>['class' => 'has-text-link']
-
-
             ])
             ->add('deadLine', DateType::class, [
                 'label' => "Date limite d'inscription: ",
@@ -44,28 +43,27 @@ class EventFormType extends AbstractType
             ->add('description', null, [
                 'label' => "Description et infos: ",
             ])
-            ->add('location', EntityType::class, [
+            ->add('location', ChoiceType::class, [
                 'label' => "Lieu: ",
-                'class' => Lieu::class,
-                'choice_label' => 'name'
+                'placeholder' => '--Liste de lieux--',
+                'mapped' => false
             ])
-            ->add('street', EntityType::class, [
+            //->add('location', EntityType::class, [
+                //'label' => "Lieu: ",
+                //'class' => Lieu::class,
+                //'choice_label' => 'name'
+            //])
+            ->add('street', ChoiceType::class, [
                 'label' => "Rue: ",
-                'class' => Lieu::class,
-                'mapped' => false,
-                'choice_label' => 'street'
+                'mapped' => false
             ])
-            ->add('latitude', EntityType::class, [
+            ->add('latitude', ChoiceType::class, [
                 'label' => "Latitude: ",
-                'class' => Lieu::class,
-                'mapped' => false,
-                'choice_label' => 'latitude'
+                'mapped' => false
             ])
-            ->add('longitude', EntityType::class, [
+            ->add('longitude', ChoiceType::class, [
                 'label' => "Longitude: ",
-                'class' => Lieu::class,
-                'mapped' => false,
-                'choice_label' => 'longitude'
+                'mapped' => false
             ])
             ->add('ville', EntityType::class, [
                 'label' => "Ville: ",
@@ -73,11 +71,9 @@ class EventFormType extends AbstractType
                 'mapped' => false,
                 'choice_label' => 'name'
             ])
-            ->add('postcode', EntityType::class, [
+            ->add('postcode', ChoiceType::class, [
                 'label' => "Code Postal: ",
-                'class' => Ville::class,
-                'mapped' => false,
-                'choice_label' => 'postcode'
+                'mapped' => false
             ])
 
             /* champs inséré en dur dans créer une sortie*/
@@ -89,7 +85,6 @@ class EventFormType extends AbstractType
                 //'attr' =>['class' => 'has-text-link']
             ])
         ;
-
     }
 
     public function configureOptions(OptionsResolver $resolver)

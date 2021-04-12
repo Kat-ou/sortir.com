@@ -2,12 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Etat;
 use App\Entity\Lieu;
 use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Form\EventFormType;
 use App\Form\EventsListFormType;
 use App\Model\SearchForm;
+use App\Repository\EtatRepository;
 use App\Repository\SortieRepository;
 use App\Services\RefreshStatesEvents;
 use Doctrine\ORM\EntityManagerInterface;
@@ -83,32 +85,24 @@ class MainController extends AbstractController
     /**
      * @Route ("/event/create",name="create")
      */
-    public function create(EntityManagerInterface $entityManager, Request $request): Response
+    public function create(EntityManagerInterface $entityManager, Request $request, EtatRepository $etatRepository): Response
     {
         $event = new Sortie();
-        $location = new Lieu();
-        // on récupère des données dans l'instance location
-        $currentName = $location->getName();
-        $currentStreet = $location->getStreet();
-        $currentLatitude = $location->getLatitude();
-        $currentLongitude = $location->getLongitude();
-        $currentLocationCity = $location->getCity();
+
         // On récupère le nom du campus
         $currentCampus = $this->getUser()->getCampus()->getName();
 
+        // On créé le formulaire
         $eventForm = $this->createForm(EventFormType::class, $event);
-        $eventForm->get('name')->setData($currentName);
-        $eventForm->get('street')->setData($currentStreet);
-        $eventForm->get('latitude')->setData($currentLatitude);
-        $eventForm->get('longitude')->setData($currentLongitude);
-        $eventForm->get('ville')->setData($currentLocationCity);
 
         $eventForm->handleRequest($request);
+
         if ($eventForm->isSubmitted() && $eventForm->isValid()) {
-            $event->setName($eventForm->get('name')->getData());
-            $event->setStreet($eventForm->get('street')->getData());
-            $event->setLatitude($eventForm->get('latitude')->getData());
-            $event->setLongitude($eventForm->get('longitude')->getData());
+            $event->setOrganizer($this->getUser());
+            $event->setOrganizingSite($this->getUser()->getCampus());
+            $event->setLocation($eventForm->get('location')->getData());
+            //$event->setState()
+
             $entityManager->persist($event);
             $entityManager->flush();
         }
@@ -153,6 +147,31 @@ class MainController extends AbstractController
 
 
         return new JsonResponse(['id' => $id]);
+    }
+
+    /**
+     * @Route ("/event/register/{id}",name="main_register", requirements={"id"="\d+"})
+     */
+    public function register($id, EntityManagerInterface $em, Request $request, SortieRepository $sortieRepository): Response
+    {
+        // on récupère la sortie
+        /** @var Sortie $event */
+        $event = $sortieRepository->findAllElementsByEvent($id);
+
+        // on contrôle qu'il reste de la place dans la sortie & que la sortie est bien ouverte
+        if ( $event->isItPossibleToRegister($this->getUser()) ) {
+
+            /** @var Participant $participant */
+            $participant = $this->getUser();
+
+            // on s'ajoute à la liste des participants
+            $event->addParticipant($participant);
+
+            // on exécute la requete
+            $em->persist($event);
+            $em->flush();
+        }
+        return $this->redirectToRoute('main_eventsList');
     }
 
 }

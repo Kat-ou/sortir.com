@@ -95,7 +95,7 @@
                         {% endif %}
                         {% if event.isItPossibleToRegister(app.user) %}
                             <!-- s'inscrire -->
-                            <a href="" title="S'inscrire"><span class="icon"><i class="fas fa-user-plus"></i></span></a>
+                            <a href="{{ path('main_register', {id: event.id}) }}" title="S'inscrire"><span class="icon"><i class="fas fa-user-plus"></i></span></a>
                         {% endif %}
                         {% if event.isItPossibleToCancel(app.user) %}
                             <!-- Annuler -->
