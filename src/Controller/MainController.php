@@ -109,6 +109,7 @@ class MainController extends AbstractController
         return $this->render('main/create.html.twig', [
             'eventForm' => $eventForm->createView(),
             'nomCampus' =>$currentCampus
+
         ]);
     }
 
