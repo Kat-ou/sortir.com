@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass=SortieRepository::class)
@@ -28,12 +29,14 @@ class Sortie
 
     /**
      * @ORM\Column(type="datetime")
-     *  @Assert\NotBlank(message="Ce champs ne peut pas être vide")
+     * @Assert\NotBlank(message="Ce champs ne peut pas être vide")
+     * @Assert\GreaterThan("+1 day UTC", message="Sélectionnez une date future")
      */
     private $startDate;
 
     /**
      * @Assert\NotBlank(message="Ce champs ne peut pas être vide")
+     * @Assert\GreaterThan("today UTC", message="Sélectionnez une date future")
      * @ORM\Column(type="datetime")
      */
     private $deadLine;
@@ -95,6 +98,21 @@ class Sortie
     public function __construct()
     {
         $this->participants = new ArrayCollection();
+    }
+
+
+    /**
+     * @Assert\Callback
+     */
+    public function validateDates(ExecutionContextInterface $context, $payload)
+    {
+        // Si la date de début de sortie est inférieure à la date de clôture :
+        if ($this->getStartDate() < $this->getDeadLine()) {
+            // on leve une violation de contrainte sur la propriété DeadLine :
+            $context->buildViolation('La date de clôture doit être avant celle du début de la sortie')
+                ->atPath('deadLine')
+                ->addViolation();
+        }
     }
 
 

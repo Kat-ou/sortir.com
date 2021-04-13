@@ -48,12 +48,7 @@ class EventFormType extends AbstractType
                 'label' => "Lieu: ",
                 'class' => Lieu::class,
                 'choice_label' => 'name',
-            ])/*
-            ->add('location', EntityType::class, [
-                'label' => "Lieu: ",
-                'class' => Lieu::class,
-                'choice_label' => 'name'
-            ])*/
+            ])
             ->add('street', ChoiceType::class, [
                 'label' => "Rue: ",
                 'mapped' => false
@@ -69,7 +64,6 @@ class EventFormType extends AbstractType
             ->add('ville', EntityType::class, [
                 'label' => "Ville: ",
                 'class' => Ville::class,
-                'placeholder' => '',
                 'mapped' => false,
                 'choice_label' => 'name',
             ])
