@@ -14,6 +14,7 @@ use App\Repository\EtatRepository;
 use App\Repository\LieuRepository;
 use App\Repository\SortieRepository;
 use App\Repository\VilleRepository;
+use App\Services\NameState;
 use App\Services\RefreshStatesEvents;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -104,7 +105,7 @@ class MainController extends AbstractController
             $event->setOrganizer($this->getUser());
             $event->setOrganizingSite($this->getUser()->getCampus());
             $event->setLocation($eventForm->get('location')->getData());
-            $createdStatus = $etatRepository->findOneBy(['wording' => 'Créée']);
+            $createdStatus = $etatRepository->findOneBy(['wording' => NameState::STATE_CREATED]);
             $event->setState($createdStatus);
 
             $entityManager->persist($event);
@@ -198,7 +199,7 @@ class MainController extends AbstractController
         if ( $event->isItPossibleToModifyOrPublish($this->getUser()) ) {
 
             // on modifie le statut de la sortie
-            $createdStatus = $etatRepository->findOneBy(['wording' => 'Ouverte']);
+            $createdStatus = $etatRepository->findOneBy(['wording' => NameState::STATE_OPEN]);
             $event->setState($createdStatus);
 
             // on exécute la requete

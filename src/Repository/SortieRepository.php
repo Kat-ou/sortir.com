@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Sortie;
+use App\Services\NameState;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,16 +15,6 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class SortieRepository extends ServiceEntityRepository
 {
-
-
-    // Constantes de l'entité 'Etat' :
-    const STATE_DONE = 'Passée';
-    const STATE_CANCELED = 'Annulée';
-    const STATE_HISTORIZED = 'Historisée';
-    const STATE_OPEN = 'Ouverte';
-    const STATE_END_REGISTER = 'Clôturée';
-    const STATE_IN_PROGRESS = 'Activité en cours';
-
 
     /**
      * SortieRepository constructor.
@@ -46,9 +37,9 @@ class SortieRepository extends ServiceEntityRepository
         // on cherche les sorties étants Ouvertes, Cloturées, et En cours :
         $queryBuilder
             ->where('e.wording IN (:open, :end, :progress)')
-            ->setParameter('open',self::STATE_OPEN)
-            ->setParameter('end',self::STATE_END_REGISTER)
-            ->setParameter('progress',self::STATE_IN_PROGRESS);
+            ->setParameter('open',NameState::STATE_OPEN)
+            ->setParameter('end',NameState::STATE_END_REGISTER)
+            ->setParameter('progress',NameState::STATE_IN_PROGRESS);
         $query = $queryBuilder->getQuery();
         return $query->getResult();
     }
@@ -125,13 +116,13 @@ class SortieRepository extends ServiceEntityRepository
         }
         if ($searchForm->isItEventsDone()) {
             $queryBuilder->andWhere('e.wording = :passee');
-            $queryBuilder->setParameter('passee', self::STATE_DONE);
+            $queryBuilder->setParameter('passee', NameState::STATE_DONE);
         }
         // filtre sur les sorties annulées et historisées
         $queryBuilder->andWhere('e.wording <> :annulee');
-        $queryBuilder->setParameter('annulee', self::STATE_CANCELED);
+        $queryBuilder->setParameter('annulee', NameState::STATE_CANCELED);
         $queryBuilder->andWhere('e.wording <> :historisee');
-        $queryBuilder->setParameter('historisee', self::STATE_HISTORIZED);
+        $queryBuilder->setParameter('historisee', NameState::STATE_HISTORIZED);
 
         // ordonnée par sa date
         $queryBuilder->orderBy('s.startDate', 'DESC');

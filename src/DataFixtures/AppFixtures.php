@@ -8,6 +8,7 @@ use App\Entity\Lieu;
 use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Entity\Ville;
+use App\Services\NameState;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
@@ -26,8 +27,8 @@ class AppFixtures extends Fixture
     const PLAIN_PASSWORD = "azerty";
 
     // Les états des sorties :
-    const STATES_START = ["Créée", "Ouverte", "Clôturée", "Annulée", "Historisée"];
-    const STATES_END = ["Activité en cours", "Passée"];
+    const STATES_START = [NameState::STATE_CREATED, NameState::STATE_OPEN, NameState::STATE_END_REGISTER, NameState::STATE_CANCELED, NameState::STATE_HISTORIZED];
+    const STATES_END = [NameState::STATE_IN_PROGRESS, NameState::STATE_DONE];
 
     // la liste des campus ENI :
     const CAMPUS_LIST = ["st herblain", "chartres de bretagne", "niort", "la roche sur yon", "angers", "quimper", "le mans", "laval"];

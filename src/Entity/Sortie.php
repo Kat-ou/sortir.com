@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\SortieRepository;
+use App\Services\NameState;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -115,7 +116,7 @@ class Sortie
     public function isItPossibleToModifyOrPublish($user): bool
     {
         $result = false;
-        if ($this->getState()->getWording() == 'Créée' && $this->getOrganizer()->getId() == $user->getId() ) {
+        if ($this->getState()->getWording() == NameState::STATE_CREATED && $this->getOrganizer()->getId() == $user->getId() ) {
             $result = true;
         }
         return $result;
@@ -132,7 +133,7 @@ class Sortie
     {
         $result = false;
         $today = new \DateTime('now');
-        if ($this->getState()->getWording() == 'Ouverte' &&
+        if ($this->getState()->getWording() == NameState::STATE_OPEN &&
             !$this->isItParticipantOfEvent($user) &&
             count($this->getParticipants()) < $this->getMaxRegistrations() &&
             $today < $this->getDeadLine()) {
@@ -153,7 +154,8 @@ class Sortie
         $result = false;
         $eventStatement = $this->getState()->getWording();
         $today = new \DateTime('now');
-        if ( $this->isItParticipantOfEvent($user) && ( $eventStatement == 'Ouverte' || ( $eventStatement == 'Clôturée' && $today < $this->deadLine ) ) ) {
+        if ( $this->isItParticipantOfEvent($user) &&
+            ( $eventStatement == NameState::STATE_OPEN || ( $eventStatement == NameState::STATE_END_REGISTER && $today < $this->deadLine ) ) ) {
             $result = true;
         }
         return $result;
@@ -170,7 +172,8 @@ class Sortie
     {
         $result = false;
         $eventStatement = $this->getState()->getWording();
-        if ( ($eventStatement == 'Ouverte' || $eventStatement == 'Clôturée') && $this->getOrganizer()->getId() == $user->getId() ) {
+        if ( ($eventStatement == NameState::STATE_OPEN || $eventStatement == NameState::STATE_END_REGISTER) &&
+            $this->getOrganizer()->getId() == $user->getId() ) {
             $result = true;
         }
         return $result;
@@ -183,7 +186,7 @@ class Sortie
      */
     public function isItPossibleToDisplay()
     {
-        return ($this->getState()->getWording() != 'Créée');
+        return ($this->getState()->getWording() != NameState::STATE_CREATED);
     }
 
 
