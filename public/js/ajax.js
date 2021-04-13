@@ -9,6 +9,7 @@ const spanLongitude = document.getElementById('event_form_longitude');
 
 
 // évenement sur l'élément Select HTML de la ville :
+addEmptyOptionIntoSelect(selectVille);
 selectVille.addEventListener('change', function () {
     var url = "create/location/" + this.value;
     // Requete AJAX
@@ -18,9 +19,7 @@ selectVille.addEventListener('change', function () {
         }).then(function (data) {
             // 1- on retire les valeurs des élements liés à un lieu (cas ou on re-sélectionne une ville)
             removeAllChildren(selectLocation);
-        spanStreet.innerHTML = "";
-        spanLatitude.innerHTML = "";
-        spanLongitude.innerHTML = "";
+            removeElementsLocationInForm();
             // on crée un élément HTML Option par Lieu et on l'ajoute au DOM :
             for (const location of data.locationsInCity) {
                 let option = document.createElement("option");
@@ -67,20 +66,39 @@ function getLocationInList(listLocations, elementSelect) {
         }
     }
     if (result === null) {
-        spanStreet.innerHTML = "";
-        spanLatitude.innerHTML = "";
-        spanLongitude.innerHTML = "";
+        removeElementsLocationInForm();
     }
     return result;
 }
 
 
 /**
- * Méthode qui supprime tous les elements enfants d'un éléments HTML parent passé en paramètre dans le DOM.
+ * Procédure qui supprime tous les elements enfants d'un éléments HTML parent passé en paramètre dans le DOM.
  * @param select - Element HTML de type Select.
  */
 function removeAllChildren(select) {
     while (select.lastElementChild) {
         select.removeChild(select.lastElementChild);
     }
+}
+
+/**
+ * Procédure d'effacement des champs correspondant au lieu sélectionné (Rue, Lat., Long.).
+ */
+function removeElementsLocationInForm() {
+    spanStreet.innerHTML = "";
+    spanLatitude.innerHTML = "";
+    spanLongitude.innerHTML = "";
+}
+
+
+/**
+ * Procédure de création d'un champ vide dans un élément HTML select passé en paramètre.
+ * @param selectHtml - L'élement Html Select.
+ */
+function addEmptyOptionIntoSelect(selectHtml) {
+    let option = document.createElement('option');
+    option.value = '0';
+    option.selected = true;
+    selectHtml.insertAdjacentElement('afterbegin', option);
 }
