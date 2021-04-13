@@ -14,6 +14,7 @@ use App\Repository\EtatRepository;
 use App\Repository\LieuRepository;
 use App\Repository\SortieRepository;
 use App\Repository\VilleRepository;
+use App\Services\EventManagement;
 use App\Services\NameState;
 use App\Services\RefreshStatesEvents;
 use Doctrine\ORM\EntityManagerInterface;
@@ -33,7 +34,7 @@ class MainController extends AbstractController
      * @Route("/", name="main_eventsList")
      */
     public function eventsList(Request $request, SortieRepository $sortieRepository, PaginatorInterface $paginator,
-                               SessionInterface $session, RefreshStatesEvents $refreshStatesEvents): Response
+                               SessionInterface $session, RefreshStatesEvents $refreshStatesEvents, EventManagement $eventManagement): Response
     {
         // Appel au service "RefreshStatesEvents" pour Mettre certaines données à jour en base.
         $refreshStatesEvents->refreshStateEventsIntoDb();
@@ -67,11 +68,31 @@ class MainController extends AbstractController
             10,
         );
 
+        // On crée un tableau associatif avec chaque conditions de l'utilisateur sur les sorties.
+        $eventStates = [];
+        foreach ($events as $event) {
+            $isItRenounce = $eventManagement->isItPossibleToRenounce($this->getUser(), $event);
+            $isItParticipant = $eventManagement->isItParticipantOfEvent($this->getUser(), $event);
+            $isItCancel = $eventManagement->isItPossibleToCancel($this->getUser(), $event);
+            $isItDisplay = $eventManagement->isItPossibleToDisplay($event);
+            $isItModifyOrPublish = $eventManagement->isItPossibleToModifyOrPublish($this->getUser(), $event);
+            $isItRegister = $eventManagement->isItPossibleToRegister($this->getUser(), $event);
+            $eventStates[$event->getId()]  = [
+                'isItRenounce' => $isItRenounce,
+                'isItParticipant' => $isItParticipant,
+                'isItCancel' => $isItCancel,
+                'isItDisplay' => $isItDisplay,
+                'isItModifyOrPublish' => $isItModifyOrPublish,
+                'isItRegister' => $isItRegister,
+            ];
+        }
+
         // Affichage des sorties dans la vue 'twig'
         // (doc. https://twig.symfony.com/doc/2.x/filters/u.html)
         return $this->render('main/eventsList.html.twig', [
             'eventsListForm' => $searchEventsForm->createView(),
             'eventsList' => $events,
+            'eventStates' => $eventStates
         ]);
 
     }
@@ -138,14 +159,14 @@ class MainController extends AbstractController
     /**
      * @Route ("/event/renounce/{id}",name="main_renounce", requirements={"id"="\d+"})
      */
-    public function renounce($id, EntityManagerInterface $em, Request $request, SortieRepository $sortieRepository): Response
+    public function renounce($id, EntityManagerInterface $em, Request $request, SortieRepository $sortieRepository, EventManagement $eventManagement): Response
     {
         // on récupère la sortie
         /** @var Sortie $event */
         $event = $sortieRepository->findAllElementsByEvent($id);
 
         // on contrôle bien que l'utilisateur est bien inscrit & que la sortie est bien cloturée ou ouverte
-        if ( $event->isItPossibleToRenounce($this->getUser()) ) {
+        if ( $eventManagement->isItPossibleToRenounce($this->getUser(), $event) ) {
 
             /** @var Participant $participant */
             $participant = $this->getUser();
@@ -164,14 +185,14 @@ class MainController extends AbstractController
     /**
      * @Route ("/event/register/{id}",name="main_register", requirements={"id"="\d+"})
      */
-    public function register($id, EntityManagerInterface $em, Request $request, SortieRepository $sortieRepository): Response
+    public function register($id, EntityManagerInterface $em, Request $request, SortieRepository $sortieRepository, EventManagement $eventManagement): Response
     {
         // on récupère la sortie
         /** @var Sortie $event */
         $event = $sortieRepository->findAllElementsByEvent($id);
 
         // on contrôle qu'il reste de la place dans la sortie & que la sortie est bien ouverte
-        if ( $event->isItPossibleToRegister($this->getUser()) ) {
+        if ( $eventManagement->isItPossibleToRegister($this->getUser(), $event) ) {
 
             /** @var Participant $participant */
             $participant = $this->getUser();
@@ -189,14 +210,14 @@ class MainController extends AbstractController
     /**
      * @Route ("/event/published/{id}",name="main_published", requirements={"id"="\d+"})
      */
-    public function published($id, EntityManagerInterface $em, Request $request, SortieRepository $sortieRepository, EtatRepository $etatRepository): Response
+    public function published($id, EntityManagerInterface $em, Request $request, SortieRepository $sortieRepository, EtatRepository $etatRepository, EventManagement $eventManagement): Response
     {
         // on récupère la sortie
         /** @var Sortie $event */
         $event = $sortieRepository->findAllElementsByEvent($id);
 
         // on contrôle que le statut est créée et que l'utilisateur est bien le créateur
-        if ( $event->isItPossibleToModifyOrPublish($this->getUser()) ) {
+        if ( $eventManagement->isItPossibleToModifyOrPublish($this->getUser(), $event) ) {
 
             // on modifie le statut de la sortie
             $createdStatus = $etatRepository->findOneBy(['wording' => NameState::STATE_OPEN]);
