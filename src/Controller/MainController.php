@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Etat;
-use App\Entity\Lieu;
 use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Entity\Ville;
@@ -11,7 +9,6 @@ use App\Form\EventFormType;
 use App\Form\EventsListFormType;
 use App\Model\SearchForm;
 use App\Repository\EtatRepository;
-use App\Repository\LieuRepository;
 use App\Repository\SortieRepository;
 use App\Repository\VilleRepository;
 use App\Services\EventManagement;
@@ -69,23 +66,7 @@ class MainController extends AbstractController
         );
 
         // On crée un tableau associatif avec chaque conditions de l'utilisateur sur les sorties.
-        $eventStates = [];
-        foreach ($events as $event) {
-            $isItRenounce = $eventManagement->isItPossibleToRenounce($this->getUser(), $event);
-            $isItParticipant = $eventManagement->isItParticipantOfEvent($this->getUser(), $event);
-            $isItCancel = $eventManagement->isItPossibleToCancel($this->getUser(), $event);
-            $isItDisplay = $eventManagement->isItPossibleToDisplay($event);
-            $isItModifyOrPublish = $eventManagement->isItPossibleToModifyOrPublish($this->getUser(), $event);
-            $isItRegister = $eventManagement->isItPossibleToRegister($this->getUser(), $event);
-            $eventStates[$event->getId()]  = [
-                'isItRenounce' => $isItRenounce,
-                'isItParticipant' => $isItParticipant,
-                'isItCancel' => $isItCancel,
-                'isItDisplay' => $isItDisplay,
-                'isItModifyOrPublish' => $isItModifyOrPublish,
-                'isItRegister' => $isItRegister,
-            ];
-        }
+        $eventStates = $eventManagement->getEventsStatesInEventsList($events, $this->getUser());
 
         // Affichage des sorties dans la vue 'twig'
         // (doc. https://twig.symfony.com/doc/2.x/filters/u.html)

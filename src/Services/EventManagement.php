@@ -111,12 +111,39 @@ class EventManagement
      * @param $event - La sortie concernée par la vérification.
      * @return bool - True s'il peut, sinon False.
      */
-    public function isItPossibleToDisplay(Sortie $event)
+    public function isItPossibleToDisplay(Sortie $event): bool
     {
         return ($event->getState()->getWording() != NameState::STATE_CREATED);
     }
 
 
+    /**
+     * Méthode créant une liste d'états conditionnels par sortie (indexée selon l'Id).
+     * @param $events - La liste des sorties à afficher.
+     * @param $connectedUser - Le participant connecté à l'application.
+     * @return array - La liste d'états conditionnels par sortie.
+     */
+    public function getEventsStatesInEventsList($events, $connectedUser): array
+    {
+        $eventStates = [];
+        foreach ($events as $event) {
+            $isItRenounce = $this->isItPossibleToRenounce($connectedUser, $event);
+            $isItParticipant = $this->isItParticipantOfEvent($connectedUser, $event);
+            $isItCancel = $this->isItPossibleToCancel($connectedUser, $event);
+            $isItDisplay = $this->isItPossibleToDisplay($event);
+            $isItModifyOrPublish = $this->isItPossibleToModifyOrPublish($connectedUser, $event);
+            $isItRegister = $this->isItPossibleToRegister($connectedUser, $event);
+            $eventStates[$event->getId()]  = [
+                'isItRenounce' => $isItRenounce,
+                'isItParticipant' => $isItParticipant,
+                'isItCancel' => $isItCancel,
+                'isItDisplay' => $isItDisplay,
+                'isItModifyOrPublish' => $isItModifyOrPublish,
+                'isItRegister' => $isItRegister,
+            ];
+        }
+        return $eventStates;
+    }
 
 
 }
