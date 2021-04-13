@@ -123,11 +123,15 @@ class MainController extends AbstractController
     {
         /** @var Ville $city */
         $city = $villeRepository->findAllLocationElementsByIdCity($id);
-        $tabLocations = [];
-        foreach ($city->getLocations() as $location) {
-            array_push($tabLocations, $location->toArray());
+        $tabLocations = [[]];
+        $postCode = "";
+        if ($city != null) {
+            foreach ($city->getLocations() as $location) {
+                array_push($tabLocations, $location->toArray());
+            }
+            $postCode = $city->getPostcode();
         }
-        return new JsonResponse(['city' => $tabLocations, 'postCode' => $city->getPostcode()]);
+        return new JsonResponse(['locationsInCity' => $tabLocations, 'postCode' => $postCode]);
     }
 
     /**

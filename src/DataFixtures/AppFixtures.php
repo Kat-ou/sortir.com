@@ -26,7 +26,8 @@ class AppFixtures extends Fixture
     const PLAIN_PASSWORD = "azerty";
 
     // Les états des sorties :
-    const STATES = ["Créée", "Ouverte", "Clôturée", "Activité en cours", "Passée", "Annulée", "Historisée"];
+    const STATES_START = ["Créée", "Ouverte", "Clôturée", "Annulée", "Historisée"];
+    const STATES_END = ["Activité en cours", "Passée"];
 
     // la liste des campus ENI :
     const CAMPUS_LIST = ["st herblain", "chartres de bretagne", "niort", "la roche sur yon", "angers", "quimper", "le mans", "laval"];
@@ -61,8 +62,8 @@ class AppFixtures extends Fixture
         }
         $manager->flush();
 
-        // Jeu de données Etat :
-        foreach (self::STATES as $state) {
+        // Jeu de données Etat (Début):
+        foreach (self::STATES_START as $state) {
             $stateDb = new Etat();
             $stateDb->setWording($state);
             $manager->persist($stateDb);
@@ -120,20 +121,28 @@ class AppFixtures extends Fixture
             $event = new Sortie();
             $event->setOrganizer($faker->randomElement($participants));
             // On ajoute un nombre aléatoire de participants à la sortie
-            for ($j = 0; $j < $faker->numberBetween(0, 10); $j++) {
+            for ($j = 0; $j < $faker->numberBetween(0, 5); $j++) {
                 $event->addParticipant($faker->randomElement($participants));
             }
             $event->setOrganizingSite($faker->randomElement($campuses));
             $event->setLocation($faker->randomElement($locations));
             $event->setState($faker->randomElement($statesDb));
-            $event->setStartDate($faker->dateTimeBetween('-20 days', 'now'));
-            $event->setDeadLine($faker->dateTimeBetween('-1 month', $event->getStartDate()));
+            $event->setStartDate($faker->dateTimeBetween('-10 days', '10 days'));
+            $event->setDeadLine($faker->dateTimeBetween('-10 days', $event->getStartDate()));
             // Duration : Exprimée en 'minutes' :
-            $event->setDuration($faker->numberBetween(30, 600));
-            $event->setMaxRegistrations(10);
-            $event->setDescription($faker->realTextBetween(30, 1500));
+            $event->setDuration($faker->numberBetween(30, 3000));
+            $event->setMaxRegistrations(5);
+            $event->setDescription($faker->realTextBetween(30, 500));
             $event->setName($faker->sentence);
             $manager->persist($event);
+        }
+        $manager->flush();
+
+        // Jeu de données Etat (Fin) :
+        foreach (self::STATES_END as $state) {
+            $stateDb = new Etat();
+            $stateDb->setWording($state);
+            $manager->persist($stateDb);
         }
         $manager->flush();
 

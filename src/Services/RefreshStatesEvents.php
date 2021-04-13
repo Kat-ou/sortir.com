@@ -19,15 +19,6 @@ use Doctrine\ORM\EntityManagerInterface;
 class RefreshStatesEvents
 {
 
-    // Constantes de l'entité 'Etat' :
-    const STATE_CREATED = 'Créée';
-    const STATE_DONE = 'Passée';
-    const STATE_CANCELED = 'Annulée';
-    const STATE_HISTORIZED = 'Historisée';
-    const STATE_OPEN = 'Ouverte';
-    const STATE_END_REGISTER = 'Clôturée';
-    const STATE_IN_PROGRESS = 'Activité en cours';
-
     // objets d'accès aux données
     private EntityManagerInterface $entityManager;
     private SortieRepository $sortieRepository;
@@ -81,31 +72,31 @@ class RefreshStatesEvents
             // on traite selon l'etat de la sortie :
             switch ($event->getState()->getWording()) {
                 // si l'état de la sortie est Ouverte
-                case self::STATE_OPEN:
+                case NameState::STATE_OPEN:
                     // si ( le nombre de participants est max OU que aujourd'hui > à la date de cloture )
                     if ( $countParticipants == $maxPersonEvent || $today > $limitDateRegister) {
                         // on passe l'event à l'état -> cloturée
-                        $event->setState($this->getStateByName(self::STATE_END_REGISTER));
+                        $event->setState($this->getStateByName(NameState::STATE_END_REGISTER));
                         $this->entityManager->persist($event);
                     }
                     break;
                 // si l'état de la sortie est cloturée
-                case self::STATE_END_REGISTER:
+                case NameState::STATE_END_REGISTER:
                     // si ( le nombre de participants < max ET que aujourd'hui <= à la date de cloture )
                     if ($countParticipants < $maxPersonEvent && $today <= $limitDateRegister) {
                         // on passe l'event à l'état -> Ouverte
-                        $event->setState($this->getStateByName(self::STATE_OPEN));
+                        $event->setState($this->getStateByName(NameState::STATE_OPEN));
                         $this->entityManager->persist($event);
                     }
                     // si aujourd'hui > date de début
                     if ($today > $startDateEvent) {
                         // on passe l'event à l'état -> En cours
-                        $event->setState($this->getStateByName(self::STATE_IN_PROGRESS));
+                        $event->setState($this->getStateByName(NameState::STATE_IN_PROGRESS));
                         $this->entityManager->persist($event);
                     }
                     break;
                 // si l'état de la sortie est En Cours
-                case self::STATE_IN_PROGRESS:
+                case NameState::STATE_IN_PROGRESS:
                     // récupération de la durée
                     $durationEvent = $event->getDuration();
                     // création d'une dateTime de fin de sortie avec la durée et la date de début :
@@ -114,16 +105,16 @@ class RefreshStatesEvents
                     // si aujourd'hui > (date de début + durée en min)
                     if ($today > $endDateEvent) {
                         // on passe l'event à l'état -> Terminée
-                        $event->setState($this->getStateByName(self::STATE_DONE));
+                        $event->setState($this->getStateByName(NameState::STATE_DONE));
                         $this->entityManager->persist($event);
                     }
                     break;
                 // si l'état de la sortie est Annulée, Historisée, créée, passée ou autres
                 // au cas ou (car la requete ne les récupère normalement pas)
-                case self::STATE_CREATED:
-                case self::STATE_DONE:
-                case self::STATE_CANCELED:
-                case self::STATE_HISTORIZED:
+                case NameState::STATE_CREATED:
+                case NameState::STATE_DONE:
+                case NameState::STATE_CANCELED:
+                case NameState::STATE_HISTORIZED:
                 default:
                     break;
             }

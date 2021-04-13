@@ -25,7 +25,7 @@ class VilleRepository extends ServiceEntityRepository
             ->join('v.locations', 'l')->addSelect('l');
         $queryBuilder->where('v.id = :id')->setParameter('id', $id);
         $query = $queryBuilder->getQuery();
-        return $query->getSingleResult();
+        return $query->getOneOrNullResult();
     }
 
 
