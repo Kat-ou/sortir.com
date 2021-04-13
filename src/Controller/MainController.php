@@ -210,6 +210,31 @@ class MainController extends AbstractController
         }
         return $this->redirectToRoute('main_eventsList');
     }
+
+    /**
+     * @Route ("/event/cancelled/{id}",name="main_published", requirements={"id"="\d+"})
+     */
+
+    public function cancelled(int $id, EntityManagerInterface $entityManager, SortieRepository $sortieRepository,EventManagement $eventManagement, EtatRepository $etatRepository):Response
+    {
+        // on récupère la sortie
+        /** @var Sortie $event */
+        $event = $sortieRepository->findAllElementsByEvent($id);
+
+        // on contrôle que le statut de la sortie le permet et que l'utilisateur est bien l'organisateur de la sortie
+        if($eventManagement->isItPossibleToCancel($this->getUser(),$event))
+        {
+
+            // on modifie le statut de la sortie
+            $cancelledStatus = $etatRepository->findOneBy(['wording' => NameState::STATE_CANCELED]);
+            $event->setState($cancelledStatus);
+
+            // on exécute la requête
+            $entityManager->persist($event);
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('main_eventsList');
+    }
 }
 
 

@@ -99,7 +99,7 @@
                         {% endif %}
                         {% if eventStates[event.id].isItCancel %}
                             <!-- Annuler -->
-                            <a href="" title="Annuler la sortie"><span class="icon"><i class="far fa-trash-alt"></i></span></a>
+                            <a href="{{ path('main_cancelled', {id: event.id}) }}" title="Annuler la sortie"><span class="icon"><i class="far fa-trash-alt"></i></span></a>
                         {% endif %}
                     </td>
                 </tr>

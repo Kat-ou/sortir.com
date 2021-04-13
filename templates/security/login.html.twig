@@ -15,52 +15,63 @@
         {% endif %}
 
         <h1 class="h3 mb-3 font-weight-normal">Merci de vous connecter</h1>
-        <div class="field is-horizontal">
-            <div class="field-label is-normal">
-                <label class="label" for="inputEmail">Identifiant</label>
-            </div>
-            <div class="field-body">
-                <div class="field">
-                    <input type="text" value="{{ last_username }}" name="login" id="inputEmail" class="form-control" required autofocus>
+        <div class="columns is-mobile">
+            <div class="column is-half is-offset-one-quarter">
+                <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label class="label" for="inputEmail">Identifiant</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <input type="text" value="{{ last_username }}" name="login" id="inputEmail"
+                                   class="form-control"
+                                   required autofocus>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="field is-horizontal">
-            <div class="field-label is-normal">
-                <label class="label" for="inputPassword">Mot de passe</label>
-            </div>
-            <div class="field-body">
-                <div class="field">
-                    <input type="password" name="password" id="inputPassword" class="form-control" required>
+
+                <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label class="label" for="inputPassword">Mot de passe</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <input type="password" name="password" id="inputPassword" class="form-control" required>
+                        </div>
+
+                    </div>
                 </div>
-            </div>
-        </div>
-        <input type="hidden" name="_csrf_token"
-               value="{{ csrf_token('authenticate') }}"
-        >
+                <input type="hidden" name="_csrf_token"
+                       value="{{ csrf_token('authenticate') }}"
+                >
 
-        {#
-        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-        See https://symfony.com/doc/current/security/remember_me.html
-        #}
-        <div class="field is-horizontal">
-            <div class="field-label is-normal">
-                <label class="label"> <div class="checkbox mb-3"></div></label>
-            </div>
-            <div class="field-body">
-                <div class="field">
-                    <input type="checkbox" name="_remember_me"> Se souvenir de moi
+                {#
+                Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+                See https://symfony.com/doc/current/security/remember_me.html
+                #}
+
+                <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label class="label">
+                            <div class="checkbox mb-3"></div>
+                        </label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <input type="checkbox" name="_remember_me"> Se souvenir de moi
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="field is-horizontal">
-            <div class="field-label is-normal">
+                <div class="field is-horizontal">
+                    <div class="field-label is-normal">
 
-            </div>
-            <div class="field-body">
-                <div class="field">
-                    <button class="button is-success" type="submit">Connexion</button>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <button class="button is-success" type="submit">Connexion</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
