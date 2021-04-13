@@ -4,32 +4,29 @@
 
 {% block body %}
 
-    {% for flashError in app.flashes('success') %}
-        <div class="notification is-primary is-light" role="alert">{{ flashError }}</div>
-    {% endfor %}
-<div class="columns">
-    <div class="column">
-        <div class="card m-6">
-            <div class="card-image">
-                <figure class="image is-4by3">
-                    {%  if app.user.pictureFilename == "" %}
-                    <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
-                    {% else %}
-                    <img src="{{ asset('img/profile/' ~ app.user.pictureFilename ) }}" alt="Placeholder image">
-                    {% endif %}
-                </figure>
+    <div class="columns">
+        <div class="column">
+            <div class="card m-6">
+                <div class="card-image">
+                    <figure class="image is-4by3">
+                        {%  if app.user.pictureFilename == "" %}
+                            <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+                        {% else %}
+                            <img src="{{ asset('img/profile/' ~ app.user.pictureFilename ) }}" alt="Placeholder image">
+                        {% endif %}
+                    </figure>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="column">
+        <div class="column">
             <h1 class="has-text-centered is-size-3">Profil de {{ app.user.username }}</h1>
 
             {{ form_start(profileForm) }}
             {{ form_widget(profileForm) }}
-            <button>Enregistrer</button>
+            <button type="submit" class="button is-medium is-link is-light is-3">Enregistrer</button>
             {{ form_end(profileForm) }}
 
+        </div>
+        <div class="column"></div>
     </div>
-    <div class="column"></div>
-</div>
 {% endblock %}

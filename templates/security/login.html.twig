@@ -4,9 +4,6 @@
 
 {% block body %}
     <form method="post">
-        {% if error %}
-            <div class="message is-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
 
         {% if app.user %}
             <div class="mb-3">
@@ -14,7 +11,7 @@
             </div>
         {% endif %}
 
-        <h1 class="h3 mb-3 font-weight-normal">Merci de vous connecter</h1>
+        <h1 class="h3 mb-3 font-weight-normal has-text-centered">Merci de vous connecter</h1>
         <div class="columns is-mobile">
             <div class="column is-half is-offset-one-quarter">
                 <div class="field is-horizontal">

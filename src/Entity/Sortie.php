@@ -39,12 +39,14 @@ class Sortie
 
     /**
      * @Assert\NotBlank(message="Ce champs ne peut pas être vide")
+     * @Assert\Range (min=1, minMessage="La durée minimum doit être supérieur à 0")
      * @ORM\Column(type="integer")
      */
     private $duration;
 
     /**
      * @Assert\NotBlank(message="Ce champs ne peut pas être vide")
+     * @Assert\Range(min=1, minMessage="Le nombre minimum de personne doit être supérieur à 0")
      * @ORM\Column(type="integer")
      */
     private $maxRegistrations;

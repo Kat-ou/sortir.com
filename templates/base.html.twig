@@ -62,6 +62,13 @@
 </header>
 <main>
     <div class="container">
+
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="notification is-{{ label }} is-light has-text-centered" role="alert">{{ message }}</div>
+                {% endfor %}
+            {% endfor %}
+
         {% block body %}
 
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque porta augue enim, in semper nulla

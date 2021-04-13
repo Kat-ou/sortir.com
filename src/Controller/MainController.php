@@ -119,6 +119,14 @@ class MainController extends AbstractController
 
             $entityManager->persist($event);
             $entityManager->flush();
+
+            // On ajoute un message flash
+            $this->addFlash("success", "Votre sortie a été créée. Il faut penser à la publier");
+
+            // Redirige vers une autre page
+            return $this->redirectToRoute("main_eventsList", [
+
+            ]);
         }
         return $this->render('main/create.html.twig', [
             'eventForm' => $eventForm->createView(),
@@ -170,6 +178,9 @@ class MainController extends AbstractController
             // on exécute la requete
             $em->persist($event);
             $em->flush();
+
+            // On ajoute un message flash
+            $this->addFlash("warning", "Votre désinscription a été prise en compte");
         }
         return $this->redirectToRoute('main_eventsList');
     }
@@ -196,6 +207,9 @@ class MainController extends AbstractController
             // on exécute la requete
             $em->persist($event);
             $em->flush();
+
+            // On ajoute un message flash
+            $this->addFlash("success", "Votre inscription a été prise en compte");
         }
         return $this->redirectToRoute('main_eventsList');
     }
@@ -219,6 +233,9 @@ class MainController extends AbstractController
             // on exécute la requete
             $em->persist($event);
             $em->flush();
+
+            // On ajoute un message flash
+            $this->addFlash("success", "Votre sortie a été publiée");
         }
         return $this->redirectToRoute('main_eventsList');
     }
