@@ -86,6 +86,7 @@ class MainController extends AbstractController
     {
         //récupère la sortie souhaitée
         $event = $sortieRepository->findAllElementsByEvent($id);
+
         return $this->render('main/details.html.twig', ["sortie" => $event]);
     }
 

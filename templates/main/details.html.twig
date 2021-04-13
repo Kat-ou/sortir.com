@@ -8,7 +8,7 @@
         <div class="column">
             <div class="columns is-mobile">
                 <div class="column is-3">
-                    <p class="has-text-link">Nom de la sortie: </p>
+                    <p class="has-text-link has-text-weight-bold">Nom de la sortie: </p>
                 </div>
                 <div class="column">
                     <p>{{ sortie.name }}</p>
@@ -16,7 +16,7 @@
             </div>
             <div class="columns is-mobile">
                 <div class="column is-3">
-                    <p class="has-text-link">Date et heure de la sortie: </p>
+                    <p class="has-text-link has-text-weight-bold">Date et heure de la sortie: </p>
                 </div>
                 <div class="column">
                     <p>{{ sortie.startDate|format_datetime('short', 'short', locale='fr') }}</p>
@@ -24,7 +24,7 @@
             </div>
             <div class="columns is-mobile">
                 <div class="column is-3">
-                    <p class="has-text-link">Date limite d'inscription: </p>
+                    <p class="has-text-link has-text-weight-bold">Date limite d'inscription: </p>
                 </div>
                 <div class="column">
                     <p>{{ sortie.deadline|format_datetime('short', 'none', locale='fr') }}</p>
@@ -32,7 +32,7 @@
             </div>
             <div class="columns is-mobile">
                 <div class="column is-3">
-                    <p class="has-text-link">Nombre de places: </p>
+                    <p class="has-text-link has-text-weight-bold">Nombre de places: </p>
                 </div>
                 <div class="column">
                     <p>{{ sortie.maxRegistrations }}</p>
@@ -40,7 +40,7 @@
             </div>
             <div class="columns is-mobile">
                 <div class="column is-3">
-                    <p class="has-text-link">Durée: </p>
+                    <p class="has-text-link has-text-weight-bold">Durée: </p>
                 </div>
                 <div class="column">
                     <p>{{ sortie.duration }} minutes</p>
@@ -48,7 +48,7 @@
             </div>
             <div class="columns is-mobile ">
                 <div class="column is-3">
-                    <p class="has-text-link">Description et infos: </p>
+                    <p class="has-text-link has-text-weight-bold">Description et infos: </p>
                 </div>
                 <div class="column">
                     <p class="has-text-justified">{{ sortie.description }}</p>
@@ -59,7 +59,7 @@
         <div class="column is-4">
             <div class="columns is-mobile">
                 <div class="column is-4">
-                    <p class="has-text-link">Campus: </p>
+                    <p class="has-text-link has-text-weight-bold">Campus: </p>
                 </div>
                 <div class="column">
                     <p>{{ sortie.organizingSite.name|upper }}</p>
@@ -67,7 +67,7 @@
             </div>
             <div class="columns is-mobile">
                 <div class="column is-4">
-                    <p class="has-text-link">Lieu: </p>
+                    <p class="has-text-link has-text-weight-bold">Lieu: </p>
                 </div>
                 <div class="column">
                     <p>{{ sortie.location.name }}</p>
@@ -75,7 +75,7 @@
             </div>
             <div class="columns is-mobile">
                 <div class="column is-4">
-                    <p class="has-text-link">Rue: </p>
+                    <p class="has-text-link has-text-weight-bold">Rue: </p>
                 </div>
                 <div class="column">
                     <p>{{ sortie.location.street }}</p>
@@ -83,7 +83,7 @@
             </div>
             <div class="columns is-mobile">
                 <div class="column is-4">
-                    <p class="has-text-link">Code Postal: </p>
+                    <p class="has-text-link has-text-weight-bold">Code Postal: </p>
                 </div>
                 <div class="column">
                     <p>{{ sortie.location.city.postcode }}</p>
@@ -91,7 +91,7 @@
             </div>
             <div class="columns is-mobile">
                 <div class="column is-4">
-                    <p class="has-text-link">Ville: </p>
+                    <p class="has-text-link has-text-weight-bold">Ville: </p>
                 </div>
                 <div class="column">
                     <p>{{ sortie.location.city.name }}</p>
@@ -99,7 +99,7 @@
             </div>
             <div class="columns is-mobile">
                 <div class="column is-4">
-                    <p class="has-text-link">Latitude: </p>
+                    <p class="has-text-link has-text-weight-bold">Latitude: </p>
                 </div>
                 <div class="column">
                     <p>{{ sortie.location.latitude }} </p>
@@ -107,7 +107,7 @@
             </div>
             <div class="columns is-mobile">
                 <div class="column is-4">
-                    <p class="has-text-link">Longitude: </p>
+                    <p class="has-text-link has-text-weight-bold">Longitude: </p>
                 </div>
                 <div class="column">
                     <p>{{ sortie.location.longitude }}</p>
@@ -116,8 +116,10 @@
         </div>
     </div>
 
+    <div class="columns">
+    <div class="column is-8">
     {% if sortie.participants|length > 0 %}
-        <p class="subtitle is-4 has-text-link">Liste des participants inscrits : </p>
+        <p class="subtitle is-4">Liste des participants inscrits : </p>
         <table class="table mb-5">
             <thead>
             <tr>
@@ -130,16 +132,23 @@
 
             {% for participant in sortie.participants %}
                 <tr>
-                    <td>{{ participant.username }}</td>
+                    <td>
+                        <a href="{{ path('profile_view', {'eventId': sortie.id, 'participantId': participant.id}) }}">{{ participant.username }}
+                    </td>
                     <td>{{ participant.name }}</td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
+        </div>
+        <div class="column">
+            <a class="button is-medium is-link is-light" href="{{ path('main_eventsList') }}">Retour</a>
+        </div>
+        </div>
     {% endif %}
 {% endblock %}
 
-{% block title %}
+    {% block title %}
 
-{% endblock %}
+    {% endblock %}
 

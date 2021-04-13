@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Sortie;
 use App\Form\ProfileFormType;
+use App\Repository\ParticipantRepository;
+use App\Repository\SortieRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,7 +40,7 @@ class ParticipantController extends AbstractController
                 //upload_dir est défini dans config/services.yaml
                 try {
                     $uploadedFile->move($this->getParameter('upload_dir'), $newFilename);
-                } catch (\Exception $e){
+                } catch (\Exception $e) {
                     dd($e->getMessage());
                 }
                 //détruit l'originale
@@ -65,5 +68,28 @@ class ParticipantController extends AbstractController
         return $this->render('participant/profile.html.twig', [
             "profileForm" => $profileForm->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/profil/voir/{eventId}/{participantId}", name="profile_view")
+     */
+    public function view(int $eventId, int $participantId, ParticipantRepository $participantRepository, SortieRepository $sortieRepository)
+    {
+        $foundParticipant = $participantRepository->find($participantId);
+        if (!$foundParticipant) {
+            throw $this->createNotFoundException("Ce profil n'existe pas !");
+        }
+        $event = $sortieRepository->findAllElementsByEvent($eventId);
+
+        /**
+         * @var Sortie $event
+         */
+        if ($event->getParticipants()->contains($foundParticipant) && $event->getParticipants()->contains($this->getUser())) {
+            return $this->render('participant/profileView.html.twig', [
+                'foundParticipant' => $foundParticipant
+            ]);
+        } else {
+            return $this->redirectToRoute('main_eventsList');
+        }
     }
 }

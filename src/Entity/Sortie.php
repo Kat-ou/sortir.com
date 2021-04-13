@@ -28,6 +28,7 @@ class Sortie
 
     /**
      * @ORM\Column(type="datetime")
+     *  @Assert\NotBlank(message="Ce champs ne peut pas être vide")
      */
     private $startDate;
 

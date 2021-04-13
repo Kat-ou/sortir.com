@@ -47,6 +47,8 @@ class ProfileFormType extends AbstractType
                 'class' => Campus::class,
                 "choice_label" => "name",
             ])
+
+
             ->add('pictureFilename', FileType::class, [
                 'label' => 'Ma photo',
                 'mapped' => false,
