@@ -102,6 +102,7 @@ class MainController extends AbstractController
         $currentCodePostal = "";
         $currentLatitude = "";
         $currentLongitude = "";
+        $currentNomLieu = "";
 
         // On créé le formulaire
         $eventForm = $this->createForm(EventFormType::class, $event);
@@ -111,7 +112,7 @@ class MainController extends AbstractController
         if ($eventForm->isSubmitted() && $eventForm->isValid() ) {
             $event->setOrganizer($this->getUser());
             $event->setOrganizingSite($this->getUser()->getCampus());
-            $currentLieu = $lieuRepository->find($eventForm->get('location')->getViewData());
+            $currentLieu = $lieuRepository->find($eventForm->get('location')->getData());
             $event->setLocation($currentLieu);
             $createdStatus = $etatRepository->findOneBy(['wording' => NameState::STATE_CREATED]);
             $event->setState($createdStatus);
@@ -125,7 +126,8 @@ class MainController extends AbstractController
             'nomRue' => $currentVille,
             'codePostal' => $currentCodePostal,
             'latitude' => $currentLatitude,
-            'longitude' => $currentLongitude
+            'longitude' => $currentLongitude,
+            'nomLieu' => $currentNomLieu
         ]);
     }
 

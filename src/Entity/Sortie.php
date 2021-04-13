@@ -3,10 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\SortieRepository;
-use App\Services\NameState;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=SortieRepository::class)
@@ -21,6 +21,7 @@ class Sortie
     private $id;
 
     /**
+     * @Assert\NotBlank(message="Ce champs ne peut pas être vide")
      * @ORM\Column(type="string", length=255)
      */
     private $name;
@@ -31,21 +32,25 @@ class Sortie
     private $startDate;
 
     /**
+     * @Assert\NotBlank(message="Ce champs ne peut pas être vide")
      * @ORM\Column(type="datetime")
      */
     private $deadLine;
 
     /**
+     * @Assert\NotBlank(message="Ce champs ne peut pas être vide")
      * @ORM\Column(type="integer")
      */
     private $duration;
 
     /**
+     * @Assert\NotBlank(message="Ce champs ne peut pas être vide")
      * @ORM\Column(type="integer")
      */
     private $maxRegistrations;
 
     /**
+     * @Assert\NotBlank(message="Ce champs ne peut pas être vide")
      * @ORM\Column(type="text")
      */
     private $description;
@@ -68,6 +73,7 @@ class Sortie
     private $organizingSite;
 
     /**
+     * @Assert\NotBlank (message="Ce champs ne peut pas être vide")
      * @ORM\ManyToOne(targetEntity=Lieu::class, inversedBy="eventsLocation")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -99,7 +105,7 @@ class Sortie
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName($name): self
     {
         $this->name = $name;
 
@@ -111,7 +117,7 @@ class Sortie
         return $this->startDate;
     }
 
-    public function setStartDate(\DateTimeInterface $startDate): self
+    public function setStartDate($startDate): self
     {
         $this->startDate = $startDate;
 
@@ -123,7 +129,7 @@ class Sortie
         return $this->deadLine;
     }
 
-    public function setDeadLine(\DateTimeInterface $deadLine): self
+    public function setDeadLine($deadLine): self
     {
         $this->deadLine = $deadLine;
 
@@ -135,7 +141,7 @@ class Sortie
         return $this->duration;
     }
 
-    public function setDuration(int $duration): self
+    public function setDuration($duration): self
     {
         $this->duration = $duration;
 
@@ -147,7 +153,7 @@ class Sortie
         return $this->maxRegistrations;
     }
 
-    public function setMaxRegistrations(int $maxRegistrations): self
+    public function setMaxRegistrations($maxRegistrations): self
     {
         $this->maxRegistrations = $maxRegistrations;
 
@@ -159,7 +165,7 @@ class Sortie
         return $this->description;
     }
 
-    public function setDescription(string $description): self
+    public function setDescription($description): self
     {
         $this->description = $description;
 

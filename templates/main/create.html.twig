@@ -19,7 +19,7 @@
                             'attr': {'class': 'has-text-link'}
                         }) }}</p>
                 </div>
-                <div class="column is-6">
+                <div class="column is-7">
                     <p>{{ form_widget(eventForm.name, {'attr': {'class': 'input is-primary'}}) }}</p>
                 </div>
             </div>
@@ -34,7 +34,7 @@
                         {{ form_widget(eventForm.startDate.date, {'attr': {'class': 'input is-primary'}}) }}
                     </p>
                 </div>
-                    <div class="column is-2">
+                    <div class="column is-3">
                         <p>{{ form_widget(eventForm.startDate.time, {'attr': {'class': 'input is-primary'}}) }} </p>
                 </div>
             </div>
@@ -76,7 +76,7 @@
                     <p>{{ form_label(eventForm.description, null, {
                             'attr': {'class': 'has-text-link'}}) }}</p>
                 </div>
-                <div class="column">
+                <div class="column is-7">
                     <p class="has-text-justified">{{ form_widget(eventForm.description, {'attr': {'class': 'input is-primary'}}) }}</p>
                 </div>
             </div>
@@ -113,7 +113,15 @@
                         }) }}</p>
                 </div>
                 <div class="column">
-                    <p>{{ form_widget(eventForm.location, {'attr': {'class': 'input is-primary'}}) }}</p>
+                    {#<p>{{ form_widget(eventForm, {'attr': {'class': 'input is-primary'}}) }}</p>#}
+                      <div class="control">
+                          <span class="select">
+                              <select id="event_form_location" name="event_form[location]" class="input is-primary">
+                                  {{ nomLieu|upper }}
+                              </select>
+                          </span>
+                      </div>
+                    {{ form_errors(eventForm.location) }}
                 </div>
             </div>
             <div class="columns is-mobile">

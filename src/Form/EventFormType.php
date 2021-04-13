@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class EventFormType extends AbstractType
 {
@@ -21,13 +22,13 @@ class EventFormType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Nom de la sortie: '
+                'label' => 'Nom de la sortie: ',
             ])
             ->add('startDate', DateTimeType::class, [
                 'label' => 'Date et heure de la sortie:  ',
                 'date_widget' => 'single_text',
                 'time_widget'=> 'single_text',
-                'attr' =>['class' => 'has-text-link']
+                'attr' =>['class' => 'has-text-link'],
             ])
             ->add('deadLine', DateType::class, [
                 'label' => "Date limite d'inscription: ",
@@ -43,9 +44,10 @@ class EventFormType extends AbstractType
             ->add('description', null, [
                 'label' => "Description et infos: ",
             ])
-            ->add('location', ChoiceType::class, [
+            ->add('location', EntityType::class, [
                 'label' => "Lieu: ",
-                'mapped' => false,
+                'class' => Lieu::class,
+                'choice_label' => 'name',
             ])/*
             ->add('location', EntityType::class, [
                 'label' => "Lieu: ",
@@ -67,6 +69,7 @@ class EventFormType extends AbstractType
             ->add('ville', EntityType::class, [
                 'label' => "Ville: ",
                 'class' => Ville::class,
+                'placeholder' => '',
                 'mapped' => false,
                 'choice_label' => 'name',
             ])
@@ -90,7 +93,9 @@ class EventFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Sortie::class,
-            'validation_groups' => false,
+            'attr' => [
+                'novalidate' => 'novalidate', // comment me to reactivate the html5 validation!
+            ]
         ]);
     }
 }
