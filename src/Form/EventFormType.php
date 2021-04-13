@@ -45,8 +45,7 @@ class EventFormType extends AbstractType
             ])
             ->add('location', ChoiceType::class, [
                 'label' => "Lieu: ",
-                'placeholder' => '',
-                'mapped' => false
+                'mapped' => false,
             ])/*
             ->add('location', EntityType::class, [
                 'label' => "Lieu: ",
@@ -57,11 +56,11 @@ class EventFormType extends AbstractType
                 'label' => "Rue: ",
                 'mapped' => false
             ])
-            ->add('latitude', ChoiceType::class, [
+            ->add('latitude', TextType::class, [
                 'label' => "Latitude: ",
                 'mapped' => false
             ])
-            ->add('longitude', ChoiceType::class, [
+            ->add('longitude', TextType::class, [
                 'label' => "Longitude: ",
                 'mapped' => false
             ])
@@ -69,7 +68,7 @@ class EventFormType extends AbstractType
                 'label' => "Ville: ",
                 'class' => Ville::class,
                 'mapped' => false,
-                'choice_label' => 'name'
+                'choice_label' => 'name',
             ])
             ->add('postcode', ChoiceType::class, [
                 'label' => "Code Postal: ",
@@ -91,6 +90,7 @@ class EventFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Sortie::class,
+            'validation_groups' => false,
         ]);
     }
 }

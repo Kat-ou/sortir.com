@@ -9,6 +9,7 @@ use App\Form\EventFormType;
 use App\Form\EventsListFormType;
 use App\Model\SearchForm;
 use App\Repository\EtatRepository;
+use App\Repository\LieuRepository;
 use App\Repository\SortieRepository;
 use App\Repository\VilleRepository;
 use App\Services\EventManagement;
@@ -91,22 +92,25 @@ class MainController extends AbstractController
     /**
      * @Route ("/event/create",name="create")
      */
-    public function create(EntityManagerInterface $entityManager, Request $request, EtatRepository $etatRepository): Response
+    public function create(EntityManagerInterface $entityManager, Request $request, EtatRepository $etatRepository, LieuRepository $lieuRepository): Response
     {
         $event = new Sortie();
 
         // On récupère le nom du campus
         $currentCampus = $this->getUser()->getCampus()->getName();
+        $currentVille = "";
+        $currentCodePostal = "44500";
 
         // On créé le formulaire
         $eventForm = $this->createForm(EventFormType::class, $event);
 
         $eventForm->handleRequest($request);
 
-        if ($eventForm->isSubmitted() && $eventForm->isValid()) {
+        if ($eventForm->isSubmitted() && $eventForm->isValid() ) {
             $event->setOrganizer($this->getUser());
             $event->setOrganizingSite($this->getUser()->getCampus());
-            $event->setLocation($eventForm->get('location')->getData());
+            $currentLieu = $lieuRepository->find($eventForm->get('location')->getViewData());
+            $event->setLocation($currentLieu);
             $createdStatus = $etatRepository->findOneBy(['wording' => NameState::STATE_CREATED]);
             $event->setState($createdStatus);
 
@@ -115,7 +119,9 @@ class MainController extends AbstractController
         }
         return $this->render('main/create.html.twig', [
             'eventForm' => $eventForm->createView(),
-            'nomCampus' =>$currentCampus
+            'nomCampus' =>$currentCampus,
+            'nomRue' => $currentVille,
+            'codePostal' => $currentCodePostal
         ]);
     }
 
@@ -212,7 +218,7 @@ class MainController extends AbstractController
     }
 
     /**
-     * @Route ("/event/cancelled/{id}",name="main_published", requirements={"id"="\d+"})
+     * @Route ("/event/cancelled/{id}",name="main_cancelled", requirements={"id"="\d+"})
      */
 
     public function cancelled(int $id, EntityManagerInterface $entityManager, SortieRepository $sortieRepository,EventManagement $eventManagement, EtatRepository $etatRepository):Response

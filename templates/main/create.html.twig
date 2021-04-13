@@ -123,7 +123,8 @@
                         }) }}</p>
                 </div>
                 <div class="column">
-                    <p>{{ form_widget(eventForm.street, {'attr': {'class': 'input is-primary'}}) }}</p>
+                    {# <p>{{ form_widget(eventForm.street, {'attr': {'class': 'input is-primary'}}) }}</p> #}
+                    <span id="event_form_street">{{ nomRue|upper }}</span>
                 </div>
             </div>
             <div class="columns is-mobile">
@@ -133,7 +134,8 @@
                         }) }}</p>
                 </div>
                 <div class="column">
-                    <p>{{ form_widget(eventForm.postcode, {'attr': {'class': 'input is-primary'}}) }}</p>
+                    {# <p>{{ form_widget(eventForm.postcode, {'attr': {'class': 'input is-primary'}}) }}</p> #}
+                    <span id="event_form_postcode">{{ codePostal|upper }}</span>
                 </div>
             </div>
             <div class="columns is-mobile">
