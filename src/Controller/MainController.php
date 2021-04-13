@@ -99,7 +99,9 @@ class MainController extends AbstractController
         // On récupère le nom du campus
         $currentCampus = $this->getUser()->getCampus()->getName();
         $currentVille = "";
-        $currentCodePostal = "44500";
+        $currentCodePostal = "";
+        $currentLatitude = "";
+        $currentLongitude = "";
 
         // On créé le formulaire
         $eventForm = $this->createForm(EventFormType::class, $event);
@@ -121,7 +123,9 @@ class MainController extends AbstractController
             'eventForm' => $eventForm->createView(),
             'nomCampus' =>$currentCampus,
             'nomRue' => $currentVille,
-            'codePostal' => $currentCodePostal
+            'codePostal' => $currentCodePostal,
+            'latitude' => $currentLatitude,
+            'longitude' => $currentLongitude
         ]);
     }
 

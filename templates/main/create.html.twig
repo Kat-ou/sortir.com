@@ -145,7 +145,8 @@
                         }) }}</p>
                 </div>
                 <div class="column">
-                    <p>{{ form_widget(eventForm.latitude, {'attr': {'class': 'input is-primary'}}) }}</p>
+                    {# <p>{{ form_widget(eventForm.latitude, {'attr': {'class': 'input is-primary'}}) }}</p> #}
+                    <span id="event_form_latitude">{{ latitude|upper }}</span>
                 </div>
             </div>
             <div class="columns is-mobile">
@@ -155,7 +156,8 @@
                         }) }}</p>
                 </div>
                 <div class="column">
-                    <p>{{ form_widget(eventForm.longitude, {'attr': {'class': 'input is-primary'}}) }}</p>
+                    {# <p>{{ form_widget(eventForm.longitude, {'attr': {'class': 'input is-primary'}}) }}</p> #}
+                    <span id="event_form_longitude">{{ longitude|upper }}</span>
                 </div>
             </div>
         </div>
