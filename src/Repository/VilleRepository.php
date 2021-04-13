@@ -22,7 +22,7 @@ class VilleRepository extends ServiceEntityRepository
     public function findAllLocationElementsByIdCity($id)
     {
         $queryBuilder = $this->createQueryBuilder('v')
-            ->join('v.locations', 'l')->addSelect('l');
+            ->leftjoin('v.locations', 'l')->addSelect('l');
         $queryBuilder->where('v.id = :id')->setParameter('id', $id);
         $query = $queryBuilder->getQuery();
         return $query->getOneOrNullResult();

@@ -1,11 +1,11 @@
 // on récupère les elements HTML Select liés au ville :
 const selectVille = document.getElementById('event_form_ville');
-const selectPostCode = document.getElementById('event_form_postcode');
+const spanPostCode = document.getElementById('event_form_postcode');
 // on récupère les elements HTML Select liés au Lieu :
 const selectLocation = document.getElementById('event_form_location');
-const selectStreet = document.getElementById('event_form_street');
-const selectLatitude = document.getElementById('event_form_latitude');
-const selectLongitude = document.getElementById('event_form_longitude');
+const spanStreet = document.getElementById('event_form_street');
+const spanLatitude = document.getElementById('event_form_latitude');
+const spanLongitude = document.getElementById('event_form_longitude');
 
 
 // évenement sur l'élément Select HTML de la ville :
@@ -17,7 +17,10 @@ selectVille.addEventListener('change', function () {
             return response.json();
         }).then(function (data) {
             // 1- on retire les valeurs des élements liés à un lieu (cas ou on re-sélectionne une ville)
-            resetFormElementsLocation();
+            removeAllChildren(selectLocation);
+        spanStreet.innerHTML = "";
+        spanLatitude.innerHTML = "";
+        spanLongitude.innerHTML = "";
             // on crée un élément HTML Option par Lieu et on l'ajoute au DOM :
             for (const location of data.locationsInCity) {
                 let option = document.createElement("option");
@@ -31,17 +34,16 @@ selectVille.addEventListener('change', function () {
             }
 
             // 2- on valorise le code postal
-            removeAllChildren(selectPostCode);
-            let optionPostCode = document.createElement("option");
-            optionPostCode.text = data.postCode;
-            selectPostCode.add(optionPostCode);
+            spanPostCode.innerHTML = data.postCode;
 
             // 3- On ajoute un évenement sur l'element Select des Lieux :
             selectLocation.addEventListener('change', function(){
                 let choiceLocation = getLocationInList(data.locationsInCity, selectLocation);
                 // On valorise les elements HTML Select "Rue, Lat. et Long." :
                 if (choiceLocation !== null) {
-                    addElementsAboutLocationInForm(choiceLocation);
+                    spanStreet.innerHTML = choiceLocation.street;
+                    spanLatitude.innerHTML = choiceLocation.latitude;
+                    spanLongitude.innerHTML = choiceLocation.longitude;
                 }
             } )
         })
@@ -65,23 +67,13 @@ function getLocationInList(listLocations, elementSelect) {
         }
     }
     if (result === null) {
-        removeAllChildren(selectStreet);
-        removeAllChildren(selectLatitude);
-        removeAllChildren(selectLongitude);
+        spanStreet.innerHTML = "";
+        spanLatitude.innerHTML = "";
+        spanLongitude.innerHTML = "";
     }
     return result;
 }
 
-/**
- * Méthode supprimant tous les éléments enfants des 4 éléments HTML de type Select parents "Rue, Latitude, Longitude, Lieu" dans le DOM.
- * Nota : Permet la remise à zéro des champs lors d'une re-sélection d'une ville.
- */
-function resetFormElementsLocation() {
-    let tabSelect = [selectStreet, selectLatitude, selectLongitude, selectLocation];
-    for (const select of tabSelect) {
-        removeAllChildren(select);
-    }
-}
 
 /**
  * Méthode qui supprime tous les elements enfants d'un éléments HTML parent passé en paramètre dans le DOM.
@@ -91,26 +83,4 @@ function removeAllChildren(select) {
     while (select.lastElementChild) {
         select.removeChild(select.lastElementChild);
     }
-}
-
-/**
- * Méthode qui ajoute les valeurs dans les élémnets HTML Select "Rue, Latitude et Longitude" dans le DOM.
- * @param choiceLocation - Le lieu choisi par l'utilisateur.
- */
-function addElementsAboutLocationInForm(choiceLocation) {
-    // Rue
-    removeAllChildren(selectStreet);
-    let optionStreet = document.createElement("option");
-    optionStreet.text = choiceLocation.street;
-    selectStreet.add(optionStreet);
-    // Latitude
-    removeAllChildren(selectLatitude);
-    let optionLatitude = document.createElement("option");
-    optionLatitude.text = choiceLocation.latitude;
-    selectLatitude.add(optionLatitude);
-    // Longitude
-    removeAllChildren(selectLongitude);
-    let optionLongitude = document.createElement("option");
-    optionLongitude.text = choiceLocation.longitude;
-    selectLongitude.add(optionLongitude);
 }
