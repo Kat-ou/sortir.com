@@ -12,6 +12,8 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\Image;
 
 class ProfileFormType extends AbstractType
 {
@@ -48,7 +50,13 @@ class ProfileFormType extends AbstractType
             ])
             ->add('pictureFilename', FileType::class, [
                 'label' => 'Ma photo',
-                'mapped' => false
+                'mapped' => false,
+                'constraints' => [
+                    new Image([
+                        'maxSize' => '5M',
+                        'maxSizeMessage' => 'La taille max est de 5 mo'
+                    ])
+                ]
             ])
         ;
     }

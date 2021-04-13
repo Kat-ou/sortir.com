@@ -7,7 +7,7 @@
     {% for flashError in app.flashes('success') %}
         <div class="notification is-primary is-light" role="alert">{{ flashError }}</div>
     {% endfor %}
-<div class="columns is-mobile">
+<div class="columns">
     <div class="column">
         <div class="card m-6">
             <div class="card-image">
@@ -22,13 +22,13 @@
         </div>
     </div>
     <div class="column">
-            <h1 class="has-text-centered">Mon profile</h1>
-        <div class="m-4">
+            <h1 class="has-text-centered is-size-3">Profil de {{ app.user.username }}</h1>
+
             {{ form_start(profileForm) }}
             {{ form_widget(profileForm) }}
             <button>Enregistrer</button>
             {{ form_end(profileForm) }}
-        </div>
+
     </div>
     <div class="column"></div>
 </div>
