@@ -44,15 +44,10 @@ class RefreshStatesEvents
     }
 
 
-    // TODO : Historiser la sortie "terminée et/ou Annulée" (1 mois de délais)
-    // TODO -> créer un event mensuel dans MySql ???
-
-    // TODO : mettre les constantes d'etat en variables d'environnement ???
-
     /**
      *  Méthode permettant de mettre à jour les états des sorties en fonction du temps et des inscriptions.
-     * Les états des sorties pris en compte sont : "Ouverte, Clôturée, et Activité en cours".
-     * Les états non-pris en compte sont : "Créee, Passée, Annulée, et Historisée".
+     * Les états des sorties pris en compte sont : "Créée, Ouverte, Clôturée, et Activité en cours".
+     * Les états non-pris en compte sont : "Passée, Annulée, et Historisée".
      */
     public function refreshStateEventsIntoDb()
     {
@@ -109,9 +104,16 @@ class RefreshStatesEvents
                         $this->entityManager->persist($event);
                     }
                     break;
-                // si l'état de la sortie est Annulée, Historisée, créée, passée ou autres
-                // au cas ou (car la requete ne les récupère normalement pas)
                 case NameState::STATE_CREATED:
+                    // si la date du jour est supérieure à sa date de cloture
+                    if ($today > $limitDateRegister) {
+                        // on passe l'event à l'état -> Annulée
+                        $event->setState($this->getStateByName(NameState::STATE_CANCELED));
+                        $this->entityManager->persist($event);
+                    }
+                    break;
+                // si l'état de la sortie est Annulée, Historisée, passée ou autres
+                // au cas ou (car la requete ne les récupère normalement pas)
                 case NameState::STATE_DONE:
                 case NameState::STATE_CANCELED:
                 case NameState::STATE_HISTORIZED:
@@ -122,7 +124,6 @@ class RefreshStatesEvents
         // on valide nos changements en base
         $this->entityManager->flush();
     }
-
 
 
     /**

@@ -27,7 +27,7 @@ class SortieRepository extends ServiceEntityRepository
 
 
     /**
-     * Méthode retournant les sorties triées selon les états souhaités : 'Ouvertes', 'Clôturées', 'En cours'.
+     * Méthode retournant les sorties triées selon les états souhaités : 'Créée', 'Ouvertes', 'Clôturées', 'En cours'.
      * @return int|mixed|string
      */
     public function findEventsBySevralStates()
@@ -36,10 +36,11 @@ class SortieRepository extends ServiceEntityRepository
             ->join('s.state', 'e')->addSelect('e');
         // on cherche les sorties étants Ouvertes, Cloturées, et En cours :
         $queryBuilder
-            ->where('e.wording IN (:open, :end, :progress)')
+            ->where('e.wording IN (:open, :end, :progress, :create)')
             ->setParameter('open',NameState::STATE_OPEN)
             ->setParameter('end',NameState::STATE_END_REGISTER)
-            ->setParameter('progress',NameState::STATE_IN_PROGRESS);
+            ->setParameter('progress',NameState::STATE_IN_PROGRESS)
+            ->setParameter('create',NameState::STATE_CREATED);
         $query = $queryBuilder->getQuery();
         return $query->getResult();
     }
