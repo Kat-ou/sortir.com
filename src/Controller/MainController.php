@@ -282,11 +282,19 @@ class MainController extends AbstractController
                 $currentLieu = $lieuRepository->find($eventForm->get('location')->getData());
                 $event->setLocation($currentLieu);
 
+                if ($request->get('publish')){
+                    $createdStatus = $etatRepository->findOneBy(['wording' => NameState::STATE_OPEN]);
+                    // On ajoute un message flash
+                    $this->addFlash("link", "Votre sortie a été créée et publiée");
+                }else{
+                    $createdStatus = $etatRepository->findOneBy(['wording' => NameState::STATE_CREATED]);
+                    // On ajoute un message flash
+                    $this->addFlash("link", "Votre sortie a été modifiée. Il faut penser à la publier");
+                }
+                $event->setState($createdStatus);
+
                 $em->persist($event);
                 $em->flush();
-
-                // On ajoute un message flash
-                $this->addFlash("link", "Votre sortie a été modifiée. Il faut penser à la publier");
 
                 // Redirige vers une autre page
                 return $this->redirectToRoute("main_eventsList", [
@@ -319,21 +327,19 @@ class MainController extends AbstractController
         // on récupère la sortie
         /** @var Sortie $event */
         $event = $sortieRepository->findAllElementsByEvent($id);
-
         // on contrôle que le statut de la sortie le permet et que l'utilisateur est bien l'organisateur de la sortie
-        if($eventManagement->isItPossibleToCancel($this->getUser(),$event))
-        {
-
+        if($eventManagement->isItPossibleToCancel($this->getUser(),$event)) {
             // on modifie le statut de la sortie
             $cancelledStatus = $etatRepository->findOneBy(['wording' => NameState::STATE_CANCELED]);
             $event->setState($cancelledStatus);
-
             // on exécute la requête
             $entityManager->persist($event);
             $entityManager->flush();
-
             // On ajoute un message flash
             $this->addFlash("link", "Votre sortie a été annulée");
+        } else {
+            // On ajoute un message flash
+            $this->addFlash("danger", "Vous n'êtes pas autorisé à annuler cette sortie");
         }
         return $this->redirectToRoute('main_eventsList');
     }

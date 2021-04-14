@@ -57,6 +57,7 @@ class Sortie
 
     /**
      * @Assert\NotBlank(message="Ce champs ne peut pas être vide")
+     * @Assert\Length (max=500, maxMessage="La description ne doit pas dépasser 500 caractères")
      * @ORM\Column(type="text")
      */
     private $description;
