@@ -80,12 +80,18 @@ class MainController extends AbstractController
     }
 
     /**
-     * @Route("/event/details/{id}", name="details")
+     * @Route("/event/details/{id}", name="details", requirements={"id"="\d+"})
      */
-    public function details($id, SortieRepository $sortieRepository,Request $request, EntityManagerInterface $entityManager): Response
+    public function details($id, SortieRepository $sortieRepository,Request $request, EntityManagerInterface $entityManager, EventManagement $eventManagement): Response
     {
         //récupère la sortie souhaitée
         $event = $sortieRepository->findAllElementsByEvent($id);
+
+        if ( !$eventManagement->isItPossibleToDisplay($event) ) {
+            // On ajoute un message flash
+            $this->addFlash("danger", "Vous ne pouvez pas afficher cette sortie");
+            return $this->redirectToRoute('main_eventsList');
+        }
 
         return $this->render('main/details.html.twig', ["sortie" => $event]);
     }
@@ -189,6 +195,9 @@ class MainController extends AbstractController
 
             // On ajoute un message flash
             $this->addFlash("link", "Votre désinscription a été prise en compte");
+        } else {
+            // On ajoute un message flash
+            $this->addFlash("danger", "Vous ne pouvez pas vous désister sur une sortie dont vous ne faites pas partie");
         }
         return $this->redirectToRoute('main_eventsList');
     }
@@ -218,6 +227,9 @@ class MainController extends AbstractController
 
             // On ajoute un message flash
             $this->addFlash("link", "Votre inscription a été prise en compte");
+        } else {
+            // On ajoute un message flash
+            $this->addFlash("danger", "Vous n'êtes pas autorisé à vous inscrire à cette sortie");
         }
         return $this->redirectToRoute('main_eventsList');
     }
@@ -244,6 +256,9 @@ class MainController extends AbstractController
 
             // On ajoute un message flash
             $this->addFlash("link", "Votre sortie a été publiée");
+        } else {
+            // On ajoute un message flash
+            $this->addFlash("danger", "Vous n'êtes pas autorisé à publier cette sortie");
         }
         return $this->redirectToRoute('main_eventsList');
     }

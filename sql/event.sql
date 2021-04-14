@@ -1,6 +1,8 @@
 
-
 -- Evenement MySQL : Historiser les sorties
+-- ref. Id 193 : l'état historisée.
+-- NOTA : Activer l évenement MySQL -> SET GLOBAL event_scheduler = ON;
+-- NOTA : connaitre la database config. MySql : select @@system_time_zone
 
 
 CREATE EVENT IF NOT EXISTS `historize_event`
@@ -19,9 +21,7 @@ WHERE
 ;
 
 
--- Id 193 : l'état historisée.
--- NOTA : Activer l évenement MySQL -> SET GLOBAL event_scheduler = ON;
--- NOTA : connaitre la database config. MySql : select @@system_time_zone
+
 
 
 
