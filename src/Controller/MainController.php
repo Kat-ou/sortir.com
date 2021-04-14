@@ -146,8 +146,8 @@ class MainController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route ("/event/create/location/{id}", name="main_location", requirements={"id"="\d+"})
+    /*
+     *
      */
     public function getLocation($id, VilleRepository $villeRepository)
     {

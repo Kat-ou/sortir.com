@@ -9,9 +9,9 @@ const spanLongitude = document.getElementById('event_form_longitude');
 
 
 // évenement sur l'élément Select HTML de la ville :
-addEmptyOptionIntoSelect(selectVille);
+//addEmptyOptionIntoSelect(selectVille);
 selectVille.addEventListener('change', function () {
-    var url = "create/location/" + this.value;
+    var url = "location/" + this.value;
     // Requete AJAX
     fetch(url, {method: 'GET'})
         .then(function (response) {
