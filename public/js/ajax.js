@@ -9,9 +9,10 @@ const spanLongitude = document.getElementById('event_form_longitude');
 
 
 // évenement sur l'élément Select HTML de la ville :
-//addEmptyOptionIntoSelect(selectVille);
 selectVille.addEventListener('change', function () {
-    var url = "location/" + this.value;
+    // Si l'id passé en paramètre est vide (choix du placeholder) on valorise l'IdCity à 0 :
+    var idCity = (this.value === "") ? 0 : this.value ;
+    var url = "location/" + idCity;
     // Requete AJAX
     fetch(url, {method: 'GET'})
         .then(function (response) {
@@ -91,14 +92,3 @@ function removeElementsLocationInForm() {
     spanLongitude.innerHTML = "";
 }
 
-
-/**
- * Procédure de création d'un champ vide dans un élément HTML select passé en paramètre.
- * @param selectHtml - L'élement Html Select.
- */
-function addEmptyOptionIntoSelect(selectHtml) {
-    let option = document.createElement('option');
-    option.value = '0';
-    option.selected = true;
-    selectHtml.insertAdjacentElement('afterbegin', option);
-}

@@ -1,11 +1,3 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
-
-main_location_create:
-  path: /event/location/{id}
-  controller: App\Controller\MainController::getLocation
-
-main_location_update:
-  path: /event/updated/location/{id}
-  controller: App\Controller\MainController::getLocation
