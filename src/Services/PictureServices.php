@@ -37,4 +37,9 @@ class PictureServices
     {
         return $this->targetDirectory;
     }
+
+    public function deletePhoto($pictureFilename)
+    {
+        unlink($this->getTargetDirectory().$pictureFilename);
+    }
 }

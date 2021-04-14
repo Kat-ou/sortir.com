@@ -61,6 +61,29 @@ class ParticipantController extends AbstractController
     }
 
     /**
+     * @Route("/profile/deleted", name="participant_profile_deleted")
+     */
+    public function profilePicture(PictureServices $pictureServices, EntityManagerInterface $entityManager): Response
+    {
+        $currentPictureName = $this->getUser()->getPictureFilename();
+        if ($currentPictureName != null) {
+            $user = $this->getUser();
+            $pictureServices->deletePhoto($currentPictureName);
+            $user->setPictureFilename(null);
+            $user->setUpdatedDate(new \DateTime());
+            // Sauvegarde en Bdd
+            $entityManager->persist($user);
+            $entityManager->flush();
+            // On ajoute un message flash
+            $this->addFlash("link", "Votre profil a été modifié");
+            return $this->redirectToRoute('participant_profile');
+        } else {
+            $this->addFlash("danger", "Vous n'avez pas de photo de profil. Suppression impossible");
+            return $this->redirectToRoute('participant_profile');
+        }
+    }
+
+    /**
      * @Route("/profil/voir/{eventId}/{participantId}", name="profile_view")
      */
     public function view(int $eventId, int $participantId, ParticipantRepository $participantRepository, SortieRepository $sortieRepository)
