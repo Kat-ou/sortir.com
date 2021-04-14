@@ -86,7 +86,7 @@
                         {% endif %}
                         {% if eventStates[event.id].isItModifyOrPublish %}
                             <!-- éditer et publier -->
-                            <a href=""><span class="icon"><i class="far fa-edit" title="Modifier la sortie"></i></span></a>
+                            <a href="{{ path('main_updated', {id: event.id}) }}"><span class="icon"><i class="far fa-edit" title="Modifier la sortie"></i></span></a>
                             <a href="{{ path('main_published', {id: event.id}) }}"><span class="icon"><i class="far fa-calendar-check" title="Publier la sortie"></i></span></a>
                         {% endif %}
                         {% if eventStates[event.id].isItRenounce %}

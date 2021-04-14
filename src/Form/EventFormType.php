@@ -71,7 +71,6 @@ class EventFormType extends AbstractType
                 'label' => "Code Postal: ",
                 'mapped' => false
             ])
-
             /* champs inséré en dur dans créer une sortie*/
             ->add('campus', EntityType::class, [
                 'label' => "Campus: ",

@@ -1,0 +1,191 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block body %}
+
+    <p class="title is-2 mt-5">Modifier une sortie</p>
+
+    {{ form_start(eventForm) }}
+    {{ form_row(eventForm._token) }}
+    <div class="columns">
+        <div class="column is-0"></div>
+        <div class="column">
+            <div class="columns is-mobile">
+                <div class="column is-4">
+                    <p class="has-text-link">{{ form_label(eventForm.name, null, {
+                            'attr': {'class': 'has-text-link'}
+                        }) }}</p>
+                </div>
+                <div class="column is-7">
+                    <p>{{ form_widget(eventForm.name, {'attr': {'class': 'input is-primary'}}) }}</p>
+                </div>
+            </div>
+            <div class="columns is-mobile">
+                <div class="column is-4">
+                    <p>{{ form_label(eventForm.startDate, null, {
+                            'attr': {'class': 'has-text-link'}
+                        }) }}</p>
+                </div>
+                <div class="column is-4">
+                    <p>
+                        {{ form_widget(eventForm.startDate.date, {'attr': {'class': 'input is-primary'}}) }}{{ form_errors(eventForm.startDate) }}
+                    </p>
+                </div>
+                <div class="column is-3">
+                    <p>{{ form_widget(eventForm.startDate.time, {'attr': {'class': 'input is-primary'}}) }}{{ form_errors(eventForm.startDate) }} </p>
+
+                </div>
+            </div>
+            <div class="columns is-mobile">
+                <div class="column is-4">
+                    <p>{{ form_label(eventForm.deadLine, null, {
+                            'attr': {'class': 'has-text-link'}
+                        }) }}</p>
+                </div>
+                <div class="column is-4">
+                    <p>{{ form_widget(eventForm.deadLine, {'attr': {'class': 'input is-primary'}}) }}</p>
+                </div>
+            </div>
+            <div class="columns is-mobile">
+                <div class="column is-4">
+                    <p>{{ form_label(eventForm.maxRegistrations, null, {
+                            'attr': {'class': 'has-text-link'}
+                        }) }}</p>
+                </div>
+                <div class="column is-2">
+                    <p>{{ form_widget(eventForm.maxRegistrations, {'attr': {'class': 'input is-primary'}}) }}</p>
+                </div>
+            </div>
+            <div class="columns is-mobile">
+                <div class="column is-4">
+                    <p>{{ form_label(eventForm.duration, null, {
+                            'attr': {'class': 'has-text-link'}
+                        }) }}</p>
+                </div>
+                <div class="column is-2">
+                    <p>{{ form_widget(eventForm.duration, {'attr': {'class': 'input is-primary'}}) }} </p>
+                </div>
+                <div class="column is-2">
+                    <p>minutes</p>
+                </div>
+            </div>
+            <div class="columns is-mobile ">
+                <div class="column is-4">
+                    <p>{{ form_label(eventForm.description, null, {
+                            'attr': {'class': 'has-text-link'}}) }}</p>
+                </div>
+                <div class="column is-7">
+                    <p class="has-text-justified">{{ form_widget(eventForm.description, {'attr': {'class': 'input is-primary'}}) }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="column is-0"></div>
+        <div class="column">
+            <div class="columns is-mobile">
+                <div class="column is-3">
+                    <p>{{ form_label(eventForm.campus, null, {
+                            'attr': {'class': 'has-text-link'}
+                        }) }}
+                        <!-- <label class='has-text-weight-bold has-text-link'>Campus: </label>-->
+                    </p>
+                </div>
+                <div class="column">
+                    <p>{{ form_widget(eventForm.campus, {'attr': {'class': 'input is-primary'}}) }}</p>
+                    {# {{ nomCampus|upper }} #}
+                </div>
+            </div>
+            <div class="columns is-mobile">
+                <div class="column is-3">
+                    <p>{{ form_label(eventForm.ville, null, {
+                            'attr': {'class': 'has-text-link'}
+                        }) }}</p>
+                </div>
+                <div class="column">
+                    <p>{{ form_widget(eventForm.ville, {'attr': {'class': 'input is-primary'}}) }}</p>
+                </div>
+            </div>
+            <div class="columns is-mobile">
+                <div class="column is-3">
+                    <p>{{ form_label(eventForm.location, null, {
+                            'attr': {'class': 'has-text-link'}
+                        }) }}</p>
+                </div>
+                <div class="column">
+                    {#<p>{{ form_widget(eventForm.location, {'attr': {'class': 'input is-primary'}}) }}</p>#}
+                    <div class="control">
+                          <span class="select">
+                              <select id="event_form_location" name="event_form[location]" class="input is-primary">
+                                  <option>
+                                      {{ nomLieu|upper }}
+                                  </option>
+                              </select>
+                          </span>
+                    </div>
+                    {{ form_errors(eventForm.location) }}
+                </div>
+            </div>
+            <div class="columns is-mobile">
+                <div class="column is-3">
+                    <p>{{ form_label(eventForm.street, null, {
+                            'attr': {'class': 'has-text-link'}
+                        }) }}</p>
+                </div>
+                <div class="column">
+                    {# <p>{{ form_widget(eventForm.street, {'attr': {'class': 'input is-primary'}}) }}</p> #}
+                    <span id="event_form_street">{{ nomRue|upper }}</span>
+                </div>
+            </div>
+            <div class="columns is-mobile">
+                <div class="column is-3">
+                    <p>{{ form_label(eventForm.postcode, null, {
+                            'attr': {'class': 'has-text-link'}
+                        }) }}</p>
+                </div>
+                <div class="column">
+                    {# <p>{{ form_widget(eventForm.postcode, {'attr': {'class': 'input is-primary'}}) }}</p> #}
+                    <span id="event_form_postcode">{{ codePostal|upper }}</span>
+                </div>
+            </div>
+            <div class="columns is-mobile">
+                <div class="column is-3">
+                    <p>{{ form_label(eventForm.latitude, null, {
+                            'attr': {'class': 'has-text-link'}
+                        }) }}</p>
+                </div>
+                <div class="column">
+                    {# <p>{{ form_widget(eventForm.latitude, {'attr': {'class': 'input is-primary'}}) }}</p> #}
+                    <span id="event_form_latitude">{{ latitude|upper }}</span>
+                </div>
+            </div>
+            <div class="columns is-mobile">
+                <div class="column is-3">
+                    <p>{{ form_label(eventForm.longitude, null, {
+                            'attr': {'class': 'has-text-link'}
+                        }) }}</p>
+                </div>
+                <div class="column">
+                    {# <p>{{ form_widget(eventForm.longitude, {'attr': {'class': 'input is-primary'}}) }}</p> #}
+                    <span id="event_form_longitude">{{ longitude|upper }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="section columns">
+        <div class="column"></div>
+
+        <button type="submit" class="button is-medium is-link is-light">Enregistrer</button>
+        <div class="column"></div>
+        <button class="button is-medium is-link is-light">Publier la sortie</button>
+        <div class="column"></div>
+        <button class="button is-medium is-link is-light">Annuler</button>
+
+        <div class="column"></div>
+    </div>
+
+    {{ form_end(eventForm, {render_rest: false}) }}
+
+{% endblock %}
+

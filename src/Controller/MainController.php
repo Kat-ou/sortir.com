@@ -63,7 +63,7 @@ class MainController extends AbstractController
         $events = $paginator->paginate(
             $eventsListToDisplay,
             $request->query->getInt('page', 1),
-            10,
+            10
         );
 
         // On crée un tableau associatif avec chaque conditions de l'utilisateur sur les sorties.
@@ -115,14 +115,20 @@ class MainController extends AbstractController
             $event->setOrganizingSite($this->getUser()->getCampus());
             $currentLieu = $lieuRepository->find($eventForm->get('location')->getData());
             $event->setLocation($currentLieu);
-            $createdStatus = $etatRepository->findOneBy(['wording' => NameState::STATE_CREATED]);
+
+            if ($request->get('publish')){
+                $createdStatus = $etatRepository->findOneBy(['wording' => NameState::STATE_OPEN]);
+                // On ajoute un message flash
+                $this->addFlash("success", "Votre sortie a été publiée");
+            }else{
+                $createdStatus = $etatRepository->findOneBy(['wording' => NameState::STATE_CREATED]);
+                // On ajoute un message flash
+                $this->addFlash("success", "Votre sortie a été créée. Il faut penser à la publier");
+            }
             $event->setState($createdStatus);
 
             $entityManager->persist($event);
             $entityManager->flush();
-
-            // On ajoute un message flash
-            $this->addFlash("success", "Votre sortie a été créée. Il faut penser à la publier");
 
             // Redirige vers une autre page
             return $this->redirectToRoute("main_eventsList", [
@@ -242,6 +248,60 @@ class MainController extends AbstractController
     }
 
     /**
+     * @Route ("/event/updated/{id}",name="main_updated", requirements={"id"="\d+"})
+     */
+    public function updated($id, EntityManagerInterface $em, Request $request, SortieRepository $sortieRepository, EtatRepository $etatRepository, EventManagement $eventManagement): Response
+    {
+        // on récupère la sortie
+        /** @var Sortie $event */
+        $event = $sortieRepository->findAllElementsByEvent($id);
+        $currentCity = $event->getLocation()->getCity();
+        $currentLieu = $event->getLocation()->getName();
+        $currentPostCode = $event->getLocation()->getCity()->getPostcode();
+        $currentStreet = $event->getLocation()->getStreet();
+        $currentLatitude = $event->getLocation()->getLatitude();
+        $currentLongitude = $event->getLocation()->getLongitude();
+
+        // Crée une instance de la classe de formulaire que l'on assicie à notre formulaire
+        $eventForm = $this->createForm(EventFormType::class, $event);
+        $eventForm->get('ville')->setData($currentCity);
+
+        // On prend les données du formulaire soumis, et les injecte dans mon $profil
+        $eventForm->handleRequest($request);
+
+        // on contrôle que le statut est créée et que l'utilisateur est bien le créateur
+        if ( $eventManagement->isItPossibleToModifyOrPublish($this->getUser(), $event) ) {
+
+            if ($eventForm->isSubmitted() && $eventForm->isValid() ) {
+
+                $em->persist($event);
+                $em->flush();
+
+                // On ajoute un message flash
+                $this->addFlash("success", "Votre sortie a été modifiée. Il faut penser à la publier");
+
+                // Redirige vers une autre page
+                return $this->redirectToRoute("main_eventsList", [
+
+                ]);
+            }
+
+            return $this->render('main/update.html.twig', [
+                'eventForm' => $eventForm->createView(),
+                'nomLieu' => $currentLieu,
+                'nomRue' => $currentStreet,
+                'codePostal' => $currentPostCode,
+                'latitude' => $currentLatitude,
+                'longitude' => $currentLongitude
+            ]);
+        } else {
+            // On ajoute un message flash
+            $this->addFlash("danger", "Vous ne pouvez pas modifier une sortie dont vous n'êtes pas l'auteur");
+            return $this->redirectToRoute('main_eventsList');
+        }
+    }
+
+    /**
      * @Route ("/event/cancelled/{id}",name="main_cancelled", requirements={"id"="\d+"})
      */
 
@@ -262,6 +322,9 @@ class MainController extends AbstractController
             // on exécute la requête
             $entityManager->persist($event);
             $entityManager->flush();
+
+            // On ajoute un message flash
+            $this->addFlash("danger", "Votre sortie a été annulée");
         }
         return $this->redirectToRoute('main_eventsList');
     }
