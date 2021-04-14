@@ -180,13 +180,13 @@
     </div>
     <div class="section columns">
         <div class="column"></div>
-
         <button type="submit" class="button is-medium is-link is-light">Enregistrer</button>
         <div class="column"></div>
-        <button class="button is-medium is-link is-light">Publier la sortie</button>
+        <a class="button is-medium is-link is-light" href="{{ path('main_published', {id: eventId}) }}">Publier</a>
         <div class="column"></div>
-        <button class="button is-medium is-link is-light">Annuler</button>
-
+        <a class="button is-medium is-link is-light" href="{{ path('main_cancelled', {id: eventId}) }}">Supprimer</a>
+        <div class="column"></div>
+        <a class="button is-medium is-link is-light" href="{{ path('main_updated', {id: eventId}) }}">Annuler</a>
         <div class="column"></div>
     </div>
 

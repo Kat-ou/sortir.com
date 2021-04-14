@@ -119,7 +119,7 @@ class MainController extends AbstractController
             if ($request->get('publish')){
                 $createdStatus = $etatRepository->findOneBy(['wording' => NameState::STATE_OPEN]);
                 // On ajoute un message flash
-                $this->addFlash("link", "Votre sortie a été publiée");
+                $this->addFlash("link", "Votre sortie a été créée et publiée");
             }else{
                 $createdStatus = $etatRepository->findOneBy(['wording' => NameState::STATE_CREATED]);
                 // On ajoute un message flash
@@ -301,7 +301,8 @@ class MainController extends AbstractController
                 'nomRue' => $currentStreet,
                 'codePostal' => $currentPostCode,
                 'latitude' => $currentLatitude,
-                'longitude' => $currentLongitude
+                'longitude' => $currentLongitude,
+                'eventId' => $id,
             ]);
         } else {
             // On ajoute un message flash
