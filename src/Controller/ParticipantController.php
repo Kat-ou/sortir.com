@@ -62,7 +62,7 @@ class ParticipantController extends AbstractController
             $entityManager->flush();
 
             // On ajoute un message flash
-            $this->addFlash("success", "Votre profil a été modifié");
+            $this->addFlash("link", "Votre profil a été modifié");
         }
 
         return $this->render('participant/profile.html.twig', [
@@ -90,7 +90,7 @@ class ParticipantController extends AbstractController
             ]);
         } else {
             // On ajoute un message flash
-            $this->addFlash("danger", "Vous devez participer à cette sortie pour contacter les autres membres inscrits");
+            $this->addFlash("link", "Vous devez participer à cette sortie pour contacter les autres membres inscrits");
             return $this->redirectToRoute('details', ["id" => $eventId]
             );
         }

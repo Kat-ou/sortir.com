@@ -119,11 +119,11 @@ class MainController extends AbstractController
             if ($request->get('publish')){
                 $createdStatus = $etatRepository->findOneBy(['wording' => NameState::STATE_OPEN]);
                 // On ajoute un message flash
-                $this->addFlash("success", "Votre sortie a été publiée");
+                $this->addFlash("link", "Votre sortie a été publiée");
             }else{
                 $createdStatus = $etatRepository->findOneBy(['wording' => NameState::STATE_CREATED]);
                 // On ajoute un message flash
-                $this->addFlash("success", "Votre sortie a été créée. Il faut penser à la publier");
+                $this->addFlash("link", "Votre sortie a été créée. Il faut penser à la publier");
             }
             $event->setState($createdStatus);
 
@@ -187,7 +187,7 @@ class MainController extends AbstractController
             $em->flush();
 
             // On ajoute un message flash
-            $this->addFlash("warning", "Votre désinscription a été prise en compte");
+            $this->addFlash("link", "Votre désinscription a été prise en compte");
         }
         return $this->redirectToRoute('main_eventsList');
     }
@@ -216,7 +216,7 @@ class MainController extends AbstractController
             $em->flush();
 
             // On ajoute un message flash
-            $this->addFlash("success", "Votre inscription a été prise en compte");
+            $this->addFlash("link", "Votre inscription a été prise en compte");
         }
         return $this->redirectToRoute('main_eventsList');
     }
@@ -242,7 +242,7 @@ class MainController extends AbstractController
             $em->flush();
 
             // On ajoute un message flash
-            $this->addFlash("success", "Votre sortie a été publiée");
+            $this->addFlash("link", "Votre sortie a été publiée");
         }
         return $this->redirectToRoute('main_eventsList');
     }
@@ -278,7 +278,7 @@ class MainController extends AbstractController
                 $em->flush();
 
                 // On ajoute un message flash
-                $this->addFlash("success", "Votre sortie a été modifiée. Il faut penser à la publier");
+                $this->addFlash("link", "Votre sortie a été modifiée. Il faut penser à la publier");
 
                 // Redirige vers une autre page
                 return $this->redirectToRoute("main_eventsList", [
