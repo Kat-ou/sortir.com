@@ -70,6 +70,9 @@ class RegistrationFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Participant::class,
+            'attr' => [
+                'novalidate' => 'novalidate', // comment me to reactivate the html5 validation!
+            ]
         ]);
     }
 }
