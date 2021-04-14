@@ -2,9 +2,13 @@
 
 
 {% block title %}
-    {{ parent()}} | Accueil
+    Accueil | {{ parent() }}
 {% endblock %}
 
+{% block script %}
+    {{ parent() }}
+    <script src="{{ asset('js/appJs.js') }}" defer></script>
+{% endblock %}
 
 {% block header %}
     {% include 'inc/nav_bar.html.twig' %}

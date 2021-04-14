@@ -1,6 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ParticipantController!{% endblock %}
+{% block title %}Profil | {{ parent() }}{% endblock %}
+
+{% block script %}
+    {{ parent() }}
+{% endblock %}
 
 {% block body %}
 

@@ -1,7 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
+    Modifier une sortie | {{ parent() }}
+{% endblock %}
 
+{% block script %}
+    {{ parent() }}
+    <script src="{{ asset('js/ajax.js') }}" defer></script>
 {% endblock %}
 
 {% block body %}

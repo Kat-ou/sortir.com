@@ -1,5 +1,13 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    Details | {{ parent() }}
+{% endblock %}
+
+{% block script %}
+    {{ parent() }}
+{% endblock %}
+
 {% block body %}
     <h1 class="title is-2 mt-5">Details sortie</h1>
 

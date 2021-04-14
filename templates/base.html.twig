@@ -22,10 +22,10 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js" defer></script>
-    <script src="{{ asset('js/appJs.js') }}" defer></script>
-    <script src="{{ asset('js/ajax.js') }}" defer></script>
-    <script src="{{ asset('js/navbar.js') }}" defer></script>
+
+    {% block script %}
+        <script src="{{ asset('js/navbar.js') }}" defer></script>
+    {% endblock %}
 
     {#
     flavicon
