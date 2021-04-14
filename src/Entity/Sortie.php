@@ -104,7 +104,7 @@ class Sortie
     /**
      * @Assert\Callback
      */
-    public function validateDates(ExecutionContextInterface $context, $payload)
+    public function validateDates(ExecutionContextInterface $context)
     {
         // Si la date de début de sortie est inférieure à la date de clôture :
         if ($this->getStartDate() < $this->getDeadLine()) {
