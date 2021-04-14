@@ -39,12 +39,9 @@ class ProfileFormType extends AbstractType
                 'invalid_message' => 'Les mots de passe ne correspondent pas.',
                 'options' => ['attr' => [
                     'class' => 'password-field',
-                    'class'=>'has-text-link',
-                    'class'=>'has-text-link'
-
                 ]],
-                'first_options'  => ['label' => 'Mot de passe: '],
-                'second_options' => ['label' => 'Confirmation: '],
+                'first_options'  => ['label' => 'Mot de passe:'],
+                'second_options' => ['label' => 'Confirmation:'],
                 'mapped' => false
             ])
             ->add('campus', EntityType::class, [

@@ -3,14 +3,12 @@
 *::after {
     box-sizing: border-box;
 }
-body {
-    font-family: "Sancreek", cursive;
-}
+
 .container {
     position: relative;
     height: 100vh;
     overflow: hidden;
-    background: #282820;
+    background: #00D1B2;
     z-index: -1;
 }
 .message {
@@ -30,6 +28,11 @@ body {
     animation-delay: 1s;
     animation-duration: 1.3s;
 }
+.test { font-family: "Arial Narrow",cursive;
+    position: absolute;
+    text-align: center;
+  }
+
 .message::before,
 .message::after {
     content: "";
@@ -47,6 +50,7 @@ body {
     right: 20px;
 }
 .message-inner {
+    font-family: "Sancreek", cursive;
     padding: 40px;
     border-radius: 20px;
     position: absolute;

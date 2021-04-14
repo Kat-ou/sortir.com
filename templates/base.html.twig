@@ -75,15 +75,17 @@
         {% endblock %}
     </div>
 </main>
+{% block footer %}
 <footer class="color-bg">
     <div class="container">
         <p class="content has-text-centered">
             &copy; {{ "now"|date("Y") }} Sortir.com<br>
-            Logo by <a href="https://pngimage.net/wp-content/uploads/2018/06/meditation-logo-png-1.png" target="_blank">PNGimage.net</a><br>
-            Free Icons by <a href="https://fontawesome.com" target="_blank">fontawsome.com</a>
+            Logo by <a href="https://pngimage.net/wp-content/uploads/2018/06/meditation-logo-png-1.png" target="_blank" class="has-text-link-dark has-text-weight-semibold">PNGimage.net</a><br>
+            Free Icons by <a href="https://fontawesome.com" target="_blank" class="has-text-link-dark has-text-weight-semibold">fontawsome.com</a>
         </p>
     </div>
 </footer>
+{% endblock %}
 </body>
 </html>
 

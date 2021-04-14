@@ -4,15 +4,14 @@
 {# modifier le mode dev vers prod dans le fichier env.local #}
 {# Lien vers la doc: https://symfony.com/doc/current/controller/error_pages.html#testing-error-pages #}
 
-{% extends 'base.html.twig' %}
 
   {% block script%}
 
       <link href="https://fonts.googleapis.com/css?family=Abril+Fatface|Cabin+Sketch|Cinzel+Decorative|Ewert|Geo|Josefin+Sans|Rye|Sancreek|Spirax|Ultra|UnifrakturMaguntia|Vast+Shadow" rel="stylesheet">
       <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css" rel="stylesheet">
       <link rel="stylesheet" type="text/css" href="{{ asset('css/403.css') }}">
-
   {% endblock %}
+
 
 {% block body %}
 
@@ -48,18 +47,21 @@
             <div class="rivet bottom-left"></div>
             <div class="rivet bottom-right"></div>
             <div class="message-inner">
-                <h1 class="message-title">Access <br />Forbidden</h1>
-                <p class="message-subtitle">Error code 403</p>
+                <h1 class="message-title">Access <br />{{ status_text }}</h1>
+                <p class="message-subtitle">Error code {{ status_code }}</p>
+
+                <h1>
+                    <p class="test">
+                        <br><br>Oups !! <br><br><br>Vous n'êtes pas autorisé à consulter cette page :-( </p>
+                </h1>
+
+
             </div>
         </div>
     </div>
+    <h1>
+    <a class="test" href="{{ path('main_eventsList') }}"> Retour à la page d'accueil !?</a>
+    </h1>
 
 
-    <!--<p> <h1>Oups !! Vous n'êtes pas autorisé à consulter cette page :-(</h1>
-
-   {{ status_code }} {{ status_text }}</p>-->
-
-    <p>
-        <a href="{{ path('main_eventsList') }}"> Revenez à la page d'accueil !?</a>
-    </p>
 {% endblock %}
