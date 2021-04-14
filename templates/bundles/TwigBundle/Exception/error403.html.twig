@@ -6,12 +6,40 @@
 
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <h1>Oups !! Vous n'êtes pas autorisé à consulter cette page :-(</h1>
+  {% block script%}
+      {{ parent() }}
+      <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+      <link rel="stylesheet" type="text/css" href="{{ asset('css/403.css') }}">
 
-    <p>{{ status_code }} {{ status_text }}</p>
+  {% endblock %}
+
+{% block body %}
+
+
+    <div class="gandalf">
+        <div class="fireball"></div>
+        <div class="skirt"></div>
+        <div class="sleeves"></div>
+        <div class="shoulders">
+            <div class="hand left"></div>
+            <div class="hand right"></div>
+        </div>
+        <div class="head">
+            <div class="hair"></div>
+            <div class="beard"></div>
+        </div>
+    </div>
+    <div class="message403 mb-6">
+        <h1>403 - You Shall Not Pass</h1>
+        <p>Uh oh, Gandalf is blocking the way!<br/>Maybe you have a typo in the url? Or you meant to go to a different location? Like...Hobbiton?</p>
+    </div>
+
+
+    <!--<p> <h1>Oups !! Vous n'êtes pas autorisé à consulter cette page :-(</h1>
+
+   {{ status_code }} {{ status_text }}</p>-->
 
     <p>
-        <a href="{{ path('main_eventsList') }}"> revenez à la page d'accueil</a>.
+        <a href="{{ path('main_eventsList') }}"> Revenez à la page d'accueil !?</a>
     </p>
 {% endblock %}

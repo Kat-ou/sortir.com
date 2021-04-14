@@ -1,17 +1,18 @@
 <nav class="navbar is-transparent" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
         <div class="navbar-item">
-        <div class="buttons">
-        <a class="button is-link is-light" href="{{ path('main_eventsList') }}">
-            <img src="{{ asset('img/logo.png') }}" height="50" alt="logo">Sortir.com
-        </a>
+            <div class="buttons">
+                <a class="button is-link is-light" href="{{ path('main_eventsList') }}">
+                    <img src="{{ asset('img/logo.png') }}" height="50" alt="logo">Sortir.com
+                </a>
 
-        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-        </a>
-    </div>
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"
+                   data-target="navbarBasicExample">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
         </div>
     </div>
     <div id="navbarBasicExample" class="navbar-menu">
@@ -19,12 +20,15 @@
 
             <!-- Lien accessible uniquement à l'admin -->
             {% if is_granted("ROLE_ADMIN") %}
-            <a class="navbar-item">
-                Villes
-            </a>
-            <a class="navbar-item" href="{{ path('app_register') }}">
-                Campus
-            </a>
+                <a class="navbar-item">
+                    Villes
+                </a>
+                <a class="navbar-item" href="{{ path('app_register') }}">
+                    Campus
+                </a>
+                <a class="navbar-item" href="{{ path('app_register') }}">
+                    Utilisateurs
+                </a>
             {% endif %}
 
             <!-- Lien accessible uniquement à un utilisateur connecté -->
@@ -42,17 +46,13 @@
     <div class="navbar-end">
         <div class="navbar-item">
             {% if not is_granted("ROLE_USER") %}
-            <div class="buttons">
                 <a class="button is-link is-light" href="{{ path('app_login') }}">
                     <strong>Se connecter</strong>
                 </a>
-            </div>
             {% else %}
-                <div class="buttons">
                     <a class="button is-link is-light" href="{{ path('app_logout') }}">
                         <strong>Se déconnecter ({{ app.user.username | striptags }})</strong>
                     </a>
-                </div>
             {% endif %}
         </div>
     </div>
