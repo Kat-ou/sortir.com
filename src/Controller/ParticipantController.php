@@ -6,20 +6,20 @@ use App\Entity\Sortie;
 use App\Form\ProfileFormType;
 use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
+use App\Services\PictureServices;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\String\ByteString;
 
 class ParticipantController extends AbstractController
 {
     /**
      * @Route("/profile", name="participant_profile")
      */
-    public function profile(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $encoder): Response
+    public function profile(PictureServices $pictureServices,Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $encoder): Response
     {
         $user = $this->getUser();
 
@@ -33,19 +33,9 @@ class ParticipantController extends AbstractController
         if ($profileForm->isSubmitted() && $profileForm->isValid()) {
 
             $uploadedFile = $profileForm->get('pictureFilename')->getData();
-            if ($uploadedFile != "") {
-                //génère un nom de fichier sécuritaire
-                $newFilename = ByteString::fromRandom(30) . "." . $uploadedFile->guessExtension();
-                //déplace le fichier dans mon répertoire public/ avant sa destruction
-                //upload_dir est défini dans config/services.yaml
-                try {
-                    $uploadedFile->move($this->getParameter('upload_dir'), $newFilename);
-                } catch (\Exception $e) {
-                    dd($e->getMessage());
-                }
-                //détruit l'originale
-                //unlink($this->getParameter('upload_dir') . "/$newFilename");
-                $user->setPictureFilename($newFilename);
+            if ($uploadedFile) {
+                $brochureFileName = $pictureServices->upload($uploadedFile);
+                $user->setPictureFilename($brochureFileName);
             }
 
             // On récupère le mot de passe en 'claire' et on le hash
