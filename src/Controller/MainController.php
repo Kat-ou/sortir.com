@@ -286,7 +286,7 @@ class MainController extends AbstractController
                 $em->flush();
 
                 // On ajoute un message flash
-                $this->addFlash("success", "Votre sortie a été modifiée. Il faut penser à la publier");
+                $this->addFlash("link", "Votre sortie a été modifiée. Il faut penser à la publier");
 
                 // Redirige vers une autre page
                 return $this->redirectToRoute("main_eventsList", [
@@ -314,7 +314,6 @@ class MainController extends AbstractController
     /**
      * @Route ("/event/cancelled/{id}",name="main_cancelled", requirements={"id"="\d+"})
      */
-
     public function cancelled(int $id, EntityManagerInterface $entityManager, SortieRepository $sortieRepository,EventManagement $eventManagement, EtatRepository $etatRepository):Response
     {
         // on récupère la sortie
@@ -334,8 +333,32 @@ class MainController extends AbstractController
             $entityManager->flush();
 
             // On ajoute un message flash
-            $this->addFlash("danger", "Votre sortie a été annulée");
+            $this->addFlash("link", "Votre sortie a été annulée");
         }
+        return $this->redirectToRoute('main_eventsList');
+    }
+
+    /**
+     * @Route ("/event/delete/{id}",name="main_deleted", requirements={"id"="\d+"})
+     */
+    public function deleted(int $id, EntityManagerInterface $entityManager, SortieRepository $sortieRepository, EventManagement $eventManagement):Response
+    {
+        // on récupère la sortie
+        /** @var Sortie $event */
+        $event = $sortieRepository->find($id);
+
+        // Si les conditions de suppression sont respectées :
+        if ( $eventManagement->isItPossibleToDelete($this->getUser(), $event) ) {
+            // On supprime la sortie
+            $entityManager->remove($event);
+            $entityManager->flush();
+            // On ajoute un message flash
+            $this->addFlash("link", "Votre sortie a été supprimée");
+        } else {
+            // On ajoute un message flash
+            $this->addFlash("danger", "Vous n'êtes pas autorisé à supprimer cette sortie");
+        }
+
         return $this->redirectToRoute('main_eventsList');
     }
 }

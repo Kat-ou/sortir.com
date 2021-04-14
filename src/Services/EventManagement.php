@@ -107,6 +107,23 @@ class EventManagement
 
 
     /**
+     * Méthode permettant de controller si l'utilisateur passé en paramêtre peut supprimer une sortie.
+     * @param $user - L'utilisateur connecté
+     * @param Sortie $event - La sortie (en état 'Créée')
+     * @return bool - True s'il peut, sinon False.
+     */
+    public function isItPossibleToDelete($user, Sortie $event): bool
+    {
+        $result = false;
+        $eventStatement = $event->getState()->getWording();
+        if ( $event->getOrganizer()->getId() == $user->getId() && $eventStatement == NameState::STATE_CREATED ) {
+            $result = true;
+        }
+        return $result;
+    }
+
+
+    /**
      * Méthode permettant de vérifier si un utilisateur peut afficher les détails d'une sortie.
      * @param $event - La sortie concernée par la vérification.
      * @return bool - True s'il peut, sinon False.
