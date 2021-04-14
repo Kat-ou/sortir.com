@@ -15,20 +15,71 @@
 
     {{ form_start(registrationForm) }}
 
-    {{ form_label(registrationForm.username, null, {'attr': {'class': 'has-text-link'} }) }}
-    {{ form_widget(registrationForm.username, {'attr': {'class': 'input is-primary'}}) }}
 
-    {{ form_label(registrationForm.email, null, {'attr': {'class': 'has-text-link'} }) }}
-    {{ form_widget(registrationForm.email, {'attr': {'class': 'input is-primary'}}) }}
+    <div class="columns is-mobile">
+        <div class="column is-2">
+            {{ form_label(registrationForm.name, null, {'attr': {'class': 'has-text-link'} }) }}
+        </div>
+        <div class="column is-4">
+            {{ form_widget(registrationForm.name, {'attr': {'class': 'input is-primary'}}) }}
+        </div>
+    </div>
 
-    {{ form_label(registrationForm.plainPassword, null, {'attr': {'class': 'has-text-link'} }) }}
-    {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'input is-primary'}}) }}
+    <div class="columns is-mobile">
+        <div class="column is-2">
+            {{ form_label(registrationForm.firstname, null, {'attr': {'class': 'has-text-link'} }) }}
+        </div>
+        <div class="column is-4">
+            {{ form_widget(registrationForm.firstname, {'attr': {'class': 'input is-primary'}}) }}
+        </div>
+    </div>
 
-    {{ form_label(registrationForm.campus, null, {'attr': {'class': 'has-text-link'} }) }}
-    {{ form_widget(registrationForm.campus, {'attr': {'class': 'input is-primary is-uppercase'}}) }}
+    <div class="columns is-mobile">
+        <div class="column is-2">
+            {{ form_label(registrationForm.username, null, {'attr': {'class': 'has-text-link'} }) }}
+        </div>
+        <div class="column is-4">
+            {{ form_widget(registrationForm.username, {'attr': {'class': 'input is-primary'}}) }}
+        </div>
+    </div>
 
-    {{ form_label(registrationForm.roles, null, {'attr': {'class': 'has-text-link'} }) }}
-    {{ form_widget(registrationForm.roles, {'attr': {'class': 'input is-primary is-uppercase'}}) }}
+    <div class="columns is-mobile">
+        <div class="column is-2">
+            {{ form_label(registrationForm.email, null, {'attr': {'class': 'has-text-link'} }) }}
+        </div>
+        <div class="column is-4">
+            {{ form_widget(registrationForm.email, {'attr': {'class': 'input is-primary'}}) }}
+        </div>
+    </div>
+
+    <div class="columns is-mobile">
+        <div class="column is-2">
+            {{ form_label(registrationForm.campus, null, {'attr': {'class': 'has-text-link'} }) }}
+        </div>
+        <div class="column">
+            {{ form_widget(registrationForm.campus, {'attr': {'class': 'input is-primary is-uppercase'}}) }}
+        </div>
+    </div>
+
+    <div class="columns is-mobile">
+        <div class="column is-2">
+            {{ form_label(registrationForm.roles, null, {'attr': {'class': 'has-text-link'} }) }}
+        </div>
+        <div class="column">
+            {{ form_widget(registrationForm.roles, {'attr': {'class': 'input is-primary'}}) }}
+        </div>
+    </div>
+
+    <div class="columns is-mobile">
+        <div class="column is-2">
+            {{ form_label(registrationForm.isActive, null, {'attr': {'class': 'has-text-link'} }) }}
+        </div>
+        <div class="column">
+            {{ form_widget(registrationForm.isActive, {'attr': {'class': 'input is-primary'}}) }}
+        </div>
+    </div>
+
+
 
     <button type="submit" class="btn button is-medium is-link is-light">Register</button>
     {{ form_end(registrationForm) }}

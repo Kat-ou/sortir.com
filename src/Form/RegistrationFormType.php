@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
@@ -23,7 +24,7 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('username', null, ['label' => 'Identifiant: '])
             ->add('email', EmailType::class,['label' => 'Email: '])
-            ->add('plainPassword', PasswordType::class, [
+            /*->add('plainPassword', PasswordType::class, [
                 'label'=>'Mot de passe:',
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
@@ -39,7 +40,7 @@ class RegistrationFormType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
-            ])
+            ])*/
             ->add('campus', EntityType::class,[
                 'label' => "Campus: ",
                 'class' => Campus::class,
@@ -49,10 +50,19 @@ class RegistrationFormType extends AbstractType
                 'label' => "Role: ",
                 'mapped' =>false,
                 'choices' => [
-                    '[ROLE_USER]'=>true,
-                    '[ROLE_ADMIN]'=>false
+                    'ROLE_USER'=>'ROLE_USER',
+                    'ROLE_ADMIN'=>'ROLE_ADMIN'
                 ]
             ])
+            ->add('isActive',ChoiceType::class,[
+                'label' => "Statut du compte: ",
+                'choices' => [
+                    'Actif'=>true,
+                    'Inactif'=>false]
+                ])
+
+            ->add('name', TextType::class, ['label' => 'Nom:'])
+            ->add('firstname', TextType::class, ['label' => 'Prénom:'])
         ;
     }
 
