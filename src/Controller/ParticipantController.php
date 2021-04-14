@@ -86,7 +86,8 @@ class ParticipantController extends AbstractController
          */
         if ($event->getParticipants()->contains($foundParticipant) && $event->getParticipants()->contains($this->getUser())) {
             return $this->render('participant/profileView.html.twig', [
-                'foundParticipant' => $foundParticipant
+                'foundParticipant' => $foundParticipant,
+                'event' => $event
             ]);
         } else {
             // On ajoute un message flash

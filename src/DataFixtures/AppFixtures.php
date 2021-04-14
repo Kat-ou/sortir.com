@@ -131,7 +131,7 @@ class AppFixtures extends Fixture
             $event->setStartDate($faker->dateTimeBetween('-10 days', '10 days'));
             $event->setDeadLine($faker->dateTimeBetween('-10 days', $event->getStartDate()));
             // Duration : Exprimée en 'minutes' :
-            $event->setDuration($faker->numberBetween(30, 2000));
+            $event->setDuration($faker->numberBetween(30, 720));
             $event->setMaxRegistrations(5);
             $event->setDescription($faker->realTextBetween(30, 500));
             $event->setName($faker->sentence);
