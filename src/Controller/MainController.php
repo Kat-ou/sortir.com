@@ -250,13 +250,14 @@ class MainController extends AbstractController
     /**
      * @Route ("/event/updated/{id}",name="main_updated", requirements={"id"="\d+"})
      */
-    public function updated($id, EntityManagerInterface $em, Request $request, SortieRepository $sortieRepository, EtatRepository $etatRepository, EventManagement $eventManagement): Response
+    public function updated($id, EntityManagerInterface $em, Request $request, SortieRepository $sortieRepository, EtatRepository $etatRepository, EventManagement $eventManagement, LieuRepository $lieuRepository): Response
     {
         // on récupère la sortie
         /** @var Sortie $event */
         $event = $sortieRepository->findAllElementsByEvent($id);
         $currentCity = $event->getLocation()->getCity();
         $currentLieu = $event->getLocation()->getName();
+        $currentLieuId = $event->getLocation()->getId();
         $currentPostCode = $event->getLocation()->getCity()->getPostcode();
         $currentStreet = $event->getLocation()->getStreet();
         $currentLatitude = $event->getLocation()->getLatitude();
@@ -274,11 +275,15 @@ class MainController extends AbstractController
 
             if ($eventForm->isSubmitted() && $eventForm->isValid() ) {
 
+                $event->setOrganizingSite($eventForm->get('campus')->getData());
+                $currentLieu = $lieuRepository->find($eventForm->get('location')->getData());
+                $event->setLocation($currentLieu);
+
                 $em->persist($event);
                 $em->flush();
 
                 // On ajoute un message flash
-                $this->addFlash("link", "Votre sortie a été modifiée. Il faut penser à la publier");
+                $this->addFlash("success", "Votre sortie a été modifiée. Il faut penser à la publier");
 
                 // Redirige vers une autre page
                 return $this->redirectToRoute("main_eventsList", [
@@ -289,6 +294,7 @@ class MainController extends AbstractController
             return $this->render('main/update.html.twig', [
                 'eventForm' => $eventForm->createView(),
                 'nomLieu' => $currentLieu,
+                'idLieu' => $currentLieuId,
                 'nomRue' => $currentStreet,
                 'codePostal' => $currentPostCode,
                 'latitude' => $currentLatitude,
