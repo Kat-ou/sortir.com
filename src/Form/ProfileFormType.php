@@ -20,37 +20,42 @@ class ProfileFormType extends AbstractType
     {
         $builder
             ->add('username', TextType::class, [
-                'label' => 'Pseudo',
+                'label' => 'Pseudo: ',
                 ])
             ->add('firstname', TextType::class, [
-                'label' => 'Prénom',
+                'label' => 'Prénom: ',
             ])
             ->add('name', TextType::class, [
-                'label' => 'Nom',
+                'label' => 'Nom: ',
             ])
             ->add('phone', TextType::class, [
-                'label' => 'Téléphone',
+                'label' => 'Téléphone: ',
             ])
             ->add('email', TextType::class, [
-                'label' => 'Email',
+                'label' => 'Email: ',
             ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'invalid_message' => 'Les mots de passe ne correspondent pas.',
-                'options' => ['attr' => ['class' => 'password-field']],
-                'first_options'  => ['label' => 'Mot de passe'],
-                'second_options' => ['label' => 'Confirmation'],
+                'options' => ['attr' => [
+                    'class' => 'password-field',
+                    'class'=>'has-text-link',
+                    'class'=>'has-text-link'
+
+                ]],
+                'first_options'  => ['label' => 'Mot de passe: '],
+                'second_options' => ['label' => 'Confirmation: '],
                 'mapped' => false
             ])
             ->add('campus', EntityType::class, [
-                'label' => 'Campus',
+                'label' => 'Campus: ',
                 'class' => Campus::class,
                 "choice_label" => "name",
             ])
 
 
             ->add('pictureFilename', FileType::class, [
-                'label' => 'Ma photo',
+                'label' => 'Ma photo: ',
                 'mapped' => false,
                 'constraints' => [
                     new Image([

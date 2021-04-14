@@ -125,34 +125,35 @@
     </div>
 
     <div class="columns">
-    <div class="column is-8">
-    {% if sortie.participants|length > 0 %}
-        <p class="subtitle is-4">Liste des participants inscrits : </p>
-        <table class="table mb-5">
-            <thead>
-            <tr>
-                <th>Pseudo</th>
-                <th>Nom</th>
-            </tr>
-            </thead>
-            <tfoot>
-            <tbody>
-
-            {% for participant in sortie.participants %}
+        <div class="column is-8">
+            {% if sortie.participants|length > 0 %}
+            <p class="subtitle is-4">Liste des participants inscrits : </p>
+            <table class="table mb-5">
+                <thead>
                 <tr>
-                    <td>
-                        <a href="{{ path('profile_view', {'eventId': sortie.id, 'participantId': participant.id}) }}">{{ participant.username }}
-                    </td>
-                    <td>{{ participant.name }}</td>
+                    <th>Pseudo</th>
+                    <th>Nom</th>
                 </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tfoot>
+                <tbody>
+
+                {% for participant in sortie.participants %}
+                    <tr>
+                        <td>
+                            <a href="{{ path('profile_view', {'eventId': sortie.id, 'participantId': participant.id}) }}">{{ participant.username }}
+                        </td>
+                        <td>{{ participant.name }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
         </div>
+
+        {% endif %}
         <div class="column">
-            <a class="button is-medium is-link is-light" href="{{ path('main_eventsList') }}">Retour</a>
+            <a class="button is-medium is-link is-light is-vcentered" href="{{ path('main_eventsList') }}">Retour</a>
         </div>
-        </div>
-    {% endif %}
+    </div>
 {% endblock %}
 

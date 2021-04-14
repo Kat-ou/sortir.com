@@ -20,41 +20,42 @@
 
             <!-- Lien accessible uniquement à l'admin -->
             {% if is_granted("ROLE_ADMIN") %}
-                <a class="navbar-item">
+                <a class="navbar-item has-text-weight-bold">
                     Villes
                 </a>
-                <a class="navbar-item" href="{{ path('app_register') }}">
+                <a class="navbar-item has-text-weight-bold">
                     Campus
                 </a>
-                <a class="navbar-item" href="{{ path('app_register') }}">
+                <a class="navbar-item has-text-weight-bold" href="{{ path('app_register') }}">
                     Utilisateurs
                 </a>
             {% endif %}
 
             <!-- Lien accessible uniquement à un utilisateur connecté -->
             {% if is_granted("ROLE_USER") %}
-            <a class="navbar-item" href="{{ path('main_eventsList') }}">
-                Accueil
-            </a>
-            <a class="navbar-item" href="{{ path('participant_profile') }}">
-                Mon Profil
-            </a>
-        </div>
-        {% endif %}
-    </div>
-
-    <div class="navbar-end">
-        <div class="navbar-item">
-            {% if not is_granted("ROLE_USER") %}
-                <a class="button is-link is-light" href="{{ path('app_login') }}">
-                    <strong>Se connecter</strong>
+                <a class="navbar-item has-text-weight-bold" href="{{ path('main_eventsList') }}">
+                    Accueil
                 </a>
-            {% else %}
+                <a class="navbar-item has-text-weight-bold" href="{{ path('participant_profile') }}">
+                    Mon Profil
+                </a>
+
+
+            {% endif %}
+
+
+            <div class="navbar-item">
+                {% if not is_granted("ROLE_USER") %}
+                    <a class="button is-link is-light" href="{{ path('app_login') }}">
+                        <strong>Se connecter</strong>
+                    </a>
+                {% else %}
                     <a class="button is-link is-light" href="{{ path('app_logout') }}">
                         <strong>Se déconnecter ({{ app.user.username | striptags }})</strong>
                     </a>
-            {% endif %}
+                {% endif %}
+            </div>
+
         </div>
-    </div>
     </div>
 </nav>
