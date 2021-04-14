@@ -89,7 +89,10 @@ class ParticipantController extends AbstractController
                 'foundParticipant' => $foundParticipant
             ]);
         } else {
-            return $this->redirectToRoute('main_eventsList');
+            // On ajoute un message flash
+            $this->addFlash("danger", "Vous devez participer à cette sortie pour contacter les autres membres inscrits");
+            return $this->redirectToRoute('details', ["id" => $eventId]
+            );
         }
     }
 }
