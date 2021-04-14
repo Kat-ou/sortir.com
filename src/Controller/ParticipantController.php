@@ -34,8 +34,8 @@ class ParticipantController extends AbstractController
 
             $uploadedFile = $profileForm->get('pictureFilename')->getData();
             if ($uploadedFile) {
-                $brochureFileName = $pictureServices->upload($uploadedFile);
-                $user->setPictureFilename($brochureFileName);
+                $pictureFileName = $pictureServices->upload($uploadedFile);
+                $user->setPictureFilename($pictureFileName);
             }
 
             // On récupère le mot de passe en 'claire' et on le hash

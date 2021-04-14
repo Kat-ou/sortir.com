@@ -1,5 +1,5 @@
 {# templates/bundles/TwigBundle/Exception/error404.html.twig #}
-{# Pour tester la page d'erreur 404 --> http://localhost/sortir.com/public/_error/404.html #}
+{# Pour tester la page d'erreur 403 --> http://localhost/sortir.com/public/_error/403.html #}
 {# composer require symfony/twig-pack #}
 {# modifier le mode dev vers prod dans le fichier env.local #}
 {# Lien vers la doc: https://symfony.com/doc/current/controller/error_pages.html#testing-error-pages #}
@@ -12,7 +12,6 @@
     <p>{{ status_code }} {{ status_text }}</p>
 
     <p>
-        La page demandée n'a pas pu être localisée.
-        Vérifiez toute faute d'orthographe de l'URL ou <a href="{{ path('main_eventsList') }}"> revenez à la page d'accueil</a>.
+        <a href="{{ path('main_eventsList') }}"> revenez à la page d'accueil</a>.
     </p>
 {% endblock %}
