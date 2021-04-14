@@ -15,7 +15,9 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser()) {
-             return $this->redirectToRoute('main_eventsList');
+            // On ajoute un message flash
+            $this->addFlash("link", "Vous êtes déjà connecté");
+            return $this->redirectToRoute('main_eventsList');
         }
 
         // get the login error if there is one

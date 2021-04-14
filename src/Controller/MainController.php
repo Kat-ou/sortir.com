@@ -256,6 +256,7 @@ class MainController extends AbstractController
         // on récupère la sortie
         /** @var Sortie $event */
         $event = $sortieRepository->findAllElementsByEvent($id);
+        $currentCampus = $event->getOrganizingSite();
         $currentCity = $event->getLocation()->getCity();
         $currentLieu = $event->getLocation()->getName();
         $currentLieuId = $event->getLocation()->getId();
@@ -267,6 +268,7 @@ class MainController extends AbstractController
         // Crée une instance de la classe de formulaire que l'on assicie à notre formulaire
         $eventForm = $this->createForm(EventFormType::class, $event);
         $eventForm->get('ville')->setData($currentCity);
+        $eventForm->get('campus')->setData($currentCampus);
 
         // On prend les données du formulaire soumis, et les injecte dans mon $profil
         $eventForm->handleRequest($request);
