@@ -13,6 +13,9 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -44,11 +47,11 @@ class EventFormType extends AbstractType
             ->add('description', null, [
                 'label' => "Description et infos: ",
             ])
-            ->add('location', EntityType::class, [
-                'label' => "Lieu: ",
-                'class' => Lieu::class,
-                'choice_label' => 'name',
-            ])
+            //->add('location', EntityType::class, [
+                //'label' => "Lieu: ",
+                //'class' => Lieu::class,
+                //'choice_label' => 'name',
+            //])
             ->add('street', ChoiceType::class, [
                 'label' => "Rue: ",
                 'mapped' => false
@@ -81,6 +84,50 @@ class EventFormType extends AbstractType
                 //'attr' =>['class' => 'has-text-link']
             ])
         ;
+
+        $formUpdate = function (FormInterface $form, Ville $ville = null) {
+            $lieu = null === $ville ? [] : $ville->getLocations();
+
+            $form->add('location', EntityType::class, [
+                'class' => Lieu::class,
+                'placeholder' => 'Choisir un lieu',
+                'choices' => $lieu,
+                'choice_label' => 'name',
+            ]);
+        };
+
+        $builder->addEventListener(
+            FormEvents::PRE_SET_DATA,
+            function (FormEvent $event) use ($formUpdate) {
+                // On récupère la donnée
+                $data = $event->getData();
+                if (is_null($data->getId())) {
+                    formUpdate($event->getForm(), $data->getLocation());
+                } else {
+                    formUpdate($event->getForm(), $data->getLocation()->getCity());
+                }
+            }
+        );
+
+        $builder->get('ville')->addEventListener(
+            FormEvents::POST_SUBMIT,
+            function (FormEvent $event) use ($formUpdate) {
+                $ville = $event->getForm()->getData();
+                $formUpdate($event->getForm()->getParent(), $ville);
+            }
+        );
+
+        function formUpdate (FormInterface $form, Ville $ville = null)
+        {
+            $lieu = null === $ville ? [] : $ville->getLocations();
+
+            $form->add('location', EntityType::class, [
+                'class' => Lieu::class,
+                'placeholder' => 'Choisir un lieu',
+                'choices' => $lieu,
+                'choice_label' => 'name',
+            ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)

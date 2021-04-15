@@ -99,7 +99,7 @@ class MainController extends AbstractController
     /**
      * @Route ("/event/create",name="create")
      */
-    public function create(EntityManagerInterface $entityManager, Request $request, EtatRepository $etatRepository, LieuRepository $lieuRepository): Response
+    public function create(EntityManagerInterface $entityManager, Request $request, EtatRepository $etatRepository): Response
     {
         $event = new Sortie();
 
@@ -109,7 +109,6 @@ class MainController extends AbstractController
         $currentCodePostal = "";
         $currentLatitude = "";
         $currentLongitude = "";
-        $currentNomLieu = "";
 
         // On créé le formulaire
         $eventForm = $this->createForm(EventFormType::class, $event);
@@ -119,8 +118,6 @@ class MainController extends AbstractController
         if ($eventForm->isSubmitted() && $eventForm->isValid() ) {
             $event->setOrganizer($this->getUser());
             $event->setOrganizingSite($this->getUser()->getCampus());
-            $currentLieu = $lieuRepository->find($eventForm->get('location')->getData());
-            $event->setLocation($currentLieu);
 
             if ($request->get('publish')){
                 $createdStatus = $etatRepository->findOneBy(['wording' => NameState::STATE_OPEN]);
@@ -148,7 +145,6 @@ class MainController extends AbstractController
             'codePostal' => $currentCodePostal,
             'latitude' => $currentLatitude,
             'longitude' => $currentLongitude,
-            'nomLieu' => $currentNomLieu
         ]);
     }
 
@@ -266,15 +262,13 @@ class MainController extends AbstractController
     /**
      * @Route ("/event/updated/{id}",name="main_updated", requirements={"id"="\d+"})
      */
-    public function updated($id, EntityManagerInterface $em, Request $request, SortieRepository $sortieRepository, EtatRepository $etatRepository, EventManagement $eventManagement, LieuRepository $lieuRepository): Response
+    public function updated($id, EntityManagerInterface $em, Request $request, SortieRepository $sortieRepository, EtatRepository $etatRepository, EventManagement $eventManagement): Response
     {
         // on récupère la sortie
         /** @var Sortie $event */
         $event = $sortieRepository->findAllElementsByEvent($id);
         $currentCampus = $event->getOrganizingSite();
         $currentCity = $event->getLocation()->getCity();
-        $currentLieu = $event->getLocation()->getName();
-        $currentLieuId = $event->getLocation()->getId();
         $currentPostCode = $event->getLocation()->getCity()->getPostcode();
         $currentStreet = $event->getLocation()->getStreet();
         $currentLatitude = $event->getLocation()->getLatitude();
@@ -294,8 +288,6 @@ class MainController extends AbstractController
             if ($eventForm->isSubmitted() && $eventForm->isValid() ) {
 
                 $event->setOrganizingSite($eventForm->get('campus')->getData());
-                $currentLieu = $lieuRepository->find($eventForm->get('location')->getData());
-                $event->setLocation($currentLieu);
 
                 if ($request->get('publish')){
                     $createdStatus = $etatRepository->findOneBy(['wording' => NameState::STATE_OPEN]);
@@ -319,8 +311,7 @@ class MainController extends AbstractController
 
             return $this->render('main/update.html.twig', [
                 'eventForm' => $eventForm->createView(),
-                'nomLieu' => $currentLieu,
-                'idLieu' => $currentLieuId,
+                //'idLieu' => $currentLieuId,
                 'nomRue' => $currentStreet,
                 'codePostal' => $currentPostCode,
                 'latitude' => $currentLatitude,

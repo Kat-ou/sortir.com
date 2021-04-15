@@ -119,8 +119,8 @@
                         }) }}</p>
                 </div>
                 <div class="column">
-                    {#<p>{{ form_widget(eventForm.location, {'attr': {'class': 'input is-primary'}}) }}</p>#}
-                    <div class="control">
+                    <p>{{ form_widget(eventForm.location, {'attr': {'class': 'input is-primary'}}) }}</p>
+                    {#<div class="control">
                           <span class="select">
                               <select id="event_form_location" name="event_form[location]" class="input is-primary">
                                   <option value="{{ idLieu|upper }}">
@@ -129,7 +129,7 @@
                               </select>
                           </span>
                     </div>
-                    {{ form_errors(eventForm.location) }}
+                    {{ form_errors(eventForm.location) }}#}
                 </div>
             </div>
             <div class="columns is-mobile">
