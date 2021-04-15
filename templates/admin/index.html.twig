@@ -31,8 +31,8 @@
                 <td>{{ participant.isActive ? 'Yes' : 'No' }}</td>
                 <td>{{ participant.createdDate ? participant.createdDate|date('d-m-Y') : '' }}</td>
                 <td>
-                    <a href="{{ path('users_show', {'id': participant.id}) }}"><span class="icon"><i class="fas fa-search" title="Visualiser"></i></span></a>
-                    <a href="{{ path('users_edit', {'id': participant.id}) }}"><span class="icon"><i class="far fa-edit" title="Modifier"></i></span></a>
+                    <a href="{{ path('admin_show', {'id': participant.id}) }}"><span class="icon"><i class="fas fa-search" title="Visualiser"></i></span></a>
+                    <a href="{{ path('admin_edit', {'id': participant.id}) }}"><span class="icon"><i class="far fa-edit" title="Modifier"></i></span></a>
                 </td>
             </tr>
         {% else %}
@@ -44,5 +44,4 @@
     </table>
 </div>
 
-    <a href="{{ path('users_new') }}">Create new</a>
 {% endblock %}

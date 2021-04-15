@@ -47,12 +47,12 @@
         </tbody>
     </table>
     <div class="section columns">
-        <a class="button is-medium is-link is-light" href="{{ path('users_index') }}">Annuler</a>
+        <a class="button is-medium is-link is-light" href="{{ path('admin_index') }}">Annuler</a>
         <div class="column is-1"></div>
         <a class="button is-medium is-link is-light"
-           href="{{ path('users_edit', {'id': participant.id}) }}">Modifier</a>
+           href="{{ path('admin_edit', {'id': participant.id}) }}">Modifier</a>
         <div class="column is-1"></div>
-        <form method="post" action="{{ path('users_delete', {'id': participant.id}) }}"
+        <form method="post" action="{{ path('admin_delete', {'id': participant.id}) }}"
               onsubmit="return confirm('Etes-vous sûr de vouloir supprimer ce compte ?');">
             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ participant.id) }}">
             <button class="button is-medium is-link is-light">Supprimer</button>
