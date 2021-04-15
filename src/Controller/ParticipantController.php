@@ -3,7 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Sortie;
+use App\Form\CsvFormType;
+use App\Form\EventsListFormType;
 use App\Form\ProfileFormType;
+use App\Model\CsvForm;
+use App\Model\SearchForm;
 use App\Repository\ParticipantRepository;
 use App\Repository\SortieRepository;
 use App\Services\PictureServices;
@@ -94,9 +98,6 @@ class ParticipantController extends AbstractController
         }
         $event = $sortieRepository->findAllElementsByEvent($eventId);
 
-        /**
-         * @var Sortie $event
-         */
         if ($event->getParticipants()->contains($foundParticipant) && $event->getParticipants()->contains($this->getUser())) {
             return $this->render('participant/profileView.html.twig', [
                 'foundParticipant' => $foundParticipant,
@@ -109,4 +110,6 @@ class ParticipantController extends AbstractController
             );
         }
     }
+
+
 }

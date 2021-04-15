@@ -38,6 +38,7 @@ class AppFixtures extends Fixture
 
 
 
+
     /**
      * Méthode de chargement des jeux de données dans chacune des tables du projet "sortir.com".
      * Les tables concernées sont : Participant, Sortie, Campus, Etat, Lieu, et Ville.

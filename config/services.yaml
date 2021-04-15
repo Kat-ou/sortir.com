@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     upload_dir: '%kernel.project_dir%/public/img/profile/'
+    upload_csv_dir: '%kernel.project_dir%/public/files/'
 
 imports:
     - { resource: packages/paginator.yaml } # Configurations du composant de pagination knp_paginator (doc. https://github.com/KnpLabs/KnpPaginatorBundle)

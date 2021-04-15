@@ -78,9 +78,16 @@
             {{ form_widget(registrationForm.isActive, {'attr': {'class': 'input is-primary'}}) }}
         </div>
     </div>
-
-
-
-    <button type="submit" class="btn button is-medium is-link is-light">Register</button>
+    <button type="submit" class="btn button is-medium is-link is-light">Enregistrer</button>
     {{ form_end(registrationForm) }}
+
+
+    <h1 class="title is-3 my-6">Import CSV</h1>
+
+    {{ form_start(csvForm) }}
+        {{ form_row(csvForm.csvFile) }}
+        <button type="submit" class="btn button is-medium is-link is-light">Importer</button>
+    {{ form_end(csvForm) }}
+
+
 {% endblock %}

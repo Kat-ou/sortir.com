@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Participant;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -44,6 +45,30 @@ class ParticipantRepository extends ServiceEntityRepository implements UserLoade
         $user->setPassword($newEncodedPassword);
         $this->_em->persist($user);
         $this->_em->flush();
+    }
+
+    /**
+     * Méthode retournant si un utilisateur est déja inscrit en base de données selon son 'username' et son 'email' passés en paramètre.
+     * @param string $username - Le pseudo du participant.
+     * @param string $email - L'email du participant.
+     * @return bool - True si une personne possède déjà se pseudo ou cette email ; sinon False.
+     */
+    public function isParticipantAlreadyExist(string $username, string $email): bool
+    {
+        $areThereSevralResult = false;
+        try {
+            $queryBuilder = $this->createQueryBuilder('p');
+            $queryBuilder
+                ->where('p.username = :username')
+                ->setParameter('username',$username)
+                ->orWhere('p.email = :email')
+                ->setParameter('email',$email);
+            $query = $queryBuilder->getQuery();
+            $result = $query->getOneOrNullResult();
+        } catch (NonUniqueResultException $nure) {
+            $areThereSevralResult = true;
+        }
+        return ($areThereSevralResult || $result != null);
     }
 
     // /**
