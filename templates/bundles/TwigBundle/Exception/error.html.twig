@@ -1,18 +1,49 @@
 {# templates/bundles/TwigBundle/Exception/error404.html.twig #}
-{# Pour tester la page d'erreur 404 --> http://localhost/sortir.com/public/_error/404.html #}
+{# Pour tester la page d'erreur 404 --> http://localhost/sortir.com/public/_error/500.html #}
 {# composer require symfony/twig-pack #}
 {# modifier le mode dev vers prod dans le fichier env.local #}
 {# Lien vers la doc: https://symfony.com/doc/current/controller/error_pages.html#testing-error-pages #}
 
-{% extends 'base.html.twig' %}
-
 {% block body %}
-<h1>Oups !! Le site est maintenance :-(</h1>
 
-<p>{{ status_code }} {{ status_text }}</p>
+      {% block script%}
+    <link href="https://fonts.googleapis.com/css?family=Encode+Sans+Semi+Condensed:100,200,300,400" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/500.css') }}">
+          <script src="{{ asset('js/500.js') }}" defer></script>
+      {% endblock %}
 
-<p>
-    La page demandée n'a pas pu être localisée.
-    Vérifiez toute faute d'orthographe de l'URL ou <a href="{{ path('main_eventsList') }}"> revenez à la page d'accueil</a>.
-</p>
+    <body class="loading">
+    <h1>500</h1>
+    <h2>Unexpected Error <b>:(</b></h2>
+    <h3>
+
+       Oups !! Le site est maintenance. <br>
+       La page demandée n'a pas pu être localisée.<br><br>
+        Vérifiez toute faute d'orthographe de l'URL ou <a href="{{ path('main_eventsList') }}"> revenez à la page d'accueil</a>.
+    </h3>
+    <div class="gears">
+        <div class="gear one">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <div class="gear two">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+        <div class="gear three">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="js/main.js" type="text/javascript"></script>
+
+
+    </body>
+
+
+
 {% endblock %}
