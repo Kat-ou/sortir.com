@@ -15,9 +15,8 @@ class CsvForm
     /**
      * @Assert\File(
      *     maxSize = "1024k",
-     *     mimeTypes = {"text/plain"},
-     *     mimeTypesMessage = "Veuillez télécharger un fichier .csv"
-     * )
+     *     maxSizeMessage="Votre fichier .csv ne doit pas excéder 1Mo",
+     *     )
      */
     private ?UploadedFile $csvFile = null;
 

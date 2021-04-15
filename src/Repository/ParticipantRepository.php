@@ -55,6 +55,7 @@ class ParticipantRepository extends ServiceEntityRepository implements UserLoade
      */
     public function isParticipantAlreadyExist(string $username, string $email): bool
     {
+        $result = null;
         $areThereSevralResult = false;
         try {
             $queryBuilder = $this->createQueryBuilder('p');
@@ -66,6 +67,8 @@ class ParticipantRepository extends ServiceEntityRepository implements UserLoade
             $query = $queryBuilder->getQuery();
             $result = $query->getOneOrNullResult();
         } catch (NonUniqueResultException $nure) {
+            // gestion de la levée d'exception au cas ou, mais présence
+            // de contraintes d'unicité sur les 2 champs intérrogés
             $areThereSevralResult = true;
         }
         return ($areThereSevralResult || $result != null);

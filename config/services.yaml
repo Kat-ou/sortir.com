@@ -38,3 +38,7 @@ services:
     App\Services\PictureServices:
         arguments:
             $targetDirectory: '%kernel.project_dir%/public/img/profile/'
+
+    App\Services\ImportParticipants:
+        arguments:
+            $uploadCsvDir: '%kernel.project_dir%/public/files/'
