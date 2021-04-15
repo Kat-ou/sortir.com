@@ -85,20 +85,9 @@ class EventFormType extends AbstractType
             ])
         ;
 
-        $formUpdate = function (FormInterface $form, Ville $ville = null) {
-            $lieu = null === $ville ? [] : $ville->getLocations();
-
-            $form->add('location', EntityType::class, [
-                'class' => Lieu::class,
-                'placeholder' => 'Choisir un lieu',
-                'choices' => $lieu,
-                'choice_label' => 'name',
-            ]);
-        };
-
         $builder->addEventListener(
             FormEvents::PRE_SET_DATA,
-            function (FormEvent $event) use ($formUpdate) {
+            function (FormEvent $event) {
                 // On récupère la donnée
                 $data = $event->getData();
                 if (is_null($data->getId())) {
@@ -111,9 +100,9 @@ class EventFormType extends AbstractType
 
         $builder->get('ville')->addEventListener(
             FormEvents::POST_SUBMIT,
-            function (FormEvent $event) use ($formUpdate) {
+            function (FormEvent $event) {
                 $ville = $event->getForm()->getData();
-                $formUpdate($event->getForm()->getParent(), $ville);
+                formUpdate($event->getForm()->getParent(), $ville);
             }
         );
 
