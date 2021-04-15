@@ -33,7 +33,8 @@ class SortieRepository extends ServiceEntityRepository
     public function findEventsBySevralStates()
     {
         $queryBuilder = $this->createQueryBuilder('s')
-            ->join('s.state', 'e')->addSelect('e');
+            ->join('s.state', 'e')->addSelect('e')
+            ->leftJoin('s.participants', 'p')->addSelect('p');
         // on cherche les sorties étants Ouvertes, Cloturées, et En cours :
         $queryBuilder
             ->where('e.wording IN (:open, :end, :progress, :create)')
