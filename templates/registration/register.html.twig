@@ -15,79 +15,85 @@
 
     {{ form_start(registrationForm) }}
 
+    <div class="columns is-vcentered">
+        <div class="column is-1"></div>
+        <div class="column is-7 mt-6">
+            <div class="columns is-mobile">
+                <div class="column is-2">
+                    {{ form_label(registrationForm.name, null, {'attr': {'class': 'has-text-link'} }) }}
+                </div>
+                <div class="column is-8">
+                    {{ form_widget(registrationForm.name, {'attr': {'class': 'input is-primary'}}) }}
+                </div>
+            </div>
 
-    <div class="columns is-mobile">
-        <div class="column is-2">
-            {{ form_label(registrationForm.name, null, {'attr': {'class': 'has-text-link'} }) }}
+            <div class="columns is-mobile">
+                <div class="column is-2">
+                    {{ form_label(registrationForm.firstname, null, {'attr': {'class': 'has-text-link'} }) }}
+                </div>
+                <div class="column is-8">
+                    {{ form_widget(registrationForm.firstname, {'attr': {'class': 'input is-primary'}}) }}
+                </div>
+            </div>
+
+            <div class="columns is-mobile">
+                <div class="column is-2">
+                    {{ form_label(registrationForm.username, null, {'attr': {'class': 'has-text-link'} }) }}
+                </div>
+                <div class="column is-8">
+                    {{ form_widget(registrationForm.username, {'attr': {'class': 'input is-primary'}}) }}
+                </div>
+            </div>
+
+            <div class="columns is-mobile">
+                <div class="column is-2">
+                    {{ form_label(registrationForm.email, null, {'attr': {'class': 'has-text-link'} }) }}
+                </div>
+                <div class="column is-8">
+                    {{ form_widget(registrationForm.email, {'attr': {'class': 'input is-primary'}}) }}
+                </div>
+            </div>
+
+            <div class="columns is-mobile">
+                <div class="column is-2">
+                    {{ form_label(registrationForm.campus, null, {'attr': {'class': 'has-text-link'} }) }}
+                </div>
+                <div class="column">
+                    {{ form_widget(registrationForm.campus, {'attr': {'class': 'input is-primary is-uppercase'}}) }}
+                </div>
+            </div>
+
+            <div class="columns is-mobile">
+                <div class="column is-2">
+                    {{ form_label(registrationForm.roles, null, {'attr': {'class': 'has-text-link'} }) }}
+                </div>
+                <div class="column">
+                    {{ form_widget(registrationForm.roles, {'attr': {'class': 'input is-primary'}}) }}
+                </div>
+            </div>
+
+            <div class="columns is-mobile">
+                <div class="column is-2">
+                    {{ form_label(registrationForm.isActive, null, {'attr': {'class': 'has-text-link'} }) }}
+                </div>
+                <div class="column">
+                    {{ form_widget(registrationForm.isActive, {'attr': {'class': 'input is-primary'}}) }}
+                </div>
+            </div>
+            <button type="submit" class="btn button is-medium is-link is-light">Enregistrer</button>
+            {{ form_end(registrationForm) }}
         </div>
-        <div class="column is-4">
-            {{ form_widget(registrationForm.name, {'attr': {'class': 'input is-primary'}}) }}
+
+        <div class="column is-3">
+
+                <h1 class="title is-3 my-6">Import CSV</h1>
+            <div class="columns is-mobile">
+                {{ form_start(csvForm) }}
+                {{ form_row(csvForm.csvFile) }}
+                <button type="submit" class="btn button is-medium is-link is-light">Importer</button>
+                {{ form_end(csvForm) }}
+            </div>
         </div>
     </div>
-
-    <div class="columns is-mobile">
-        <div class="column is-2">
-            {{ form_label(registrationForm.firstname, null, {'attr': {'class': 'has-text-link'} }) }}
-        </div>
-        <div class="column is-4">
-            {{ form_widget(registrationForm.firstname, {'attr': {'class': 'input is-primary'}}) }}
-        </div>
-    </div>
-
-    <div class="columns is-mobile">
-        <div class="column is-2">
-            {{ form_label(registrationForm.username, null, {'attr': {'class': 'has-text-link'} }) }}
-        </div>
-        <div class="column is-4">
-            {{ form_widget(registrationForm.username, {'attr': {'class': 'input is-primary'}}) }}
-        </div>
-    </div>
-
-    <div class="columns is-mobile">
-        <div class="column is-2">
-            {{ form_label(registrationForm.email, null, {'attr': {'class': 'has-text-link'} }) }}
-        </div>
-        <div class="column is-4">
-            {{ form_widget(registrationForm.email, {'attr': {'class': 'input is-primary'}}) }}
-        </div>
-    </div>
-
-    <div class="columns is-mobile">
-        <div class="column is-2">
-            {{ form_label(registrationForm.campus, null, {'attr': {'class': 'has-text-link'} }) }}
-        </div>
-        <div class="column">
-            {{ form_widget(registrationForm.campus, {'attr': {'class': 'input is-primary is-uppercase'}}) }}
-        </div>
-    </div>
-
-    <div class="columns is-mobile">
-        <div class="column is-2">
-            {{ form_label(registrationForm.roles, null, {'attr': {'class': 'has-text-link'} }) }}
-        </div>
-        <div class="column">
-            {{ form_widget(registrationForm.roles, {'attr': {'class': 'input is-primary'}}) }}
-        </div>
-    </div>
-
-    <div class="columns is-mobile">
-        <div class="column is-2">
-            {{ form_label(registrationForm.isActive, null, {'attr': {'class': 'has-text-link'} }) }}
-        </div>
-        <div class="column">
-            {{ form_widget(registrationForm.isActive, {'attr': {'class': 'input is-primary'}}) }}
-        </div>
-    </div>
-    <button type="submit" class="btn button is-medium is-link is-light">Enregistrer</button>
-    {{ form_end(registrationForm) }}
-
-
-    <h1 class="title is-3 my-6">Import CSV</h1>
-
-    {{ form_start(csvForm) }}
-        {{ form_row(csvForm.csvFile) }}
-        <button type="submit" class="btn button is-medium is-link is-light">Importer</button>
-    {{ form_end(csvForm) }}
-
 
 {% endblock %}

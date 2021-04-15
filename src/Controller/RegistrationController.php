@@ -54,11 +54,13 @@ class RegistrationController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
-            // do anything else you need here, like send an email
 
+            // do anything else you need here, like send an email
+            $this->addFlash("link", "L'utilisateur a été créée");
            return $this->redirectToRoute('app_register');
         }
 
+            // cas import CSV
         if ( $csvRegisterForm->isSubmitted() && $csvRegisterForm->isValid() ) {
             $isItUploaded = true;
             /** @var UploadedFile $uploadedFile */
