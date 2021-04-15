@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Participant;
 use App\Entity\Sortie;
 use App\Form\CsvFormType;
 use App\Form\EventsListFormType;
@@ -110,6 +111,5 @@ class ParticipantController extends AbstractController
             );
         }
     }
-
 
 }

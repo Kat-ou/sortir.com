@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Participant index{% endblock %}
+
+{% block body %}
+    <h1 class="title is-2 mt-5">Participants</h1>
+<div class="table-container mt-5">
+    <table class="table is-striped is-hoverable">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Pseudo</th>
+                <th>Tél</th>
+                <th>Actif</th>
+                <th>DatCréation</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for participant in participants %}
+            <tr>
+                <td>{{ participant.id }}</td>
+                <td>{{ participant.email }}</td>
+                <td>{{ participant.name }}</td>
+                <td>{{ participant.firstname }}</td>
+                <td>{{ participant.username }}</td>
+                <td>{{ participant.phone }}</td>
+                <td>{{ participant.isActive ? 'Yes' : 'No' }}</td>
+                <td>{{ participant.createdDate ? participant.createdDate|date('d-m-Y') : '' }}</td>
+                <td>
+                    <a href="{{ path('users_show', {'id': participant.id}) }}"><span class="icon"><i class="fas fa-search" title="Visualiser"></i></span></a>
+                    <a href="{{ path('users_edit', {'id': participant.id}) }}"><span class="icon"><i class="far fa-edit" title="Modifier"></i></span></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="13">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+    <a href="{{ path('users_new') }}">Create new</a>
+{% endblock %}

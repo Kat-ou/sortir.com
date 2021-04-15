@@ -97,7 +97,7 @@ class Participant implements UserInterface
     private $updatedDate;
 
     /**
-     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="organizer")
+     * @ORM\OneToMany(targetEntity=Sortie::class, mappedBy="organizer", cascade={"remove"})
      */
     private $events;
 

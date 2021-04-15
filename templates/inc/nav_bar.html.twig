@@ -26,9 +26,21 @@
                 <a class="navbar-item has-text-weight-bold">
                     Campus
                 </a>
-                <a class="navbar-item has-text-weight-bold" href="{{ path('app_register') }}">
-                    Utilisateurs
-                </a>
+                <div class="navbar-item has-dropdown is-hoverable has-text-weight-bold">
+                    <a class="navbar-link">
+                        Utilisateurs
+                    </a>
+
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item" href="{{ path('app_register') }}">
+                        Créer
+                        </a>
+                        <a class="navbar-item" href="{{ path('users_index') }}">
+                        Gérer
+                        </a>
+                    </div>
+                </div>
+
             {% endif %}
 
             <!-- Lien accessible uniquement à un utilisateur connecté -->
