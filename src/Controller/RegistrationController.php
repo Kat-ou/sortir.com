@@ -6,9 +6,6 @@ use App\Entity\Participant;
 use App\Form\CsvFormType;
 use App\Form\RegistrationFormType;
 use App\Model\CsvForm;
-use App\Repository\CampusRepository;
-use App\Repository\ParticipantRepository;
-use App\Security\AppAuthenticator;
 use App\Services\ImportParticipants;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,15 +13,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
 class RegistrationController extends AbstractController
 {
     /**
      * @Route("/admin/register", name="app_register")
      */
-    public function register(Request $request, EntityManagerInterface $entityManager, UserPasswordEncoderInterface $passwordEncoder, ParticipantRepository $participantRepository,
-                             GuardAuthenticatorHandler $guardHandler, AppAuthenticator $authenticator, CampusRepository $campusRepository, ImportParticipants $importParticipants): Response
+    public function register(Request $request, EntityManagerInterface $entityManager,
+                             UserPasswordEncoderInterface $passwordEncoder, ImportParticipants $importParticipants): Response
     {
         // Gestion Formulaire de creation d'un participant :
         $user = new Participant();
